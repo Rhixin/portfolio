@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm install --legacy-peer-deps && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "preinstall": "npx npm-force-resolutions"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
