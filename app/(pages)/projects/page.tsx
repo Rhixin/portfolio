@@ -11,6 +11,8 @@ export default function Projects() {
     "/images/zhazted_2by2_nobg.png",
   ];
 
+  const p0 = ["/images/asl/1.png", "/images/asl/2.png", "/images/asl/3.png"];
+
   const p1 = [
     "/images/mnsts/1.png",
     "/images/mnsts/2.png",
@@ -62,11 +64,33 @@ export default function Projects() {
     "/images/maze/3.png",
     "/images/maze/4.png",
     "/images/maze/5.png",
-    "/images/maze/6.png",
   ];
 
   return (
     <>
+      <Project
+        title={"Real-Time Sign Language Recognition"}
+        description={
+          "Built a real-time sign language recognition system leveraging computer vision and deep learning. Integrated TensorFlow and Keras for model training, achieving 98.6% accuracy in gesture classification. Used Flask and Socket.IO for real-time backend communication, and a React-based frontend for live hand tracking and gesture detection. Implemented a responsive UI with Tailwind and deployed the model through a Python-based API. Focused on seamless real-time video processing and improving accessibility for sign language users."
+        }
+        images={p0}
+        technology={[
+          "React",
+          "Next.js",
+          "Tailwind",
+          "Tensorflow",
+          "Keras",
+          "Flask",
+          "SocketIo",
+          "Python",
+          "Numpy",
+          "Matplotlib",
+        ]}
+        weblink={""}
+        github={"https://github.com/Rhixin/GesturbeeCamera"}
+        video={""}
+      ></Project>
+
       <Project
         title={"RoomRadar Website"}
         description={
