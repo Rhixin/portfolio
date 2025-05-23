@@ -94,7 +94,7 @@ export default function Projects() {
       <Project
         title={"RoomRadar Website"}
         description={
-          "Developed a landlord-tenant platform that streamlines the process of finding and listing boarding houses, integrating Google Maps API for interactive property listings and advanced search filters for tenants. Built an interactive landlord dashboard for managing listings and a tenant search system with filters for proximity, price range, and availability. Focused primarily on frontend development and implemented API connectivity between the frontend and the ASP.NET backend to ensure seamless data integration."
+          "Developed a landlord-tenant platform that streamlines the process of finding and listing boarding houses, integrating Google Maps API for interactive property listings and advanced search filters for tenants. Built an interactive landlord dashboard for managing listings and a tenant search system with filters for proximity, price range, and availability."
         }
         images={p3}
         technology={[
@@ -129,7 +129,7 @@ export default function Projects() {
       <Project
         title={"Cinema System with Reserved Seating"}
         description={
-          "Developed a cinema ticketing website with an admin panel for listing movies, using SQLite as the database. Implemented a reserved seating feature that allows users to select seats based on their preferences. Primarily handled frontend development while also contributing to the database structuring."
+          "Developed a cinema ticketing website with an admin panel for listing movies, using SQLite as the database. Implemented a reserved seating feature that allows users to select seats based on their preferences."
         }
         images={p5}
         technology={["HTML", "CSS", "Javascript", "Python Django", "SQLite"]}
