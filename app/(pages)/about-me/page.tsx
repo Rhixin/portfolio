@@ -145,7 +145,7 @@ export default function About() {
         </div>
         <div className="flex justify-center mt-5 md:mt-0">
           <Image
-            src="/images/zhazted_2by2_nobg.png"
+            src="/images/profile_picture.jpeg"
             alt="Zhazted"
             width={300}
             height={300}
