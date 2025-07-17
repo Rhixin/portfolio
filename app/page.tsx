@@ -496,7 +496,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
+          <h1 className="text-6xl md:text-8xl font-bold text-cyan-400 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
             RHIXIN VALLES
           </h1>
 
@@ -551,14 +551,14 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="flex-1 max-w-2xl">
               <p className="text-lg text-cyan-400 mb-2">Hello, I'm</p>
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-cyan-400 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
                 Zhazted Rhixin
               </h1>
               <div className="h-10 relative mb-8">
                 <AnimatePresence mode="wait">
                   <motion.h2
                     key={currentTitle}
-                    className="absolute w-full text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
+                    className="absolute w-full text-2xl md:text-3xl font-bold text-purple-400 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
@@ -674,7 +674,7 @@ export default function Home() {
         >
           {/* Technical Skills */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-cyan-400 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent text-center">
               Technical Skills
             </h2>
 
@@ -725,7 +725,7 @@ export default function Home() {
 
           {/* Soft Skills */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-purple-400 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent text-center">
               Soft Skills
             </h2>
 
@@ -776,7 +776,7 @@ export default function Home() {
           viewport={{ once: true }}
           className="max-w-6xl w-full"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-16 bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-16 text-pink-400 bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent text-center">
             Education Roadmap
           </h2>
 
@@ -952,7 +952,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-12 md:mb-20 lg:mb-32 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-12 md:mb-20 lg:mb-32 text-cyan-400 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent"
           >
             Project Arsenal
           </motion.h1>
@@ -1435,7 +1435,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-12 md:mb-16 lg:mb-20"
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-cyan-400 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4">
               Contact Me
             </h1>
             <p className="text-lg md:text-xl text-gray-400 font-mono tracking-wider">
@@ -1490,7 +1490,7 @@ export default function Home() {
 
                   {/* Label */}
                   <div className="relative mb-3">
-                    <h3 className="text-lg md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:from-pink-400 group-hover:to-cyan-400 transition-all duration-300">
+                    <h3 className="text-lg md:text-xl font-bold text-cyan-400 bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:from-pink-400 group-hover:to-cyan-400 transition-all duration-300">
                       {info.label.toUpperCase()}
                     </h3>
                   </div>
