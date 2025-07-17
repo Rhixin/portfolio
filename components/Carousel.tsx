@@ -20,8 +20,11 @@ export default function Carousel({ images }: { images: string[] }) {
       <div className="relative flex items-center justify-center overflow-hidden w-full mx-auto mt-2">
         {/* Slides Container */}
         <div
-          className="flex transition-transform duration-500 ease-in-out w-full"
-          style={{ transform: `translateX(-${index * 100}%)` }}
+          className="flex w-full will-change-transform"
+          style={{ 
+            transform: `translate3d(-${index * 100}%, 0, 0)`,
+            transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
         >
           {images.map((item, index) => (
             <div
@@ -33,9 +36,9 @@ export default function Carousel({ images }: { images: string[] }) {
                 alt={item}
                 width={500}
                 height={200}
-                layout="intrinsic" // Ensures responsive scaling
-                objectFit="cover" // Ensures images fill the container without distortion
-                className="transition-transform transform hover:scale-105 duration-300"
+                className="w-full h-auto max-h-[35vh] object-cover transition-transform duration-200 ease-out hover:scale-[1.02] will-change-transform"
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
               />
             </div>
           ))}
@@ -65,7 +68,7 @@ export default function Carousel({ images }: { images: string[] }) {
         {images.map((_, i) => (
           <button
             key={i}
-            className={`h-2 w-2 sm:h-2.5 sm:w-2.5 mx-1 sm:mx-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+            className={`h-2 w-2 sm:h-2.5 sm:w-2.5 mx-1 sm:mx-1.5 rounded-full transition-all duration-200 cursor-pointer ${
               index === i
                 ? "bg-[#1b1b1e] scale-110"
                 : "bg-[#a9bcd0] hover:bg-[#58a4b0]"

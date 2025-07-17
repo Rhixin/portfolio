@@ -103,24 +103,24 @@ export default function About() {
   ];
 
   return (
-    <>
+    <div className="min-h-screen p-4 md:p-8">
       {/* ABOUT ME SECTION */}
       <motion.div
         variants={sectionVariants}
         initial="hidden"
         animate="visible"
-        className="flex flex-col md:flex-row items-center justify-center h-auto md:h-[50vh] p-5 font-sans m-auto mt-16"
+        className="flex flex-col md:flex-row items-center justify-center h-auto p-4 md:p-8 font-sans m-auto glass-effect rounded-3xl border border-cyan-400/20 shadow-2xl max-w-6xl mb-8 md:mb-12"
       >
         <div className="md:pr-5 mr-4">
-          <p className="text-lg text-[#1b1b1e] mb-2">Hello, I'm</p>
-          <h1 className="text-6xl md:text-7xl font-bold mb-2 tracking-tight leading-tight text-[#373f51]">
+          <p className="text-lg text-cyan-400 mb-2">Hello, I'm</p>
+          <h1 className="text-6xl md:text-7xl font-bold mb-2 tracking-tight leading-tight bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
             Zhazted Rhixin
           </h1>
           <div className="h-10 relative">
             <AnimatePresence mode="wait">
               <motion.h1
                 key={currentTitle}
-                className="absolute w-full text-3xl md:text-4xl font-bold text-[#373f51]"
+                className="absolute w-full text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
@@ -131,13 +131,13 @@ export default function About() {
             </AnimatePresence>
           </div>
 
-          <p className="mb-3 mt-8 max-w-[500px] text-[#1b1b1e] text-justify">
+          <p className="mb-3 mt-8 max-w-[500px] text-gray-300 text-justify">
             I'm Zhazted Rhixin V. Valles, a 3rd-year Computer Science student
             and I have a deep passion for programming, especially when it comes
             to developing solutions that address real-world problems.
           </p>
 
-          <p className="mb-3 mt-8 max-w-[500px] text-[#1b1b1e] text-justify">
+          <p className="mb-3 mt-8 max-w-[500px] text-gray-300 text-justify">
             I find fulfillment in creating solutions that make a difference. For
             me, programming isn't just a skill—it's a way to innovate, improve
             lives, and shape the future through technology.
@@ -149,7 +149,7 @@ export default function About() {
             alt="Zhazted"
             width={300}
             height={300}
-            className="rounded-full transition-transform transform hover:scale-105 duration-300 bg-[#a9bcd0]"
+            className="rounded-full transition-transform transform hover:scale-105 duration-300 border-4 border-cyan-400/50 glow-border"
           />
         </div>
       </motion.div>
@@ -159,11 +159,11 @@ export default function About() {
         variants={sectionVariants}
         initial="hidden"
         animate="visible"
-        className="flex flex-col md:flex-col h-auto md:h-[50vh] font-sans m-auto items-start justify-start w-full max-w-[830px]"
+        className="flex flex-col h-auto font-sans m-auto items-start justify-start w-full max-w-6xl glass-effect rounded-3xl p-4 md:p-8 border border-purple-400/20 shadow-2xl mb-8 md:mb-12"
       >
         {/* Technical Skills Section */}
         <div className="mt-10 w-full">
-          <h2 className="text-3xl font-bold mb-6 text-start text-[#373f51]">
+          <h2 className="text-3xl font-bold mb-6 text-start bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
             Technical Skills
           </h2>
           <motion.div className="flex flex-wrap justify-start gap-2">
@@ -174,7 +174,7 @@ export default function About() {
                 variants={skillVariants}
                 initial="hidden"
                 animate="visible"
-                className="cursor-pointer px-4 py-2 shadow-sm rounded-full bg-[#a9bcd0] text-[#1b1b1e] text-sm font-medium transition-transform duration-300 ease-in-out hover:scale-110"
+                className="cursor-pointer px-4 py-2 shadow-sm rounded-full glass-effect text-cyan-400 text-sm font-medium transition-all duration-300 ease-in-out hover:scale-110 hover:glow-border border border-cyan-400/30 hover:text-white"
               >
                 {skill}
               </motion.div>
@@ -184,7 +184,7 @@ export default function About() {
 
         {/* Soft Skills Section */}
         <div className="mt-10 w-full">
-          <h2 className="text-3xl font-bold mb-6 text-start text-[#373f51]">
+          <h2 className="text-3xl font-bold mb-6 text-start bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
             Soft Skills
           </h2>
           <motion.div className="flex flex-wrap justify-start gap-2">
@@ -195,7 +195,7 @@ export default function About() {
                 variants={skillVariants}
                 initial="hidden"
                 animate="visible"
-                className=" cursor-pointer px-4 shadow-sm py-2 rounded-full bg-[#a9bcd0] text-[#1b1b1e] text-sm font-medium transition-transform duration-300 ease-in-out hover:scale-110"
+                className="cursor-pointer px-4 shadow-sm py-2 rounded-full glass-effect text-purple-400 text-sm font-medium transition-all duration-300 ease-in-out hover:scale-110 hover:glow-border border border-purple-400/30 hover:text-white"
               >
                 {skill}
               </motion.div>
@@ -210,9 +210,9 @@ export default function About() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="flex flex-col h-auto font-sans m-auto items-start justify-start w-full max-w-[830px] mt-10"
+        className="flex flex-col h-auto font-sans m-auto items-start justify-start w-full max-w-6xl glass-effect rounded-3xl p-4 md:p-8 border border-pink-400/20 shadow-2xl mb-8 md:mb-12"
       >
-        <h2 className="text-3xl font-bold mb-6 text-start text-[#373f51]">
+        <h2 className="text-3xl font-bold mb-6 text-start bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent">
           Education
         </h2>
 
@@ -232,18 +232,18 @@ export default function About() {
                 className="rounded-full"
               />
               <div>
-                <p className="text-lg font-medium text-[#1b1b1e]">{edu.name}</p>
-                <p className="text-md text-[#373f51]">{edu.additional}</p>
+                <p className="text-lg font-medium text-gray-200">{edu.name}</p>
+                <p className="text-md text-gray-400">{edu.additional}</p>
               </div>
             </div>
 
             {/* Right: Graduation Year (Responsive Alignment) */}
             <div className="w-full md:flex-1 md:text-right">
-              <p className="text-md font-medium text-[#1b1b1e]">{edu.year}</p>
+              <p className="text-md font-medium text-cyan-400">{edu.year}</p>
             </div>
           </motion.div>
         ))}
       </motion.div>
-    </>
+    </div>
   );
 }

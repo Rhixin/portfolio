@@ -30,9 +30,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen pb-20 gap-16  font-[family-name:var(--font-geist-sans)]">
+        <div className="relative min-h-screen font-[family-name:var(--font-geist-sans)]">
           <Navbar></Navbar>
-          <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+          <main className="relative z-10">
             {children}
           </main>
           <Footer></Footer>
