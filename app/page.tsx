@@ -496,7 +496,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <h1 className="text-6xl md:text-8xl font-bold text-cyan-400 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold text-cyan-400 animate-pulse text-center">
             RHIXIN VALLES
           </h1>
 
@@ -551,14 +551,14 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="flex-1 max-w-2xl">
               <p className="text-lg text-cyan-400 mb-2">Hello, I'm</p>
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-cyan-400 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 text-cyan-400">
                 Zhazted Rhixin
               </h1>
               <div className="h-10 relative mb-8">
                 <AnimatePresence mode="wait">
                   <motion.h2
                     key={currentTitle}
-                    className="absolute w-full text-2xl md:text-3xl font-bold text-purple-400 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
+                    className="absolute w-full text-xl sm:text-2xl md:text-3xl font-bold text-purple-400"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
@@ -674,7 +674,7 @@ export default function Home() {
         >
           {/* Technical Skills */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-cyan-400 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-cyan-400 text-center">
               Technical Skills
             </h2>
 
@@ -725,7 +725,7 @@ export default function Home() {
 
           {/* Soft Skills */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-purple-400 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-purple-400 text-center">
               Soft Skills
             </h2>
 
@@ -776,11 +776,63 @@ export default function Home() {
           viewport={{ once: true }}
           className="max-w-6xl w-full"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-16 text-pink-400 bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 md:mb-16 text-pink-400 text-center">
             Education Roadmap
           </h2>
 
-          <div className="relative">
+          {/* Mobile Education Layout */}
+          <div className="md:hidden space-y-6">
+            {education.map((edu, index) => (
+              <motion.div
+                key={index}
+                ref={(el) => (educationRefs.current[index] = el)}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="w-full px-4"
+              >
+                <div
+                  className={`glass-effect rounded-2xl p-4 border transition-all duration-300 ${
+                    activeEducationIndex === index
+                      ? "border-cyan-400/60 shadow-lg shadow-cyan-400/20"
+                      : "border-pink-400/20"
+                  }`}
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <Image
+                      src={edu.logo}
+                      alt="School Logo"
+                      width={50}
+                      height={50}
+                      className="rounded-full border-2 border-cyan-400/30"
+                    />
+                    <div className="flex-1">
+                      <h3
+                        className={`text-lg font-bold mb-1 ${
+                          activeEducationIndex === index ? "text-cyan-400" : "text-pink-400"
+                        }`}
+                      >
+                        {edu.school}
+                      </h3>
+                      <p className="text-gray-400 text-sm">{edu.year}</p>
+                    </div>
+                  </div>
+                  <p className="text-gray-300 text-sm leading-relaxed mb-3">
+                    {edu.description}
+                  </p>
+                  {edu.additional && (
+                    <p className="text-cyan-400 text-sm font-medium">
+                      {edu.additional}
+                    </p>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Desktop Education Layout */}
+          <div className="hidden md:block relative">
             {/* Timeline background line */}
             <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gray-600/30 rounded-full"></div>
 
@@ -1444,7 +1496,7 @@ export default function Home() {
           </motion.div>
 
           {/* Contact Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 justify-items-center">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={index}
@@ -1453,7 +1505,7 @@ export default function Home() {
                 transition={{ delay: 0.1 * index, duration: 0.6 }}
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.05, rotateY: 5 }}
-                className="group relative"
+                className="group relative w-full max-w-sm"
               >
                 {/* Hexagonal border animation */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/15 via-purple-500/15 to-pink-500/15 p-[2px] group-hover:from-cyan-400/40 group-hover:via-purple-500/40 group-hover:to-pink-500/40 transition-all duration-500">

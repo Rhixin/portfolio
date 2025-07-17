@@ -13,22 +13,36 @@ export default function Navbar() {
     
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const sectionElement = entry.target as HTMLElement;
-            const sectionIndex = Array.from(sections).indexOf(sectionElement);
-            // Skip the first section (hero) for navbar indexing
-            if (sectionIndex > 0) {
-              setActiveIndex(sectionIndex - 1);
-            } else if (sectionIndex === 0) {
-              setActiveIndex(0); // Hero section maps to "About Me"
-            }
+        let visibleSections = entries.filter(entry => entry.isIntersecting);
+        
+        if (visibleSections.length > 0) {
+          // Get the section that's most visible
+          const mostVisible = visibleSections.reduce((prev, current) => {
+            return current.intersectionRatio > prev.intersectionRatio ? current : prev;
+          });
+          
+          const sectionElement = mostVisible.target as HTMLElement;
+          const sectionIndex = Array.from(sections).indexOf(sectionElement);
+          
+          // Map sections to navbar items correctly
+          if (sectionIndex === 0) {
+            setActiveIndex(0); // Hero -> About Me
+          } else if (sectionIndex === 1) {
+            setActiveIndex(0); // About Me -> About Me
+          } else if (sectionIndex === 2) {
+            setActiveIndex(1); // Skills -> Skills
+          } else if (sectionIndex === 3) {
+            setActiveIndex(2); // Education -> Education
+          } else if (sectionIndex === 4) {
+            setActiveIndex(3); // Projects -> Projects
+          } else if (sectionIndex === 5) {
+            setActiveIndex(4); // Contact -> Contact
           }
-        });
+        }
       },
       {
-        threshold: 0.3, // Section needs to be 30% visible
-        rootMargin: '-100px 0px -100px 0px' // Offset for better detection
+        threshold: [0.1, 0.25, 0.5, 0.75], // Multiple thresholds for better detection
+        rootMargin: '-20% 0px -20% 0px' // Better detection area
       }
     );
 
@@ -112,14 +126,14 @@ export default function Navbar() {
     >
       {/* Navigation Bar */}
       <div 
-        className="rounded-full relative w-full transition-all duration-300 shadow-2xl hover:shadow-cyan-500/25"
+        className="rounded-full relative w-full transition-all duration-300 shadow-lg md:shadow-2xl hover:shadow-cyan-500/25"
         style={{ 
           opacity: scrollOpacity,
           background: 'rgba(10, 10, 15, 0.95)',
           backdropFilter: 'blur(40px) saturate(200%) brightness(1.1)',
           WebkitBackdropFilter: 'blur(40px) saturate(200%) brightness(1.1)',
           border: '1px solid rgba(0, 245, 255, 0.4)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 245, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 245, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
         }}
       >
         <ul className="flex w-full justify-between relative">
@@ -139,10 +153,10 @@ export default function Navbar() {
               style={{ width: `calc(${getWidth(item)}%)` }}
             >
               <button
-                className={`w-full py-4 transition-all duration-300 font-medium md:px-8 px-4 cursor-pointer rounded-full relative overflow-hidden group ${
+                className={`w-full py-3 md:py-4 transition-all duration-300 font-medium px-2 sm:px-4 md:px-8 cursor-pointer rounded-full relative overflow-hidden group text-xs sm:text-sm md:text-base ${
                   activeIndex === index
-                    ? "text-white font-bold glow-text"
-                    : "text-gray-300 hover:text-cyan-400 hover:glow-text"
+                    ? "text-white font-bold"
+                    : "text-gray-300 hover:text-cyan-400"
                 }`}
                 onClick={() => scrollToSection(index)}
               >
