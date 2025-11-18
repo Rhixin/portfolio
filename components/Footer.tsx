@@ -41,20 +41,19 @@ export default function Footer() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   return (
-    <footer className={`sticky bottom-7 w-full z-40 transition-all max-w-6xl m-auto duration-700 ease-out flex justify-center items-center py-4 glass-effect neon-border rounded-full shadow-2xl hover:shadow-cyan-500/25 ${
+    <footer className={`sticky bottom-3 sm:bottom-5 md:bottom-7 w-full z-40 transition-all max-w-6xl mx-auto px-3 sm:px-4 duration-700 ease-out flex justify-center items-center py-3 sm:py-4 glass-effect neon-border rounded-full shadow-xl sm:shadow-2xl hover:shadow-cyan-500/25 ${
       isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
     }`}>
-      <div className="flex space-x-10 h-[20px]">
+      <div className="flex space-x-6 sm:space-x-8 md:space-x-10 h-[18px] sm:h-[20px]">
         <a
           href="https://github.com/Rhixin"
           target="_blank"
           rel="noopener noreferrer"
-          className="cursor-pointer w-[20px] group transition-all duration-300 hover:scale-110"
+          className="cursor-pointer w-[18px] sm:w-[20px] group transition-all duration-300 hover:scale-110"
         >
-          <FontAwesomeIcon 
-            icon={faGithub} 
-            size="lg" 
-            className="text-gray-300 group-hover:text-cyan-400 transition-colors duration-300 group-hover:glow-text" 
+          <FontAwesomeIcon
+            icon={faGithub}
+            className="text-gray-300 group-hover:text-cyan-400 transition-colors duration-300 group-hover:glow-text text-base sm:text-lg"
           />
         </a>
 
@@ -62,12 +61,11 @@ export default function Footer() {
           href="https://www.facebook.com/zhaztedrhixin.valles/"
           target="_blank"
           rel="noopener noreferrer"
-          className="cursor-pointer w-[20px] group transition-all duration-300 hover:scale-110"
+          className="cursor-pointer w-[18px] sm:w-[20px] group transition-all duration-300 hover:scale-110"
         >
-          <FontAwesomeIcon 
-            icon={faFacebook} 
-            size="lg" 
-            className="text-gray-300 group-hover:text-purple-400 transition-colors duration-300 group-hover:glow-text" 
+          <FontAwesomeIcon
+            icon={faFacebook}
+            className="text-gray-300 group-hover:text-purple-400 transition-colors duration-300 group-hover:glow-text text-base sm:text-lg"
           />
         </a>
 
@@ -75,12 +73,11 @@ export default function Footer() {
           href="https://www.linkedin.com/in/rhixin-valles-051152258/"
           target="_blank"
           rel="noopener noreferrer"
-          className="cursor-pointer w-[20px] group transition-all duration-300 hover:scale-110"
+          className="cursor-pointer w-[18px] sm:w-[20px] group transition-all duration-300 hover:scale-110"
         >
-          <FontAwesomeIcon 
-            icon={faLinkedin} 
-            size="lg" 
-            className="text-gray-300 group-hover:text-pink-400 transition-colors duration-300 group-hover:glow-text" 
+          <FontAwesomeIcon
+            icon={faLinkedin}
+            className="text-gray-300 group-hover:text-pink-400 transition-colors duration-300 group-hover:glow-text text-base sm:text-lg"
           />
         </a>
       </div>

@@ -1,0 +1,114 @@
+TECHNICAL SKILLS
+###
+Languages: C, C++, C#, Java, PHP, JavaScript, SQL, Python
+Frameworks: Next.js, Bootstrap, ASP.NET, Django, NestJS
+Libraries: Nodejs, React, jQuery, libGDX, PyGame, PyTurtle
+Machine Learning & Data Science Libraries: Pandas, TensorFlow, Keras, Seaborn, Matplotlib
+Database: Cloud Firestore, MySQL, Firebase Storage
+Developer Tools: Android Studio, github, IntelliJ, VS Code
+Others: Leetcode (250+ problems solved)	
+###
+
+SOFT SKILLS
+###
+Adaptability 
+Critical Thinking
+Project Management
+Time Management
+###
+
+EXPERIENCE
+###
+Freelancing January-Present 2025
+Full Stack Software Developer Internship | Full Scale Teams June-September 2025 
+Full Stack Software Developer Internship | Sun* Inc. March-June  2025 
+Scholarship Technopreneurship Training Program (STTP) March-August 2025
+###
+
+PROJECTS
+###
+1. GesturBee
+GesturBee is a gamified e-learning mobile app designed to make learning Filipino Sign Language (FSL) fun, accessible, and engaging. It features progressive learning stages such as Alphabets, Numbers, Greetings, and Common Phrases , along with mini-games , quizzes, and performance tracking.
+
+The app is powered by a custom-built AI model developed by my team from scratch to recognize FSL gestures in real time. It analyzes hand shape, orientation, and movement, providing instant feedback on sign accuracy to ensure proper execution.
+
+React Native
+TypeScript
+Firebase
+Redux
+
+2. RoomRadar
+Developed a web platform that helps users easily find nearby boarding houses through real-time listings integrated with Google Maps . The system allows landlords to post property details while tenants can browse available rooms , view monthly prices, check amenities, and filter results based on budget, proximity, and personal needs. Users can see property reviews, chat directly with landlords for inquiries , and explore listings through an intuitive map-based interface . Built with modern web technologies ensuring a smooth, responsive, and user-friendly experience.
+React
+Next.js
+ASP.NET
+MySQL
+Google Maps API
+Bootstrap
+
+
+3. Sinehan
+Developed an online cinema ticketing system that lets users browse real-time movie schedules, choose their preferred screening time, and reserve specific seats through an interactive seating layout . The platform streamlines the entire booking process from movie selection to payment confirmation. It also includes a full admin dashboard where cinema staff can manage movies, add or edit screening schedules, update seat availability, and oversee all system operations. Built with a focus on usability, accuracy, and a seamless ticketing experience.
+
+HTML
+CSS
+Javascript
+Python Django
+
+
+4. Power Systems Inc.
+Developed an internal company website for Power Systems Inc. as part of a freelance project, transitioning their paper-based forms into a fully digital system. The platform centralizes all company forms related to services, job orders, and operational workflows, allowing staff to easily submit, track, and browse records. It features a searchable data management dashboard and an integrated AI-powered chatbot that can answer queries about existing data, helping employees quickly retrieve information without manually going through files. Built with a focus on accessibility, efficiency, and improving the company’s internal processes.
+
+Next.js
+PostgreSQL
+NestJS
+Render
+Tailwind
+
+
+5. MNSTS IMS
+Developed an Inventory Management System (IMS) for MNSTS as part of a freelance project , designed to help the school efficiently track all inventory items such as books, equipment, and sports materials. The platform allows staff to record, monitor, and update item quantities while generating automated reports for easier administration. It includes an AI-powered chatbot that can answer queries about the current inventory status and assist in retrieving information quickly. The system also features automated email alerts via Gmail for low-stock items, ensuring timely restocking and smoother school operations.
+
+Next.js
+PostgreSQL
+Tailwind
+Cloudinary
+
+6. MNSTS School Website
+Developed a full-featured school website for MNSTS as a freelance project , designed to centralize news articles, announcements, event calendars, and school achievements in one accessible platform. The website includes an admin dashboard where school staff can easily publish and manage all content. It also supports automated Gmail notifications for important announcements , ensuring that students and parents stay updated. Built to enhance the school’s online presence and streamline communication across the community.
+
+Next.js
+Tailwind
+MongoDB
+Cloudinary
+
+7. Maze Horror Game
+A thrilling first-person horror experience where players navigate through dark mazes while avoiding terrifying creatures. Built with immersive 3D graphics and atmospheric sound design.
+
+Java
+Raycasting
+3D Graphics
+JDBC
+
+
+8. CITerraria
+A 2D sandbox adventure game inspired by Terraria , featuring exploration, crafting, and building mechanics. Players can mine resources, craft items, and build structures in a procedurally generated world.
+
+Java
+JDBC
+2D Graphics
+OpenGL
+###
+
+
+CERTIFICATIONS
+###
+AWS Cloud Foundations - AWS Academy Graduate 
+TOPCIT LEVEL III PASSER
+PhilNITS Fundamental Information Technology Engineers (FE) Certification 
+Python  (Udemy 100 Days of Code: The Complete Python Pro Bootcamp)
+React 	(Udemy React - The Complete Guide 2024)
+JavaScript (Udemy The Complete JavaScript Course 2024: From Zero to Expert!)
+C (CodeChum Certification Exam)                                  
+Java (CodeChum Certification Exam (3rd Place))
+###

@@ -193,7 +193,7 @@ export default function Navbar() {
 
   return (
     <div
-      className={`fixed top-6 left-0 right-0 w-full z-50 transition-all px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24 duration-700 ease-out ${
+      className={`fixed top-3 sm:top-4 md:top-6 left-0 right-0 w-full z-50 transition-all px-3 sm:px-6 md:px-12 lg:px-16 xl:px-24 duration-700 ease-out ${
         isVisible
           ? "opacity-100 translate-y-0 scale-100"
           : "opacity-0 -translate-y-8 scale-95"
@@ -201,7 +201,7 @@ export default function Navbar() {
     >
       {/* Navigation Bar */}
       <div
-        className="rounded-full relative shadow-lg md:shadow-2xl py-3"
+        className="rounded-full relative shadow-md sm:shadow-lg md:shadow-2xl py-2 sm:py-2.5 md:py-3"
         style={{
           opacity: scrollOpacity,
           background: "rgba(10, 10, 15, 0.95)",
@@ -221,12 +221,12 @@ export default function Navbar() {
       >
         {/* Left Navigation Menu */}
         <ul
-          className="flex items-center gap-1 sm:gap-2 md:gap-4 overflow-hidden justify-start"
+          className="flex items-center gap-0.5 sm:gap-1 md:gap-2 lg:gap-4 overflow-hidden justify-start"
           style={{
             opacity: isExpanded ? 1 : 0,
             transition: "opacity 0.8s ease",
-            paddingLeft: isExpanded ? "1.5rem" : "0",
-            paddingRight: isExpanded ? "1rem" : "0",
+            paddingLeft: isExpanded ? "0.75rem" : "0",
+            paddingRight: isExpanded ? "0.5rem" : "0",
           }}
         >
           {menuItems.slice(0, 3).map((item, index) => (
@@ -241,7 +241,7 @@ export default function Navbar() {
               }}
             >
               <button
-                className={`px-3 sm:px-4 md:px-6 py-2 transition-all duration-300 font-medium cursor-pointer rounded-full relative overflow-hidden group text-xs sm:text-sm md:text-base whitespace-nowrap ${
+                className={`px-2 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 transition-all duration-300 font-medium cursor-pointer rounded-full relative overflow-hidden group text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap ${
                   activeIndex === index
                     ? "bg-[#FF6B35] text-white font-bold shadow-lg shadow-[#FF6B35]/30"
                     : "text-gray-300 hover:text-white hover:bg-white/5"
@@ -255,24 +255,24 @@ export default function Navbar() {
         </ul>
 
         {/* Logo - Centered and Fixed */}
-        <div className="flex items-center justify-center flex-shrink-0 px-4">
+        <div className="flex items-center justify-center flex-shrink-0 px-2 sm:px-3 md:px-4">
           <Image
             src="/imagesv2/others/z.png"
             alt="ZCreations"
             width={120}
             height={40}
-            className="h-8 sm:h-10 w-auto object-contain"
+            className="h-6 sm:h-8 md:h-10 w-auto object-contain"
           />
         </div>
 
         {/* Right Navigation Menu */}
         <ul
-          className="flex items-center gap-1 sm:gap-2 md:gap-4 overflow-hidden justify-end"
+          className="flex items-center gap-0.5 sm:gap-1 md:gap-2 lg:gap-4 overflow-hidden justify-end"
           style={{
             opacity: isExpanded ? 1 : 0,
             transition: "opacity 0.8s ease",
-            paddingLeft: isExpanded ? "1rem" : "0",
-            paddingRight: isExpanded ? "1.5rem" : "0",
+            paddingLeft: isExpanded ? "0.5rem" : "0",
+            paddingRight: isExpanded ? "0.75rem" : "0",
           }}
         >
           {menuItems.slice(3).map((item, index) => {
@@ -290,7 +290,7 @@ export default function Navbar() {
                 }}
               >
                 <button
-                  className={`px-3 sm:px-4 md:px-6 py-2 transition-all duration-300 font-medium cursor-pointer rounded-full relative overflow-hidden group text-xs sm:text-sm md:text-base whitespace-nowrap ${
+                  className={`px-2 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 transition-all duration-300 font-medium cursor-pointer rounded-full relative overflow-hidden group text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap ${
                     activeIndex === actualIndex
                       ? "bg-[#FF6B35] text-white font-bold shadow-lg shadow-[#FF6B35]/30"
                       : "text-gray-300 hover:text-white hover:bg-white/5"

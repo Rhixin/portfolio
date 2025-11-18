@@ -155,6 +155,22 @@ export default function Home() {
   const [projectHoverIndex, setProjectHoverIndex] = useState(-1);
   const [expandedProjects, setExpandedProjects] = useState<number[]>([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState<
+    Array<{ role: "user" | "assistant"; content: string }>
+  >([
+    {
+      role: "assistant",
+      content:
+        "Hello! I'm Rhixin's AI assistant. Feel free to ask me anything about my skills, projects, or experience!",
+    },
+  ]);
+  const [chatInput, setChatInput] = useState("");
+  const [isChatLoading, setIsChatLoading] = useState(false);
+  const chatMessagesEndRef = useRef<HTMLDivElement>(null);
+  const [chatPosition, setChatPosition] = useState({ x: 0, y: 0 });
+  const [isDraggingChat, setIsDraggingChat] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const chatBoxRef = useRef<HTMLDivElement>(null);
   const [heroScrollProgress, setHeroScrollProgress] = useState(0);
   const [phoneRotation, setPhoneRotation] = useState({ x: -10, y: 20 });
   const [isDragging, setIsDragging] = useState(false);
@@ -497,6 +513,114 @@ export default function Home() {
   useEffect(() => {
     setCurrentTitle(titles[titleIndex]);
   }, [titleIndex]);
+
+  // Scroll chat to bottom when messages change
+  useEffect(() => {
+    chatMessagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages]);
+
+  // Handle sending chat messages
+  const handleSendMessage = async () => {
+    if (!chatInput.trim() || isChatLoading) return;
+
+    const userMessage = { role: "user" as const, content: chatInput };
+    setChatMessages((prev) => [...prev, userMessage]);
+    setChatInput("");
+    setIsChatLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: [...chatMessages, userMessage],
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get response");
+      }
+
+      const data = await response.json();
+      const assistantMessage = {
+        role: "assistant" as const,
+        content: data.message,
+      };
+
+      setChatMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      const errorMessage = {
+        role: "assistant" as const,
+        content:
+          "Sorry, I'm having trouble connecting right now. Please try again later.",
+      };
+      setChatMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsChatLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  // Drag handlers for chatbox
+  const handleChatMouseDown = (e: React.MouseEvent) => {
+    if (!chatBoxRef.current) return;
+    const rect = chatBoxRef.current.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+    setIsDraggingChat(true);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDraggingChat) return;
+
+      const newX = e.clientX - dragOffset.x;
+      const newY = e.clientY - dragOffset.y;
+
+      // Get window dimensions
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      const chatWidth = 384; // w-96 = 384px
+      const chatHeight = 550; // approximate height
+
+      // Constrain to window bounds
+      const constrainedX = Math.max(
+        0,
+        Math.min(newX, windowWidth - chatWidth)
+      );
+      const constrainedY = Math.max(
+        0,
+        Math.min(newY, windowHeight - chatHeight)
+      );
+
+      setChatPosition({ x: constrainedX, y: constrainedY });
+    };
+
+    const handleMouseUp = () => {
+      setIsDraggingChat(false);
+    };
+
+    if (isDraggingChat) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDraggingChat, dragOffset]);
 
   const technicalSkills = [
     {
@@ -846,10 +970,10 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="absolute top-[20%] right-[2%] md:right-[12%] lg:right-[18%] z-20"
+          className="absolute top-[20%] right-[2%] sm:right-[5%] md:right-[12%] lg:right-[18%] z-20"
         >
           <div
-            className="rounded-full px-6 py-3 hover:scale-105 transition-all duration-300"
+            className="rounded-full px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 hover:scale-105 transition-all duration-300"
             style={{
               background: "rgba(255, 107, 53, 0.05)",
               backdropFilter: "blur(20px) saturate(180%)",
@@ -859,13 +983,13 @@ export default function Home() {
                 "0 4px 12px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)",
             }}
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center">
-                <span className="text-white font-bold text-lg">4+</span>
+            <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center">
+                <span className="text-white font-bold text-xs sm:text-sm md:text-lg">4+</span>
               </div>
               <div>
-                <p className="text-white font-bold text-sm">Years</p>
-                <p className="text-gray-400 text-xs">Experience</p>
+                <p className="text-white font-bold text-xs sm:text-sm">Years</p>
+                <p className="text-gray-400 text-[10px] sm:text-xs">Experience</p>
               </div>
             </div>
           </div>
@@ -877,10 +1001,10 @@ export default function Home() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="absolute top-[50%] right-[1%] md:right-[10%] lg:right-[16%] z-20 -translate-y-1/2"
+          className="absolute top-[50%] right-[1%] sm:right-[4%] md:right-[10%] lg:right-[16%] z-20 -translate-y-1/2"
         >
           <div
-            className="rounded-xl px-5 py-4 hover:scale-105 transition-all duration-300"
+            className="rounded-xl px-3 sm:px-4 md:px-5 py-2.5 sm:py-3 md:py-4 hover:scale-105 transition-all duration-300"
             style={{
               background: "rgba(255, 107, 53, 0.08)",
               backdropFilter: "blur(20px) saturate(180%)",
@@ -891,11 +1015,11 @@ export default function Home() {
             }}
           >
             <div className="text-center">
-              <div className="text-4xl font-black bg-gradient-to-r from-[#FF6B35] to-[#FF8C5A] bg-clip-text  mb-1 text-white">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-[#FF6B35] to-[#FF8C5A] bg-clip-text mb-0.5 sm:mb-1 text-white">
                 100+
               </div>
-              <p className="text-white font-semibold text-xs">Projects</p>
-              <p className="text-gray-400 text-xs">Completed</p>
+              <p className="text-white font-semibold text-[10px] sm:text-xs">Projects</p>
+              <p className="text-gray-400 text-[10px] sm:text-xs">Completed</p>
             </div>
           </div>
         </motion.div>
@@ -906,10 +1030,10 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="absolute top-[30%] right-[1%] md:right-[6%] lg:right-[11%] z-20"
+          className="absolute top-[30%] right-[1%] sm:right-[3%] md:right-[6%] lg:right-[11%] z-20"
         >
           <div
-            className="rounded-2xl px-6 py-4 hover:scale-105 transition-all duration-300"
+            className="rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 hover:scale-105 transition-all duration-300"
             style={{
               background: "rgba(255, 107, 53, 0.06)",
               backdropFilter: "blur(20px) saturate(180%)",
@@ -919,13 +1043,13 @@ export default function Home() {
             }}
           >
             <div className="flex flex-col items-center">
-              <div className="flex items-center gap-1 mb-2">
-                <div className="w-2 h-2 rounded-full bg-[#FF6B35]"></div>
-                <div className="w-2 h-2 rounded-full bg-[#FF8C5A]"></div>
-                <div className="w-2 h-2 rounded-full bg-[#FFB088]"></div>
+              <div className="flex items-center gap-0.5 sm:gap-1 mb-1 sm:mb-2">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FF6B35]"></div>
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FF8C5A]"></div>
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FFB088]"></div>
               </div>
-              <h3 className="text-2xl font-black text-white">10+</h3>
-              <p className="text-white font-semibold text-xs">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">10+</h3>
+              <p className="text-white font-semibold text-[10px] sm:text-xs">
                 Clients Satisfied
               </p>
             </div>
@@ -5426,26 +5550,33 @@ export default function Home() {
       </div>
 
       {/* Chat Conversation UI */}
-      <div className="fixed bottom-32 left-0 right-0 z-50 pointer-events-none">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 flex justify-end">
-          <AnimatePresence>
-            {isChatOpen && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: 20 }}
-                transition={{ duration: 0.3 }}
-                className="w-80 sm:w-96 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto"
-                style={{
-                  background: "rgba(10, 10, 15, 0.95)",
-                  backdropFilter: "blur(40px) saturate(180%)",
-                  WebkitBackdropFilter: "blur(40px) saturate(180%)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.4)",
-                }}
-              >
-                {/* Chat Header */}
-                <div className="px-4 py-3 border-b border-gray-700/50 flex items-center justify-between">
+      <AnimatePresence>
+        {isChatOpen && (
+          <motion.div
+            ref={chatBoxRef}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="fixed z-50 w-80 sm:w-96 rounded-2xl overflow-hidden shadow-2xl"
+            style={{
+              background: "rgba(10, 10, 15, 0.95)",
+              backdropFilter: "blur(40px) saturate(180%)",
+              WebkitBackdropFilter: "blur(40px) saturate(180%)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.4)",
+              left: chatPosition.x || "auto",
+              top: chatPosition.y || "auto",
+              right: chatPosition.x ? "auto" : "2rem",
+              bottom: chatPosition.y ? "auto" : "8rem",
+              cursor: isDraggingChat ? "grabbing" : "default",
+            }}
+          >
+            {/* Chat Header - Draggable */}
+            <div
+              onMouseDown={handleChatMouseDown}
+              className="px-4 py-3 border-b border-gray-700/50 flex items-center justify-between cursor-grab active:cursor-grabbing"
+            >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-[#FF6B35] flex items-center justify-center">
                       <span className="text-white font-bold text-sm">R</span>
@@ -5460,25 +5591,74 @@ export default function Home() {
                 </div>
 
                 {/* Chat Messages */}
-                <div className="h-96 overflow-y-auto p-4 space-y-4">
-                  {/* Bot Message */}
-                  <div className="flex gap-2">
-                    <div className="w-8 h-8 rounded-full bg-[#FF6B35] flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-bold text-xs">R</span>
-                    </div>
+                <div className="h-96 overflow-y-auto p-4 space-y-4 chatbox-scrollbar">
+                  {chatMessages.map((message, index) => (
                     <div
-                      className="px-4 py-2 rounded-2xl rounded-tl-none max-w-[80%]"
-                      style={{
-                        background: "rgba(255, 255, 255, 0.05)",
-                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                      }}
+                      key={index}
+                      className={`flex gap-2 ${
+                        message.role === "user" ? "flex-row-reverse" : ""
+                      }`}
                     >
-                      <p className="text-gray-200 text-sm">
-                        Hello! I'm Rhixin's AI assistant. Feel free to ask me
-                        anything about my skills, projects, or experience!
-                      </p>
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          message.role === "user"
+                            ? "bg-gradient-to-br from-cyan-400 to-purple-500"
+                            : "bg-[#FF6B35]"
+                        }`}
+                      >
+                        <span className="text-white font-bold text-xs">
+                          {message.role === "user" ? "U" : "R"}
+                        </span>
+                      </div>
+                      <div
+                        className={`px-4 py-2 rounded-2xl max-w-[80%] ${
+                          message.role === "user"
+                            ? "rounded-tr-none"
+                            : "rounded-tl-none"
+                        }`}
+                        style={{
+                          background:
+                            message.role === "user"
+                              ? "rgba(0, 245, 255, 0.1)"
+                              : "rgba(255, 255, 255, 0.05)",
+                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                        }}
+                      >
+                        <p className="text-gray-200 text-sm">
+                          {message.content}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  ))}
+
+                  {isChatLoading && (
+                    <div className="flex gap-2">
+                      <div className="w-8 h-8 rounded-full bg-[#FF6B35] flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-xs">R</span>
+                      </div>
+                      <div
+                        className="px-4 py-2 rounded-2xl rounded-tl-none"
+                        style={{
+                          background: "rgba(255, 255, 255, 0.05)",
+                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                        }}
+                      >
+                        <div className="flex gap-1">
+                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                          <div
+                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.1s" }}
+                          ></div>
+                          <div
+                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.2s" }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div ref={chatMessagesEndRef} />
                 </div>
 
                 {/* Chat Input */}
@@ -5486,15 +5666,21 @@ export default function Home() {
                   <div className="flex gap-2">
                     <input
                       type="text"
+                      value={chatInput}
+                      onChange={(e) => setChatInput(e.target.value)}
+                      onKeyPress={handleKeyPress}
                       placeholder="Type your message..."
-                      className="flex-1 px-4 py-2 rounded-full text-sm text-white placeholder-gray-400 outline-none"
+                      disabled={isChatLoading}
+                      className="flex-1 px-4 py-2 rounded-full text-sm text-white placeholder-gray-400 outline-none disabled:opacity-50"
                       style={{
                         background: "rgba(255, 255, 255, 0.05)",
                         border: "1px solid rgba(255, 255, 255, 0.1)",
                       }}
                     />
                     <button
-                      className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                      onClick={handleSendMessage}
+                      disabled={!chatInput.trim() || isChatLoading}
+                      className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{
                         background:
                           "linear-gradient(135deg, rgba(255, 107, 53, 0.9) 0%, rgba(255, 107, 53, 0.7) 100%)",
@@ -5517,11 +5703,9 @@ export default function Home() {
                     </button>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
