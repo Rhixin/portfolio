@@ -32,10 +32,7 @@ export default function RootLayout({
       >
         <div className="relative min-h-screen font-[family-name:var(--font-geist-sans)]">
           <Navbar></Navbar>
-          <main className="relative z-10">
-            {children}
-          </main>
-          <Footer></Footer>
+          <main className="relative z-10">{children}</main>
         </div>
       </body>
     </html>
