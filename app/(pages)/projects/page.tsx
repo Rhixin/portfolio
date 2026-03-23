@@ -2,68 +2,68 @@ import Project from "@/components/Project";
 
 export default function Projects() {
   const images_project1 = [
-    "/images/zhazted_2by2_nobg.png",
-    "/images/zhazted_2by2_nobg.png",
-    "/images/zhazted_2by2_nobg.png",
-    "/images/zhazted_2by2_nobg.png",
-    "/images/zhazted_2by2_nobg.png",
-    "/images/zhazted_2by2_nobg.png",
-    "/images/zhazted_2by2_nobg.png",
+    "/images/zhazted_2by2_nobg.webp",
+    "/images/zhazted_2by2_nobg.webp",
+    "/images/zhazted_2by2_nobg.webp",
+    "/images/zhazted_2by2_nobg.webp",
+    "/images/zhazted_2by2_nobg.webp",
+    "/images/zhazted_2by2_nobg.webp",
+    "/images/zhazted_2by2_nobg.webp",
   ];
 
-  const p0 = ["/images/asl/1.png", "/images/asl/2.png", "/images/asl/3.png"];
+  const p0 = ["/images/asl/1.webp", "/images/asl/2.webp", "/images/asl/3.webp"];
 
   const p1 = [
-    "/images/mnsts/1.png",
-    "/images/mnsts/2.png",
-    "/images/mnsts/3.png",
-    "/images/mnsts/4.png",
-    "/images/mnsts/5.png",
-    "/images/mnsts/6.png",
-    "/images/mnsts/7.png",
+    "/images/mnsts/1.webp",
+    "/images/mnsts/2.webp",
+    "/images/mnsts/3.webp",
+    "/images/mnsts/4.webp",
+    "/images/mnsts/5.webp",
+    "/images/mnsts/6.webp",
+    "/images/mnsts/7.webp",
   ];
 
   const p2 = [
-    "/images/terraria/1.png",
-    "/images/terraria/2.png",
-    "/images/terraria/3.png",
+    "/images/terraria/1.webp",
+    "/images/terraria/2.webp",
+    "/images/terraria/3.webp",
   ];
 
   const p3 = [
-    "/images/roomradarweb/1.png",
-    "/images/roomradarweb/2.png",
-    "/images/roomradarweb/3.png",
-    "/images/roomradarweb/4.png",
-    "/images/roomradarweb/5.png",
-    "/images/roomradarweb/6.png",
-    "/images/roomradarweb/7.png",
-    "/images/roomradarweb/8.png",
+    "/images/roomradarweb/1.webp",
+    "/images/roomradarweb/2.webp",
+    "/images/roomradarweb/3.webp",
+    "/images/roomradarweb/4.webp",
+    "/images/roomradarweb/5.webp",
+    "/images/roomradarweb/6.webp",
+    "/images/roomradarweb/7.webp",
+    "/images/roomradarweb/8.webp",
   ];
 
   const p4 = [
-    "/images/disease/1.png",
-    "/images/disease/2.png",
-    "/images/disease/3.png",
-    "/images/disease/4.png",
+    "/images/disease/1.webp",
+    "/images/disease/2.webp",
+    "/images/disease/3.webp",
+    "/images/disease/4.webp",
   ];
 
   const p5 = [
-    "/images/sinehan/1.png",
-    "/images/sinehan/2.png",
-    "/images/sinehan/3.png",
-    "/images/sinehan/4.png",
-    "/images/sinehan/5.png",
-    "/images/sinehan/6.png",
-    "/images/sinehan/7.png",
-    "/images/sinehan/8.png",
+    "/images/sinehan/1.webp",
+    "/images/sinehan/2.webp",
+    "/images/sinehan/3.webp",
+    "/images/sinehan/4.webp",
+    "/images/sinehan/5.webp",
+    "/images/sinehan/6.webp",
+    "/images/sinehan/7.webp",
+    "/images/sinehan/8.webp",
   ];
 
   const p6 = [
-    "/images/maze/1.png",
-    "/images/maze/2.png",
-    "/images/maze/3.png",
-    "/images/maze/4.png",
-    "/images/maze/5.png",
+    "/images/maze/1.webp",
+    "/images/maze/2.webp",
+    "/images/maze/3.webp",
+    "/images/maze/4.webp",
+    "/images/maze/5.webp",
   ];
 
   return (

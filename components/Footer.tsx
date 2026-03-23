@@ -70,7 +70,7 @@ export default function Footer() {
         </a>
 
         <a
-          href="https://www.linkedin.com/in/rhixin-valles-051152258/"
+          href="https://www.linkedin.com/in/zhazted-rhixin-valles-051152258"
           target="_blank"
           rel="noopener noreferrer"
           className="cursor-pointer w-[18px] sm:w-[20px] group transition-all duration-300 hover:scale-110"

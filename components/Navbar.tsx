@@ -167,7 +167,7 @@ export default function Navbar() {
 
     const sections = document.querySelectorAll("section");
     // Map navbar items to sections: About Me(0)->0, Skills(1)->1, Experience(2)->2, Projects(3)->computer, Certifications(4)->4, Contact(5)->5
-    const sectionMap = [0, 1, 2, 3, 4, 5]; // navbar index -> section index
+    const sectionMap = [0, 1, 2, 3, 6, 7]; // navbar index -> section index
     const targetSection = sections[sectionMap[index]];
     if (targetSection) {
       targetSection.scrollIntoView({
@@ -257,7 +257,7 @@ export default function Navbar() {
         {/* Logo - Centered and Fixed */}
         <div className="flex items-center justify-center flex-shrink-0 px-2 sm:px-3 md:px-4">
           <Image
-            src="/imagesv2/others/z.png"
+            src="/imagesv2/others/z.webp"
             alt="ZCreations"
             width={120}
             height={40}

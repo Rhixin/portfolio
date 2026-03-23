@@ -48,7 +48,7 @@ export default function Contact() {
       label: "LinkedIn",
       value: "Rhixin Valles",
       icon: faLinkedin,
-      link: "https://www.linkedin.com/in/rhixin-valles-051152258/",
+      link: "https://www.linkedin.com/in/zhazted-rhixin-valles-051152258",
     },
   ];
 

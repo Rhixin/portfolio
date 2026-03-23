@@ -83,19 +83,19 @@ export default function About() {
 
   const education = [
     {
-      logo: "/images/dost.jpg",
+      logo: "/images/dost.webp",
       name: "DOST JLSS Scholar",
       additional: "",
       year: "August 2024 - Present",
     },
     {
-      logo: "/images/CIT.png",
+      logo: "/images/CIT.webp",
       name: "Cebu Institute of Technogloy - University",
       additional: "Bachelor of Science in Computer Science",
       year: "August 2022 - Present",
     },
     {
-      logo: "/images/MNSTS_logo.jpg",
+      logo: "/images/MNSTS_logo.webp",
       name: "Medellin National Science and Technology School",
       additional: "Graduated as Batch Salutatorian",
       year: "June 2016 - June 2022",
@@ -145,7 +145,7 @@ export default function About() {
         </div>
         <div className="flex justify-center mt-5 md:mt-0 flex-shrink-0">
           <Image
-            src="/images/profile_picture.jpeg"
+            src="/images/profile_picture.webp"
             alt="Zhazted"
             width={300}
             height={300}

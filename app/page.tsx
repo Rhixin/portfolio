@@ -1,7 +1,8 @@
 "use client";
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import PageSkeleton from "@/components/PageSkeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -14,12 +15,7 @@ import {
   faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { faVideo, faLink } from "@fortawesome/free-solid-svg-icons";
-import Project from "@/components/Project";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Html } from "@react-three/drei";
-import * as THREE from "three";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
 
 // Website projects data for tabs
 const websiteProjects = [
@@ -57,96 +53,9 @@ const websiteProjects = [
   },
 ];
 
-// 3D Computer Model Component
-function ComputerModel({ currentProject }: { currentProject: number }) {
-  const { scene } = useGLTF("/3dmodels/desktop_computer.glb");
-  const [monitorTexture, setMonitorTexture] = useState<THREE.Texture | null>(
-    null
-  );
-  const [currentImageIndex, setCurrentImageIndex] = useState(1);
-
-  // Auto-transition through images
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => {
-        const maxImages = websiteProjects[currentProject].screenshots;
-        return prev >= maxImages ? 1 : prev + 1;
-      });
-    }, 3000); // Change image every 3 seconds
-
-    return () => clearInterval(interval);
-  }, [currentProject]);
-
-  useEffect(() => {
-    if (currentProject !== null) {
-      const textureLoader = new THREE.TextureLoader();
-      const imagePath = `/imagesv2/${websiteProjects[currentProject].folder}/${currentImageIndex}.png`;
-      textureLoader.load(imagePath, (texture) => {
-        texture.flipY = false;
-        setMonitorTexture(texture);
-      });
-    }
-  }, [currentProject, currentImageIndex]);
-
-  // Auto-transition monitor textures
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev >= 8 ? 1 : prev + 1));
-    }, 3000); // Change image every 3 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (scene) {
-      const textureLoader = new THREE.TextureLoader();
-
-      // Load the replacement texture based on current image index
-      const imagePath = `/imagesv2/roomradartexture/${currentImageIndex}.png`;
-      textureLoader.load(imagePath, (newTexture) => {
-        let allTextures: any[] = [];
-
-        scene.traverse((child) => {
-          if (child instanceof THREE.Mesh && child.material) {
-            const material = child.material as any;
-
-            // Collect all baseColor textures
-            if (material.map) {
-              allTextures.push({
-                material: material,
-                texture: material.map,
-                materialName: material.name,
-              });
-            }
-          }
-        });
-
-        // Replace the texture at index 4 (5th texture, corresponding to texture ID 12)
-        if (allTextures.length > 4) {
-          const targetMaterial = allTextures[4].material;
-          const oldTexture = allTextures[4].texture;
-
-          // Copy properties from old texture to new texture to match original settings
-          newTexture.flipY = oldTexture.flipY;
-          newTexture.wrapS = oldTexture.wrapS;
-          newTexture.wrapT = oldTexture.wrapT;
-          newTexture.encoding = oldTexture.encoding;
-          newTexture.minFilter = oldTexture.minFilter;
-          newTexture.magFilter = oldTexture.magFilter;
-          newTexture.anisotropy = oldTexture.anisotropy;
-
-          // Apply the new texture
-          targetMaterial.map = newTexture;
-          targetMaterial.needsUpdate = true;
-        }
-      });
-    }
-  }, [scene, currentImageIndex]);
-
-  return <primitive object={scene} scale={0.011} />;
-}
 
 export default function Home() {
+  const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
   const [roadmapProgress, setRoadmapProgress] = useState(0);
@@ -216,6 +125,7 @@ export default function Home() {
   const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    setIsMounted(true);
     setIsVisible(true);
   }, []);
 
@@ -738,19 +648,19 @@ export default function Home() {
 
   const experience = [
     {
-      logo: "/images/sunasterisk.png",
+      logo: "/images/sunasterisk.webp",
       name: "Sun Asterisk Philippines",
       additional: "Software Developer Intern",
       year: "Apr 2025 - May 2025",
     },
     {
-      logo: "/images/fullscale.png",
+      logo: "/images/fullscale.webp",
       name: "Full Scale",
       additional: "Fullstack Software Developer Intern",
       year: "Jun 2025 - Sep 2025",
     },
     {
-      logo: "/images/freelance.png",
+      logo: "/images/freelance.webp",
       name: "Freelance",
       additional: "Web Developer",
       year: "Jan 2022 - Present",
@@ -793,7 +703,7 @@ export default function Home() {
       label: "LinkedIn",
       value: "Rhixin Valles",
       icon: faLinkedin,
-      link: "https://www.linkedin.com/in/rhixin-valles-051152258/",
+      link: "https://www.linkedin.com/in/zhazted-rhixin-valles-051152258",
     },
   ];
 
@@ -803,7 +713,7 @@ export default function Home() {
       title: "Real-Time Sign Language Recognition",
       description:
         "Built a real-time sign language recognition system leveraging computer vision and deep learning. Integrated TensorFlow and Keras for model training, achieving 98.6% accuracy in gesture classification. Used Flask and Socket.IO for real-time backend communication, and a React-based frontend for live hand tracking and gesture detection. Implemented a responsive UI with Tailwind and deployed the model through a Python-based API. Focused on seamless real-time video processing and improving accessibility for sign language users.",
-      images: ["/images/asl/1.png", "/images/asl/2.png", "/images/asl/3.png"],
+      images: ["/images/asl/1.webp", "/images/asl/2.webp", "/images/asl/3.webp"],
       technology: [
         "React",
         "Next.js",
@@ -825,14 +735,14 @@ export default function Home() {
       description:
         "Developed a landlord-tenant platform that streamlines the process of finding and listing boarding houses, integrating Google Maps API for interactive property listings and advanced search filters for tenants. Built an interactive landlord dashboard for managing listings and a tenant search system with filters for proximity, price range, and availability.",
       images: [
-        "/images/roomradarweb/1.png",
-        "/images/roomradarweb/2.png",
-        "/images/roomradarweb/3.png",
-        "/images/roomradarweb/4.png",
-        "/images/roomradarweb/5.png",
-        "/images/roomradarweb/6.png",
-        "/images/roomradarweb/7.png",
-        "/images/roomradarweb/8.png",
+        "/images/roomradarweb/1.webp",
+        "/images/roomradarweb/2.webp",
+        "/images/roomradarweb/3.webp",
+        "/images/roomradarweb/4.webp",
+        "/images/roomradarweb/5.webp",
+        "/images/roomradarweb/6.webp",
+        "/images/roomradarweb/7.webp",
+        "/images/roomradarweb/8.webp",
       ],
       technology: [
         "React",
@@ -852,13 +762,13 @@ export default function Home() {
       description:
         "Developed and deployed a school website on my own using MongoDB for the backend and Next.js for the frontend. The website enables students to access news, announcements, events, organizations, and school achievements while featuring an admin dashboard for managing displayed content. Additionally, it includes an automated email notification system that informs subscribed students about newly added news, announcements, and events.",
       images: [
-        "/images/mnsts/1.png",
-        "/images/mnsts/2.png",
-        "/images/mnsts/3.png",
-        "/images/mnsts/4.png",
-        "/images/mnsts/5.png",
-        "/images/mnsts/6.png",
-        "/images/mnsts/7.png",
+        "/images/mnsts/1.webp",
+        "/images/mnsts/2.webp",
+        "/images/mnsts/3.webp",
+        "/images/mnsts/4.webp",
+        "/images/mnsts/5.webp",
+        "/images/mnsts/6.webp",
+        "/images/mnsts/7.webp",
       ],
       technology: ["Next.js", "Tailwind", "MongoDB", "Cloudinary"],
       weblink: "https://mnsts.vercel.app/home",
@@ -871,14 +781,14 @@ export default function Home() {
       description:
         "Developed a cinema ticketing website with an admin panel for listing movies, using SQLite as the database. Implemented a reserved seating feature that allows users to select seats based on their preferences.",
       images: [
-        "/images/sinehan/1.png",
-        "/images/sinehan/2.png",
-        "/images/sinehan/3.png",
-        "/images/sinehan/4.png",
-        "/images/sinehan/5.png",
-        "/images/sinehan/6.png",
-        "/images/sinehan/7.png",
-        "/images/sinehan/8.png",
+        "/images/sinehan/1.webp",
+        "/images/sinehan/2.webp",
+        "/images/sinehan/3.webp",
+        "/images/sinehan/4.webp",
+        "/images/sinehan/5.webp",
+        "/images/sinehan/6.webp",
+        "/images/sinehan/7.webp",
+        "/images/sinehan/8.webp",
       ],
       technology: ["HTML", "CSS", "Javascript", "Python Django", "SQLite"],
       weblink: "",
@@ -891,9 +801,9 @@ export default function Home() {
       description:
         "Developed a 2D game inspired by Terraria, where players mine resources and craft materials to survive. Independently designed and implemented all aspects of the game, except for the graphics. Integrated boss battles as a core mechanic, making victory achievable only by defeating the final boss.",
       images: [
-        "/images/terraria/1.png",
-        "/images/terraria/2.png",
-        "/images/terraria/3.png",
+        "/images/terraria/1.webp",
+        "/images/terraria/2.webp",
+        "/images/terraria/3.webp",
       ],
       technology: ["Java", "libGDX"],
       weblink: "",
@@ -906,11 +816,11 @@ export default function Home() {
       description:
         "I developed a 3D game out of 2D materials using a technique called Raycasting. Raycasting is a rendering technique where virtual rays are cast from the camera into the game world to determine what objects are visible in the scene. It essentially simulates how light rays travel in the real world, allowing a 2D engine to display 3D-like environments. By tracing these rays to detect intersections with objects, I was able to create the illusion of depth and perspective, transforming flat 2D assets into a dynamic 3D experience.",
       images: [
-        "/images/maze/1.png",
-        "/images/maze/2.png",
-        "/images/maze/3.png",
-        "/images/maze/4.png",
-        "/images/maze/5.png",
+        "/images/maze/1.webp",
+        "/images/maze/2.webp",
+        "/images/maze/3.webp",
+        "/images/maze/4.webp",
+        "/images/maze/5.webp",
       ],
       technology: ["Java", "Raycasting", "JavaFx"],
       weblink: "",
@@ -923,10 +833,10 @@ export default function Home() {
       description:
         "I collected and preprocessed a dataset of diseases, symptoms, and side effects, then implemented the Apriori algorithm to identify frequent symptom sets and disease associations. I analyzed relationships between diseases based on shared symptoms to uncover potential correlations, and utilized Seaborn and Matplotlib for visualizations, including heatmaps and network graphs.",
       images: [
-        "/images/disease/1.png",
-        "/images/disease/2.png",
-        "/images/disease/3.png",
-        "/images/disease/4.png",
+        "/images/disease/1.webp",
+        "/images/disease/2.webp",
+        "/images/disease/3.webp",
+        "/images/disease/4.webp",
       ],
       technology: ["Python", "Matplotlib", "Pandas", "Seaborn", "Apriori"],
       weblink: "",
@@ -953,6 +863,8 @@ export default function Home() {
     );
   };
 
+  if (!isMounted) return <PageSkeleton />;
+
   return (
     <div className="relative">
       <AnimatedBackground />
@@ -968,9 +880,9 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="absolute top-[20%] right-[2%] sm:right-[5%] md:right-[12%] lg:right-[18%] z-20"
+          className="absolute top-[20%] right-[2%] sm:right-[5%] md:right-[12%] lg:right-[18%] z-20 hidden sm:block"
         >
           <div
             className="rounded-full px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 hover:scale-105 transition-all duration-300"
@@ -999,9 +911,9 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="absolute top-[50%] right-[1%] sm:right-[4%] md:right-[10%] lg:right-[16%] z-20 -translate-y-1/2"
+          className="absolute top-[50%] right-[1%] sm:right-[4%] md:right-[10%] lg:right-[16%] z-20 -translate-y-1/2 hidden sm:block"
         >
           <div
             className="rounded-xl px-3 sm:px-4 md:px-5 py-2.5 sm:py-3 md:py-4 hover:scale-105 transition-all duration-300"
@@ -1028,9 +940,9 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="absolute top-[30%] right-[1%] sm:right-[3%] md:right-[6%] lg:right-[11%] z-20"
+          className="absolute top-[30%] right-[1%] sm:right-[3%] md:right-[6%] lg:right-[11%] z-20 hidden sm:block"
         >
           <div
             className="rounded-xl sm:rounded-2xl px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 hover:scale-105 transition-all duration-300"
@@ -1060,23 +972,23 @@ export default function Home() {
           className="relative z-10 w-full"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 1, delay: 0.1 }}
         >
-          <div className="flex flex-col md:flex-row items-center justify-center gap-0 relative overflow-visible">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-0 relative overflow-hidden md:overflow-visible w-full">
             {/* Centered Titles overlapping with profile */}
             <div className="text-center relative z-20 md:mr-[-150px] lg:mr-[-200px] xl:mr-[-250px] mb-8 md:mb-0">
-              <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black mb-6">
+              <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black mb-4 sm:mb-6">
                 <span className="text-gray-200">I'm </span>
                 <span className="text-[#FF6B35]">Zhazted</span>
                 <span className="text-gray-200">,</span>
               </h1>
 
-              <div className="h-20 relative mb-12 overflow-hidden">
+              <div className="h-16 sm:h-20 relative mb-6 sm:mb-12 overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.h2
                     key={currentTitle}
-                    className="absolute w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-200"
+                    className="absolute w-full text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-gray-200"
                     initial={{
                       opacity: 0,
                       y: 20,
@@ -1112,10 +1024,10 @@ export default function Home() {
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex justify-center gap-4">
+              <div className="flex justify-center gap-3 sm:gap-4">
                 <button
                   onClick={() => scrollToSection(2)}
-                  className="group relative px-8 py-4 rounded-full transition-all duration-300 overflow-hidden hover:scale-105"
+                  className="group relative px-5 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 overflow-hidden hover:scale-105"
                   style={{
                     background:
                       "linear-gradient(135deg, rgba(255, 107, 53, 0.8) 0%, rgba(255, 107, 53, 0.6) 100%)",
@@ -1132,7 +1044,7 @@ export default function Home() {
 
                 <button
                   onClick={() => scrollToSection(1)}
-                  className="group relative px-8 py-4 rounded-full transition-all duration-300 overflow-hidden hover:scale-105"
+                  className="group relative px-5 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 overflow-hidden hover:scale-105"
                   style={{
                     background: "rgba(255, 255, 255, 0.05)",
                     backdropFilter: "blur(20px) saturate(180%)",
@@ -1150,7 +1062,7 @@ export default function Home() {
 
             {/* Profile image - BIGGER with half orange circle behind */}
             <div className="relative z-10">
-              <div className="relative w-[450px] h-[450px] sm:w-[550px] sm:h-[550px] md:w-[650px] md:h-[650px] lg:w-[750px] lg:h-[750px]">
+              <div className="relative w-[280px] h-[280px] sm:w-[420px] sm:h-[420px] md:w-[580px] md:h-[580px] lg:w-[720px] lg:h-[720px]">
                 {/* Half Orange circle behind profile - only top half visible with fade */}
                 <div
                   className="absolute bottom-[0%] left-1/2 transform -translate-x-1/2 overflow-hidden"
@@ -1164,7 +1076,7 @@ export default function Home() {
                   }}
                 >
                   <div
-                    className="absolute left-1/2 transform -translate-x-1/2 w-[360px] h-[420px] sm:w-[440px] sm:h-[500px] md:w-[520px] md:h-[600px] lg:w-[600px] lg:h-[700px] bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] rounded-full opacity-40 blur-2xl"
+                    className="absolute left-1/2 transform -translate-x-1/2 w-[220px] h-[260px] sm:w-[340px] sm:h-[400px] md:w-[440px] md:h-[520px] lg:w-[560px] lg:h-[650px] bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] rounded-full opacity-40 blur-2xl"
                     style={{ bottom: "-180px" }}
                   ></div>
                 </div>
@@ -1180,10 +1092,11 @@ export default function Home() {
                   }}
                 >
                   <Image
-                    src="/imagesv2/others/profile2.png"
+                    src="/imagesv2/others/profile2.webp"
                     alt="Rhixin"
                     width={750}
                     height={750}
+                    priority
                     className="object-contain w-full h-full relative z-10"
                   />
                 </div>
@@ -1207,7 +1120,7 @@ export default function Home() {
         >
           {/* Diagonal Title */}
           <div className="mb-20 relative">
-            <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-center relative inline-block w-full">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-center relative inline-block w-full">
               <span
                 className="bg-gradient-to-r from-[#FF6B35] via-[#FF8C5A] to-[#FFB088] bg-clip-text text-transparent transform -rotate-2 inline-block relative"
                 style={{
@@ -1233,12 +1146,12 @@ export default function Home() {
                 ].map((skill, index) => (
                   <div
                     key={`tech-row1-${index}`}
-                    className="flex items-center gap-4 px-8 py-6 glass-effect text-cyan-400 text-lg font-semibold rounded-2xl border-2 border-cyan-400/40 hover:border-cyan-400/80 hover:text-white hover:shadow-xl hover:shadow-cyan-400/30 transition-all duration-300 cursor-pointer hover:scale-110 flex-shrink-0 min-w-[220px]"
+                    className="flex items-center gap-2 sm:gap-4 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 glass-effect text-cyan-400 text-sm sm:text-base md:text-lg font-semibold rounded-xl sm:rounded-2xl border-2 border-cyan-400/40 hover:border-cyan-400/80 hover:text-white hover:shadow-xl hover:shadow-cyan-400/30 transition-all duration-300 cursor-pointer hover:scale-110 flex-shrink-0 min-w-[140px] sm:min-w-[180px] md:min-w-[220px]"
                   >
                     <img
                       src={skill.icon}
                       alt={skill.name}
-                      className="w-10 h-10"
+                      className="w-7 sm:w-8 md:w-10 h-7 sm:h-8 md:h-10"
                     />
                     {skill.name}
                   </div>
@@ -1255,12 +1168,12 @@ export default function Home() {
                 ].map((skill, index) => (
                   <div
                     key={`tech-row2-${index}`}
-                    className="flex items-center gap-4 px-8 py-6 glass-effect text-purple-400 text-lg font-semibold rounded-2xl border-2 border-purple-400/40 hover:border-purple-400/80 hover:text-white hover:shadow-xl hover:shadow-purple-400/30 transition-all duration-300 cursor-pointer hover:scale-110 flex-shrink-0 min-w-[220px]"
+                    className="flex items-center gap-2 sm:gap-4 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 glass-effect text-purple-400 text-sm sm:text-base md:text-lg font-semibold rounded-xl sm:rounded-2xl border-2 border-purple-400/40 hover:border-purple-400/80 hover:text-white hover:shadow-xl hover:shadow-purple-400/30 transition-all duration-300 cursor-pointer hover:scale-110 flex-shrink-0 min-w-[140px] sm:min-w-[180px] md:min-w-[220px]"
                   >
                     <img
                       src={skill.icon}
                       alt={skill.name}
-                      className="w-10 h-10"
+                      className="w-7 sm:w-8 md:w-10 h-7 sm:h-8 md:h-10"
                     />
                     {skill.name}
                   </div>
@@ -1277,12 +1190,12 @@ export default function Home() {
                 ].map((skill, index) => (
                   <div
                     key={`tech-row3-${index}`}
-                    className="flex items-center gap-4 px-8 py-6 glass-effect text-[#FF6B35] text-lg font-semibold rounded-2xl border-2 border-[#FF6B35]/40 hover:border-[#FF6B35]/80 hover:text-white hover:shadow-xl hover:shadow-[#FF6B35]/30 transition-all duration-300 cursor-pointer hover:scale-110 flex-shrink-0 min-w-[220px]"
+                    className="flex items-center gap-2 sm:gap-4 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 glass-effect text-[#FF6B35] text-sm sm:text-base md:text-lg font-semibold rounded-xl sm:rounded-2xl border-2 border-[#FF6B35]/40 hover:border-[#FF6B35]/80 hover:text-white hover:shadow-xl hover:shadow-[#FF6B35]/30 transition-all duration-300 cursor-pointer hover:scale-110 flex-shrink-0 min-w-[140px] sm:min-w-[180px] md:min-w-[220px]"
                   >
                     <img
                       src={skill.icon}
                       alt={skill.name}
-                      className="w-10 h-10"
+                      className="w-7 sm:w-8 md:w-10 h-7 sm:h-8 md:h-10"
                     />
                     {skill.name}
                   </div>
@@ -1401,7 +1314,7 @@ export default function Home() {
 
                 // Switch to running sprite sheet (484x86, still 7 frames)
                 spriteElement.style.backgroundImage =
-                  "url(/imagesv2/games/knightrun.png)";
+                  "url(/imagesv2/games/knightrun.webp)";
                 spriteElement.style.backgroundSize = "700% 100%";
                 spriteElement.style.backgroundPosition = "0% 0";
               }
@@ -1417,7 +1330,7 @@ export default function Home() {
 
                 // Switch to idle sprite with animation
                 spriteElement.style.backgroundImage =
-                  "url(/imagesv2/games/knightidle.png)";
+                  "url(/imagesv2/games/knightidle.webp)";
                 spriteElement.style.backgroundSize = "400% 100%";
               }, 150);
             }
@@ -1433,10 +1346,10 @@ export default function Home() {
         <div className="sticky top-0 h-screen w-full overflow-hidden">
           {/* Experience Bar */}
           <motion.div
-            className="absolute top-28 left-20 w-96 z-20"
+            className="absolute top-4 sm:top-28 left-2 sm:left-4 md:left-20 right-2 sm:right-auto sm:w-80 md:w-96 z-20"
             initial={{ opacity: 0, x: -100, scale: 0.8 }}
             whileInView={{ opacity: 1, x: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             {/* Profile Picture and EXP Bar */}
@@ -1448,7 +1361,7 @@ export default function Home() {
                   {/* Inner border */}
                   <div className="w-full h-full rounded-full border-2 border-[#FF8C5A]/50 overflow-hidden relative">
                     <Image
-                      src="/imagesv2/others/profile.png"
+                      src="/imagesv2/others/profile.webp"
                       alt="Profile"
                       width={72}
                       height={72}
@@ -1575,7 +1488,7 @@ export default function Home() {
             className="absolute inset-0 flex items-center justify-center overflow-hidden"
             initial={{ opacity: 0, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           >
             {/* Scrolling Background with Platforms */}
@@ -1592,7 +1505,7 @@ export default function Home() {
                   <div
                     className="w-16 h-16 flex-shrink-0"
                     style={{
-                      backgroundImage: "url(/imagesv2/games/tileset.png)",
+                      backgroundImage: "url(/imagesv2/games/tileset.webp)",
                       backgroundSize: "400% 400%",
                       backgroundPosition: "0% 0%",
                       imageRendering: "pixelated",
@@ -1604,7 +1517,7 @@ export default function Home() {
                       key={`ground-top-${i}`}
                       className="w-16 h-16 flex-shrink-0"
                       style={{
-                        backgroundImage: "url(/imagesv2/games/tileset.png)",
+                        backgroundImage: "url(/imagesv2/games/tileset.webp)",
                         backgroundSize: "400% 400%",
                         backgroundPosition: "33.33% 0%",
                         imageRendering: "pixelated",
@@ -1615,7 +1528,7 @@ export default function Home() {
                   <div
                     className="w-16 h-16 flex-shrink-0"
                     style={{
-                      backgroundImage: "url(/imagesv2/games/tileset.png)",
+                      backgroundImage: "url(/imagesv2/games/tileset.webp)",
                       backgroundSize: "400% 400%",
                       backgroundPosition: "100% 0%",
                       imageRendering: "pixelated",
@@ -1628,7 +1541,7 @@ export default function Home() {
                   <div className="w-16 h-16 flex-shrink-0 relative">
                     <div
                       style={{
-                        backgroundImage: "url(/imagesv2/games/tileset.png)",
+                        backgroundImage: "url(/imagesv2/games/tileset.webp)",
                         backgroundSize: "400% 400%",
                         backgroundPosition: "0% 33.33%",
                         imageRendering: "pixelated",
@@ -1651,7 +1564,7 @@ export default function Home() {
                     >
                       <div
                         style={{
-                          backgroundImage: "url(/imagesv2/games/tileset.png)",
+                          backgroundImage: "url(/imagesv2/games/tileset.webp)",
                           backgroundSize: "400% 400%",
                           backgroundPosition: "33.33% 33.33%",
                           imageRendering: "pixelated",
@@ -1671,7 +1584,7 @@ export default function Home() {
                   <div className="w-16 h-16 flex-shrink-0 relative">
                     <div
                       style={{
-                        backgroundImage: "url(/imagesv2/games/tileset.png)",
+                        backgroundImage: "url(/imagesv2/games/tileset.webp)",
                         backgroundSize: "400% 400%",
                         backgroundPosition: "100% 33.33%",
                         imageRendering: "pixelated",
@@ -1694,14 +1607,14 @@ export default function Home() {
               {experience.map((exp, index) => {
                 const positions = [35, 60, 90];
                 const logos = [
-                  "/imagesv2/others/sun.png",
-                  "/imagesv2/others/fullscale.png",
-                  "/imagesv2/others/zv2.png",
+                  "/imagesv2/others/sun.webp",
+                  "/imagesv2/others/fullscale.webp",
+                  "/imagesv2/others/zv2.webp",
                 ];
                 const links = [
                   "https://en.sun-asterisk.com/about/",
                   "https://fullscale.io/",
-                  "www.linkedin.com/in/zhazted-rhixin-valles-051152258",
+                  "https://www.linkedin.com/in/zhazted-rhixin-valles-051152258",
                 ];
                 return (
                   <div
@@ -1782,7 +1695,7 @@ export default function Home() {
               {/* Decorative Elements */}
               {/* Fences - 2 tiles wide (256px) */}
               <Image
-                src="/imagesv2/games/fence_1.png"
+                src="/imagesv2/games/fence_1.webp"
                 alt="fence"
                 width={256}
                 height={256}
@@ -1790,7 +1703,7 @@ export default function Home() {
                 style={{ left: "20%", imageRendering: "pixelated" }}
               />
               <Image
-                src="/imagesv2/games/fence_1.png"
+                src="/imagesv2/games/fence_1.webp"
                 alt="fence"
                 width={256}
                 height={256}
@@ -1800,7 +1713,7 @@ export default function Home() {
 
               {/* Grass - 1 tile wide (64px) */}
               <Image
-                src="/imagesv2/games/grass_1.png"
+                src="/imagesv2/games/grass_1.webp"
                 alt="grass"
                 width={64}
                 height={64}
@@ -1808,7 +1721,7 @@ export default function Home() {
                 style={{ left: "15%", imageRendering: "pixelated" }}
               />
               <Image
-                src="/imagesv2/games/grass_2.png"
+                src="/imagesv2/games/grass_2.webp"
                 alt="grass"
                 width={64}
                 height={64}
@@ -1816,7 +1729,7 @@ export default function Home() {
                 style={{ left: "55%", imageRendering: "pixelated" }}
               />
               <Image
-                src="/imagesv2/games/grass_3.png"
+                src="/imagesv2/games/grass_3.webp"
                 alt="grass"
                 width={64}
                 height={64}
@@ -1826,7 +1739,7 @@ export default function Home() {
 
               {/* Rocks - 1 tile wide (64px) */}
               <Image
-                src="/imagesv2/games/rock_1.png"
+                src="/imagesv2/games/rock_1.webp"
                 alt="rock"
                 width={64}
                 height={64}
@@ -1834,7 +1747,7 @@ export default function Home() {
                 style={{ left: "25%", imageRendering: "pixelated" }}
               />
               <Image
-                src="/imagesv2/games/rock_2.png"
+                src="/imagesv2/games/rock_2.webp"
                 alt="rock"
                 width={64}
                 height={64}
@@ -1842,7 +1755,7 @@ export default function Home() {
                 style={{ left: "80%", imageRendering: "pixelated" }}
               />
               <Image
-                src="/imagesv2/games/rock_3.png"
+                src="/imagesv2/games/rock_3.webp"
                 alt="rock"
                 width={64}
                 height={64}
@@ -1852,7 +1765,7 @@ export default function Home() {
 
               {/* Lamp - 1 tile wide (64px) */}
               <Image
-                src="/imagesv2/games/lamp.png"
+                src="/imagesv2/games/lamp.webp"
                 alt="lamp"
                 width={64}
                 height={96}
@@ -1862,7 +1775,7 @@ export default function Home() {
 
               {/* Sign - 1 tile wide (64px) */}
               <Image
-                src="/imagesv2/games/sign.png"
+                src="/imagesv2/games/sign.webp"
                 alt="sign"
                 width={64}
                 height={96}
@@ -1901,7 +1814,7 @@ export default function Home() {
                     id="experience-sprite"
                     className="absolute top-0 left-0"
                     style={{
-                      backgroundImage: "url(/imagesv2/games/knightidle.png)",
+                      backgroundImage: "url(/imagesv2/games/knightidle.webp)",
                       backgroundSize: "400% 100%",
                       backgroundPosition: "0% 0",
                       width: "100%",
@@ -1924,7 +1837,7 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.8 }}
           className="max-w-7xl w-full"
         >
@@ -1932,9 +1845,9 @@ export default function Home() {
           <motion.h2
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-center mb-32"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-center mb-8 sm:mb-16 md:mb-32"
           >
             <span className="bg-gradient-to-r from-[#FF6B35] via-[#FF8C5A] to-[#FFB088] bg-clip-text text-transparent">
               Project Arsenal
@@ -1947,12 +1860,12 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: -100 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative perspective-[2000px]"
             >
               <div
-                className={`relative w-[300px] h-[600px] cursor-grab active:cursor-grabbing ${
+                className={`relative w-[200px] h-[400px] sm:w-[260px] sm:h-[520px] md:w-[300px] md:h-[600px] cursor-grab active:cursor-grabbing ${
                   !isDragging &&
                   phoneRotation.x === -10 &&
                   phoneRotation.y === 20
@@ -2043,7 +1956,7 @@ export default function Home() {
                           <Image
                             src={`/imagesv2/gesturbee/${
                               currentScreenshot + 1
-                            }.png`}
+                            }.webp`}
                             alt={`GesturBee Screenshot ${
                               currentScreenshot + 1
                             }`}
@@ -2090,7 +2003,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="max-w-xl"
             >
@@ -2177,7 +2090,7 @@ export default function Home() {
               {/* 3D Computer Model - Left Side */}
               <div className="w-full h-full flex items-center justify-center">
                 <div
-                  className={`relative w-[638px] h-[433px] cursor-grab active:cursor-grabbing ${
+                  className={`relative w-[320px] h-[217px] sm:w-[480px] sm:h-[325px] lg:w-[638px] lg:h-[433px] cursor-grab active:cursor-grabbing ${
                     !isLaptopDragging &&
                     laptopRotation.x === -5 &&
                     laptopRotation.y === 15
@@ -2280,7 +2193,7 @@ export default function Home() {
                             <Image
                               src={`/imagesv2/roomradarweb/${
                                 currentRoomRadarImage + 1
-                              }.png`}
+                              }.webp`}
                               alt="Room Radar Screenshot"
                               fill
                               className="object-cover"
@@ -2307,7 +2220,7 @@ export default function Home() {
                             <Image
                               src={`/imagesv2/sinehan/${
                                 currentRoomRadarImage + 1
-                              }.png`}
+                              }.webp`}
                               alt="Sinehan Screenshot"
                               fill
                               className="object-cover"
@@ -2335,7 +2248,7 @@ export default function Home() {
                               src={`/imagesv2/powersystemsinc/${Math.min(
                                 currentRoomRadarImage + 1,
                                 9
-                              )}.png`}
+                              )}.webp`}
                               alt="Power Systems Inc Screenshot"
                               fill
                               className="object-cover"
@@ -2363,7 +2276,7 @@ export default function Home() {
                               src={`/imagesv2/ims/${Math.min(
                                 currentRoomRadarImage + 1,
                                 10
-                              )}.png`}
+                              )}.webp`}
                               alt="MNSTS IMS Screenshot"
                               fill
                               className="object-cover"
@@ -2387,7 +2300,7 @@ export default function Home() {
                               src={`/imagesv2/mnsts/${Math.min(
                                 currentRoomRadarImage + 1,
                                 7
-                              )}.png`}
+                              )}.webp`}
                               alt="MNSTS Website Screenshot"
                               fill
                               className="object-cover"
@@ -2593,7 +2506,7 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, x: 100 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false, amount: 0.3 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="w-full h-full flex flex-col justify-center"
               >
@@ -2671,7 +2584,7 @@ export default function Home() {
                             1
                           </span>
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
                           RoomRadar
                         </h3>
                       </div>
@@ -2793,7 +2706,7 @@ export default function Home() {
                             2
                           </span>
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
                           Sinehan
                         </h3>
                       </div>
@@ -2909,7 +2822,7 @@ export default function Home() {
                             3
                           </span>
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
                           Power Systems Inc.
                         </h3>
                       </div>
@@ -3029,7 +2942,7 @@ export default function Home() {
                             4
                           </span>
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
                           MNSTS IMS
                         </h3>
                       </div>
@@ -3133,7 +3046,7 @@ export default function Home() {
                             5
                           </span>
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
                           MNSTS School Website
                         </h3>
                       </div>
@@ -3245,7 +3158,7 @@ export default function Home() {
                       <Image
                         src={`/imagesv2/roomradarweb/${
                           currentRoomRadarImage + 1
-                        }.png`}
+                        }.webp`}
                         alt="Background"
                         fill
                         className="object-cover blur-2xl scale-110"
@@ -3254,7 +3167,7 @@ export default function Home() {
                         <Image
                           src={`/imagesv2/roomradarweb/${
                             currentRoomRadarImage + 1
-                          }.png`}
+                          }.webp`}
                           alt={`Room Radar Screenshot ${
                             currentRoomRadarImage + 1
                           }`}
@@ -3322,7 +3235,7 @@ export default function Home() {
                               }`}
                             >
                               <Image
-                                src={`/imagesv2/roomradarweb/${index + 1}.png`}
+                                src={`/imagesv2/roomradarweb/${index + 1}.webp`}
                                 alt={`Thumbnail ${index + 1}`}
                                 width={48}
                                 height={48}
@@ -3383,7 +3296,7 @@ export default function Home() {
                       <Image
                         src={`/imagesv2/sinehan/${
                           currentRoomRadarImage + 1
-                        }.png`}
+                        }.webp`}
                         alt="Background"
                         fill
                         className="object-cover blur-2xl scale-110"
@@ -3392,7 +3305,7 @@ export default function Home() {
                         <Image
                           src={`/imagesv2/sinehan/${
                             currentRoomRadarImage + 1
-                          }.png`}
+                          }.webp`}
                           alt={`Sinehan Screenshot ${
                             currentRoomRadarImage + 1
                           }`}
@@ -3460,7 +3373,7 @@ export default function Home() {
                               }`}
                             >
                               <Image
-                                src={`/imagesv2/sinehan/${index + 1}.png`}
+                                src={`/imagesv2/sinehan/${index + 1}.webp`}
                                 alt={`Thumbnail ${index + 1}`}
                                 width={48}
                                 height={48}
@@ -3504,7 +3417,7 @@ export default function Home() {
                         src={`/imagesv2/powersystemsinc/${Math.min(
                           currentRoomRadarImage + 1,
                           9
-                        )}.png`}
+                        )}.webp`}
                         alt="Background"
                         fill
                         className="object-cover blur-2xl scale-110"
@@ -3514,7 +3427,7 @@ export default function Home() {
                           src={`/imagesv2/powersystemsinc/${Math.min(
                             currentRoomRadarImage + 1,
                             9
-                          )}.png`}
+                          )}.webp`}
                           alt={`Power Systems Inc Screenshot ${
                             currentRoomRadarImage + 1
                           }`}
@@ -3584,7 +3497,7 @@ export default function Home() {
                               <Image
                                 src={`/imagesv2/powersystemsinc/${
                                   index + 1
-                                }.png`}
+                                }.webp`}
                                 alt={`Thumbnail ${index + 1}`}
                                 width={48}
                                 height={48}
@@ -3628,7 +3541,7 @@ export default function Home() {
                         src={`/imagesv2/ims/${Math.min(
                           currentRoomRadarImage + 1,
                           10
-                        )}.png`}
+                        )}.webp`}
                         alt="Background"
                         fill
                         className="object-cover blur-2xl scale-110"
@@ -3638,7 +3551,7 @@ export default function Home() {
                           src={`/imagesv2/ims/${Math.min(
                             currentRoomRadarImage + 1,
                             10
-                          )}.png`}
+                          )}.webp`}
                           alt={`MNSTS IMS Screenshot ${
                             currentRoomRadarImage + 1
                           }`}
@@ -3706,7 +3619,7 @@ export default function Home() {
                               }`}
                             >
                               <Image
-                                src={`/imagesv2/ims/${index + 1}.png`}
+                                src={`/imagesv2/ims/${index + 1}.webp`}
                                 alt={`Thumbnail ${index + 1}`}
                                 width={48}
                                 height={48}
@@ -3739,7 +3652,7 @@ export default function Home() {
                         src={`/imagesv2/mnsts/${Math.min(
                           currentRoomRadarImage + 1,
                           7
-                        )}.png`}
+                        )}.webp`}
                         alt="Background"
                         fill
                         className="object-cover blur-2xl scale-110"
@@ -3749,7 +3662,7 @@ export default function Home() {
                           src={`/imagesv2/mnsts/${Math.min(
                             currentRoomRadarImage + 1,
                             7
-                          )}.png`}
+                          )}.webp`}
                           alt={`MNSTS Website Screenshot ${
                             currentRoomRadarImage + 1
                           }`}
@@ -3817,7 +3730,7 @@ export default function Home() {
                               }`}
                             >
                               <Image
-                                src={`/imagesv2/mnsts/${index + 1}.png`}
+                                src={`/imagesv2/mnsts/${index + 1}.webp`}
                                 alt={`Thumbnail ${index + 1}`}
                                 width={48}
                                 height={48}
@@ -3853,12 +3766,12 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false, amount: 0.3 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="w-full h-full flex flex-col justify-center items-end "
+                className="w-full h-full flex flex-col justify-center pl-4 sm:pl-8 md:pl-12 lg:pl-16 pr-4 sm:pr-8"
               >
                 {/* Toggle Button */}
-                <div className="mb-12 min-w-[650px] ">
+                <div className="mb-6 sm:mb-12 w-full">
                   <div className="relative bg-white/5 backdrop-blur-sm rounded-full p-1 w-fit grid grid-cols-2">
                     <div
                       className={`absolute top-1 bottom-1 w-[calc(50%-0.25rem)] bg-gradient-to-r from-[#FF6B35] to-[#FF8C5A] rounded-full transition-transform duration-300 ease-out ${
@@ -3891,7 +3804,7 @@ export default function Home() {
                 {/* Description View */}
                 {!showGameImages && (
                   <div
-                    className="relative flex flex-col min-w-[650px] min-h-[350px]"
+                    className="relative flex flex-col w-full min-h-[350px]"
                     style={{
                       perspective: "1000px",
                       transformStyle: "preserve-3d",
@@ -3929,7 +3842,7 @@ export default function Home() {
                             1
                           </span>
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
                           Maze Horror Game
                         </h3>
                       </div>
@@ -4028,7 +3941,7 @@ export default function Home() {
                             2
                           </span>
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
                           CITerraria
                         </h3>
                       </div>
@@ -4084,7 +3997,7 @@ export default function Home() {
                 {/* Images View - Game Images */}
                 {showGameImages && (
                   <div
-                    className="flex flex-col min-w-[650px] relative h-[50vh]"
+                    className="flex flex-col w-full relative h-[50vh]"
                     style={{
                       perspective: "1000px",
                       transformStyle: "preserve-3d",
@@ -4122,7 +4035,7 @@ export default function Home() {
                         src={`/imagesv2/maze/${Math.min(
                           currentGameImage + 1,
                           5
-                        )}.png`}
+                        )}.webp`}
                         alt="Background"
                         fill
                         className="object-cover blur-2xl scale-110"
@@ -4132,7 +4045,7 @@ export default function Home() {
                           src={`/imagesv2/maze/${Math.min(
                             currentGameImage + 1,
                             5
-                          )}.png`}
+                          )}.webp`}
                           alt={`Maze Horror Game Screenshot ${
                             currentGameImage + 1
                           }`}
@@ -4202,7 +4115,7 @@ export default function Home() {
                               }`}
                             >
                               <Image
-                                src={`/imagesv2/maze/${index + 1}.png`}
+                                src={`/imagesv2/maze/${index + 1}.webp`}
                                 alt={`Thumbnail ${index + 1}`}
                                 width={48}
                                 height={48}
@@ -4263,7 +4176,7 @@ export default function Home() {
                         src={`/imagesv2/terraria/${Math.min(
                           currentGameImage + 1,
                           3
-                        )}.png`}
+                        )}.webp`}
                         alt="Background"
                         fill
                         className="object-cover blur-2xl scale-110"
@@ -4273,7 +4186,7 @@ export default function Home() {
                           src={`/imagesv2/terraria/${Math.min(
                             currentGameImage + 1,
                             3
-                          )}.png`}
+                          )}.webp`}
                           alt={`CITerraria Screenshot ${currentGameImage + 1}`}
                           fill
                           className="object-contain"
@@ -4341,7 +4254,7 @@ export default function Home() {
                               }`}
                             >
                               <Image
-                                src={`/imagesv2/terraria/${index + 1}.png`}
+                                src={`/imagesv2/terraria/${index + 1}.webp`}
                                 alt={`Thumbnail ${index + 1}`}
                                 width={48}
                                 height={48}
@@ -4359,7 +4272,7 @@ export default function Home() {
               {/* 3D Console Device - Right Side */}
               <div className="w-full h-full flex items-center justify-center">
                 <div
-                  className={`relative w-[600px] h-[420px] cursor-grab active:cursor-grabbing ${
+                  className={`relative w-[300px] h-[210px] sm:w-[450px] sm:h-[315px] lg:w-[600px] lg:h-[420px] cursor-grab active:cursor-grabbing ${
                     !isConsoleDragging &&
                     consoleRotation.x === -5 &&
                     consoleRotation.y === -15
@@ -4464,7 +4377,7 @@ export default function Home() {
                             src={`/imagesv2/maze/${Math.min(
                               currentGameImage + 1,
                               5
-                            )}.png`}
+                            )}.webp`}
                             alt="Maze Horror Game"
                             fill
                             className="object-cover"
@@ -4492,7 +4405,7 @@ export default function Home() {
                             src={`/imagesv2/terraria/${Math.min(
                               currentGameImage + 1,
                               3
-                            )}.png`}
+                            )}.webp`}
                             alt="CITerraria"
                             fill
                             className="object-cover"
@@ -4672,7 +4585,7 @@ export default function Home() {
       {/* End of Stacking Sections Container */}
 
       {/* 3D Picture Frame Certifications Gallery */}
-      <section className="min-h-screen bg-[#0a0a0f] py-20 px-8">
+      <section className="min-h-screen bg-[#0a0a0f] py-12 sm:py-20 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <motion.div
@@ -4686,7 +4599,7 @@ export default function Home() {
             <motion.h2
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.6 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-center mb-4"
             >
@@ -4756,7 +4669,7 @@ export default function Home() {
                         {/* Certificate holder */}
                         <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
                           <Image
-                            src="/imagesv2/certifications/aws.png"
+                            src="/imagesv2/certifications/aws.webp"
                             alt="AWS Academy Graduate - Cloud Foundations"
                             fill
                             className="object-contain p-3"
@@ -4834,7 +4747,7 @@ export default function Home() {
                         {/* Certificate holder */}
                         <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
                           <Image
-                            src="/imagesv2/certifications/c.png"
+                            src="/imagesv2/certifications/c.webp"
                             alt="C Programming"
                             fill
                             className="object-contain p-3"
@@ -4910,7 +4823,7 @@ export default function Home() {
                         {/* Certificate holder */}
                         <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
                           <Image
-                            src="/imagesv2/certifications/java.png"
+                            src="/imagesv2/certifications/java.webp"
                             alt="Java"
                             fill
                             className="object-contain p-3"
@@ -4993,7 +4906,7 @@ export default function Home() {
                         {/* Certificate holder */}
                         <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
                           <Image
-                            src="/imagesv2/certifications/javascript.jpg"
+                            src="/imagesv2/certifications/javascript.webp"
                             alt="JavaScript"
                             fill
                             className="object-contain p-3"
@@ -5069,7 +4982,7 @@ export default function Home() {
                         {/* Certificate holder */}
                         <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
                           <Image
-                            src="/imagesv2/certifications/philnits.jpeg"
+                            src="/imagesv2/certifications/philnits.webp"
                             alt="PhilNITS Passer"
                             fill
                             className="object-contain p-3"
@@ -5147,7 +5060,7 @@ export default function Home() {
                         {/* Certificate holder */}
                         <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
                           <Image
-                            src="/imagesv2/certifications/react.jpg"
+                            src="/imagesv2/certifications/react.webp"
                             alt="React"
                             fill
                             className="object-contain p-3"
@@ -5225,7 +5138,7 @@ export default function Home() {
                         {/* Certificate holder */}
                         <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
                           <Image
-                            src="/imagesv2/certifications/sttp.jpeg"
+                            src="/imagesv2/certifications/sttp.webp"
                             alt="Scholars Technopreneurship Training Program"
                             fill
                             className="object-contain p-3"
@@ -5301,7 +5214,7 @@ export default function Home() {
                         {/* Certificate holder */}
                         <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
                           <Image
-                            src="/imagesv2/certifications/topcit.jpeg"
+                            src="/imagesv2/certifications/topcit.webp"
                             alt="TopCIT Level III"
                             fill
                             className="object-contain p-3"
@@ -5335,7 +5248,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="min-h-screen relative overflow-hidden flex items-center justify-center py-20 px-8">
+      <section className="min-h-screen relative overflow-hidden flex items-center justify-center py-12 sm:py-20 px-4 sm:px-8">
         {/* Background gradient effects */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#FF6B35]/10 rounded-full blur-3xl"></div>
@@ -5456,7 +5369,7 @@ export default function Home() {
                 />
               </a>
               <a
-                href="www.linkedin.com/in/zhazted-rhixin-valles-051152258"
+                href="https://www.linkedin.com/in/zhazted-rhixin-valles-051152258"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#FF6B35]/20 hover:border-[#FF6B35]/50 transition-all duration-300 hover:scale-110"
@@ -5558,7 +5471,7 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
-            className="fixed z-50 w-80 sm:w-96 rounded-2xl overflow-hidden shadow-2xl"
+            className="fixed z-50 w-[min(24rem,calc(100vw-2rem))] rounded-2xl overflow-hidden shadow-2xl"
             style={{
               background: "rgba(10, 10, 15, 0.95)",
               backdropFilter: "blur(40px) saturate(180%)",
