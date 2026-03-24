@@ -15,7 +15,7 @@ import {
   faPhone,
   faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { faVideo, faLink } from "@fortawesome/free-solid-svg-icons";
+import { faVideo, faLink, faFilter, faXmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 // Website projects data for tabs
@@ -364,6 +364,8 @@ export default function Home() {
   const [activeProjectCategory, setActiveProjectCategory] = useState<
     "all" | "mobile" | "web" | "automations" | "games"
   >("all");
+  const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
+  const [showTechFilter, setShowTechFilter] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentSection, setCurrentSection] = useState(0);
   const [roadmapProgress, setRoadmapProgress] = useState(0);
@@ -2170,8 +2172,8 @@ export default function Home() {
             </p>
           </motion.div>
 
-          {/* Category Tabs */}
-          <div className="flex flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-10">
+          {/* Category Tabs + Filter Button */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4">
             {(
               [
                 { id: "all", label: "All" },
@@ -2205,12 +2207,81 @@ export default function Home() {
                 </button>
               );
             })}
+
+            {/* Filter toggle button */}
+            <button
+              onClick={() => setShowTechFilter((v) => !v)}
+              className={`ml-auto flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-300 ${
+                showTechFilter || selectedTechs.length > 0
+                  ? "bg-[#FF6B35]/20 border-[#FF6B35]/40 text-[#FF8C5A]"
+                  : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              <FontAwesomeIcon icon={faFilter} className="text-xs" />
+              Tech Stack
+              {selectedTechs.length > 0 && (
+                <span className="bg-[#FF6B35] text-white text-xs px-1.5 py-0.5 rounded-full">
+                  {selectedTechs.length}
+                </span>
+              )}
+              <FontAwesomeIcon
+                icon={faChevronDown}
+                className={`text-xs transition-transform duration-300 ${showTechFilter ? "rotate-180" : ""}`}
+              />
+            </button>
           </div>
+
+          {/* Tech Stack Filter Panel */}
+          <AnimatePresence>
+            {showTechFilter && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25 }}
+                className="overflow-hidden"
+              >
+                <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 sm:p-5 mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest">Filter by Technology</p>
+                    {selectedTechs.length > 0 && (
+                      <button
+                        onClick={() => setSelectedTechs([])}
+                        className="flex items-center gap-1 text-xs text-[#FF6B35] hover:text-[#FF8C5A] transition-colors"
+                      >
+                        <FontAwesomeIcon icon={faXmark} />
+                        Clear all
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {Array.from(new Set(allProjects.flatMap((p) => p.technology))).sort().map((tech) => (
+                      <button
+                        key={tech}
+                        onClick={() =>
+                          setSelectedTechs((prev) =>
+                            prev.includes(tech) ? prev.filter((t) => t !== tech) : [...prev, tech]
+                          )
+                        }
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-200 ${
+                          selectedTechs.includes(tech)
+                            ? "bg-[#FF6B35]/20 border-[#FF6B35]/50 text-[#FF8C5A]"
+                            : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white"
+                        }`}
+                      >
+                        {tech}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Cards Grid */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeProjectCategory}
+              key={activeProjectCategory + selectedTechs.join(",")}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -2218,7 +2289,10 @@ export default function Home() {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
             >
               {allProjects
-                .filter((p) => activeProjectCategory === "all" || (p.category as readonly string[]).includes(activeProjectCategory))
+                .filter((p) =>
+                  (activeProjectCategory === "all" || (p.category as readonly string[]).includes(activeProjectCategory)) &&
+                  (selectedTechs.length === 0 || selectedTechs.every((t) => p.technology.includes(t)))
+                )
                 .map((project, index) => (
                   <motion.div
                     key={project.id}
