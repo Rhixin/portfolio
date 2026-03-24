@@ -1231,7 +1231,7 @@ export default function Home() {
           >
             <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3">
               <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center">
-                <span className="text-white font-bold text-xs sm:text-sm md:text-lg">4+</span>
+                <span className="text-white font-bold text-xs sm:text-sm md:text-lg">6+</span>
               </div>
               <div>
                 <p className="text-white font-bold text-xs sm:text-sm">Years</p>
@@ -1294,7 +1294,7 @@ export default function Home() {
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FF8C5A]"></div>
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FFB088]"></div>
               </div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">10+</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">40+</h3>
               <p className="text-white font-semibold text-[10px] sm:text-xs">
                 Clients Satisfied
               </p>
@@ -1993,7 +1993,7 @@ export default function Home() {
                         {/* Clients count for Freelance */}
                         {index === 5 && (
                           <p className="text-[#00f5ff] text-xs font-bold">
-                            15+ Clients
+                            40+ Clients
                           </p>
                         )}
                       </div>
