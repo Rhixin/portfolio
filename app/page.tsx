@@ -958,22 +958,46 @@ export default function Home() {
 
   const experience = [
     {
-      logo: "/images/sunasterisk.webp",
-      name: "Sun Asterisk Philippines",
-      additional: "Software Developer Intern",
-      year: "Apr 2025 - May 2025",
+      logo: "/imagesv2/experiences/sttp.webp",
+      name: "STTP",
+      additional: "Scholarship Technopreneurship Training Program",
+      year: "Mar 2025 – Aug 2025",
+      duration: "6 months",
     },
     {
-      logo: "/images/fullscale.webp",
-      name: "Full Scale",
-      additional: "Fullstack Software Developer Intern",
-      year: "Jun 2025 - Sep 2025",
+      logo: "/imagesv2/others/sun.webp",
+      name: "Sun* Inc.",
+      additional: "Full Stack Software Developer Intern",
+      year: "Mar 2025 – Jun 2025",
+      duration: "4 months",
     },
     {
-      logo: "/images/freelance.webp",
-      name: "Freelance",
-      additional: "Web Developer",
-      year: "Jan 2022 - Present",
+      logo: "/imagesv2/others/fullscale.webp",
+      name: "Full Scale Teams Inc.",
+      additional: "Full Stack Software Developer Intern",
+      year: "Jun 2025 – Sep 2025",
+      duration: "4 months",
+    },
+    {
+      logo: "/imagesv2/experiences/everincrease.webp",
+      name: "Everincrease LLC",
+      additional: "Automations Engineer",
+      year: "Feb 2024 – Dec 2025",
+      duration: "1 yr 10 mos",
+    },
+    {
+      logo: "/imagesv2/experiences/stanton.webp",
+      name: "Stanton Management",
+      additional: "Automations Engineer",
+      year: "Jan 2025 – Feb 2026",
+      duration: "1 yr 1 mo",
+    },
+    {
+      logo: "/imagesv2/others/zv2.webp",
+      name: "Freelancing",
+      additional: "Automations & Full Stack Developer",
+      year: "Jan 2020 – Present",
+      duration: "6+ years",
     },
   ];
 
@@ -1544,7 +1568,7 @@ export default function Home() {
             );
             if (backgroundElement) {
               // Move from right to left as user scrolls
-              const translateX = -scrollProgress * 120; // Move 120% of width
+              const translateX = -scrollProgress * 75.5; // Move so last stop (88%) lands at center
               backgroundElement.style.transform = `translateX(${translateX}%)`;
             }
 
@@ -1581,13 +1605,22 @@ export default function Home() {
               // Platform 3 at 140% reaches center at: (140-50)/150 = 0.6
 
               let currentLevel = 1;
-              if (scrollProgress >= 0.6) {
+              if (scrollProgress >= 0.99) {
+                currentLevel = 7;
+                expLevel.textContent = "LV.7 MAX";
+              } else if (scrollProgress >= 0.801) {
+                currentLevel = 6;
+                expLevel.textContent = "LV.6";
+              } else if (scrollProgress >= 0.602) {
+                currentLevel = 5;
+                expLevel.textContent = "LV.5";
+              } else if (scrollProgress >= 0.404) {
                 currentLevel = 4;
-                expLevel.textContent = "LV.4 MAX";
-              } else if (scrollProgress >= 0.267) {
+                expLevel.textContent = "LV.4";
+              } else if (scrollProgress >= 0.205) {
                 currentLevel = 3;
                 expLevel.textContent = "LV.3";
-              } else if (scrollProgress >= 0.04) {
+              } else if (scrollProgress >= 0.033) {
                 currentLevel = 2;
                 expLevel.textContent = "LV.2";
               } else {
@@ -1650,7 +1683,7 @@ export default function Home() {
           return () => window.removeEventListener("scroll", handleScroll);
         }}
         className="relative"
-        style={{ height: "400vh" }}
+        style={{ height: "700vh" }}
       >
         {/* Sticky container */}
         <div className="sticky top-0 h-screen w-full overflow-hidden">
@@ -1805,7 +1838,7 @@ export default function Home() {
             <div
               id="experience-background"
               className="absolute top-0 bottom-0 left-0 transition-transform duration-100 ease-linear"
-              style={{ width: "250%", transform: "translateX(0%)" }}
+              style={{ width: "400%", transform: "translateX(0%)" }}
             >
               {/* Continuous Ground Platform - Spans entire background */}
               <div className="absolute bottom-0 left-0 w-full flex flex-col">
@@ -1822,7 +1855,7 @@ export default function Home() {
                     }}
                   ></div>
                   {/* Middle tiles [0,1] - repeat many times to fill width */}
-                  {[...Array(120)].map((_, i) => (
+                  {[...Array(300)].map((_, i) => (
                     <div
                       key={`ground-top-${i}`}
                       className="w-16 h-16 flex-shrink-0"
@@ -1867,7 +1900,7 @@ export default function Home() {
                       }}
                     ></div>
                   </div>
-                  {[...Array(120)].map((_, i) => (
+                  {[...Array(300)].map((_, i) => (
                     <div
                       key={`ground-mid-${i}`}
                       className="w-16 h-16 flex-shrink-0 relative"
@@ -1915,15 +1948,21 @@ export default function Home() {
 
               {/* Experience Shops - Positioned across the scrolling background */}
               {experience.map((exp, index) => {
-                const positions = [35, 60, 90];
+                const positions = [15, 28, 43, 58, 73, 88];
                 const logos = [
+                  "/imagesv2/experiences/sttp.webp",
                   "/imagesv2/others/sun.webp",
                   "/imagesv2/others/fullscale.webp",
+                  "/imagesv2/experiences/everincrease.webp",
+                  "/imagesv2/experiences/stanton.webp",
                   "/imagesv2/others/zv2.webp",
                 ];
                 const links = [
+                  "https://www.linkedin.com/in/zhazted-rhixin-valles-051152258",
                   "https://en.sun-asterisk.com/about/",
                   "https://fullscale.io/",
+                  "https://everincreasellc.com/",
+                  "https://www.stantonpm.com/",
                   "https://www.linkedin.com/in/zhazted-rhixin-valles-051152258",
                 ];
                 return (
@@ -1952,7 +1991,7 @@ export default function Home() {
                           {exp.name}
                         </h3>
                         {/* Clients count for Freelance */}
-                        {index === 2 && (
+                        {index === 5 && (
                           <p className="text-[#00f5ff] text-xs font-bold">
                             15+ Clients
                           </p>
@@ -1965,8 +2004,12 @@ export default function Home() {
                       </p>
                       {/* Duration */}
                       <p className="text-gray-300 text-sm">
-                        {index === 2 ? "Jan 2022 - Present" : exp.year}
+                        {exp.year}
                       </p>
+                      {/* Duration badge */}
+                      <span className="inline-block mt-1 px-2.5 py-0.5 bg-[#FF6B35]/20 border border-[#FF6B35]/40 text-[#FF8C5A] text-xs font-semibold rounded-full">
+                        {exp.duration}
+                      </span>
                     </div>
 
                     {/* Shop - 8 tiles wide (384px) with hover effects */}
