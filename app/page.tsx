@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import PageSkeleton from "@/components/PageSkeleton";
+import ProjectModal, { type Project } from "@/components/ProjectModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -53,10 +54,317 @@ const websiteProjects = [
   },
 ];
 
+const allProjects = [
+  // ── Mobile ──
+  {
+    id: "gesturbee",
+    title: "GesturBee",
+    category: ["mobile", "automations"] as const,
+    description:
+      "A gamified e-learning mobile app designed to make learning Filipino Sign Language (FSL) fun, accessible, and engaging. Features progressive learning stages, mini-games, quizzes, and performance tracking powered by a custom-built AI gesture recognition model built from scratch.",
+    images: [
+      "/imagesv2/gesturbee/1.webp",
+      "/imagesv2/gesturbee/2.webp",
+      "/imagesv2/gesturbee/3.webp",
+      "/imagesv2/gesturbee/4.webp",
+      "/imagesv2/gesturbee/5.webp",
+      "/imagesv2/gesturbee/6.webp",
+      "/imagesv2/gesturbee/7.webp",
+      "/imagesv2/gesturbee/8.webp",
+      "/imagesv2/gesturbee/9.webp",
+      "/imagesv2/gesturbee/10.webp",
+      "/imagesv2/gesturbee/11.webp",
+    ],
+    technology: ["React Native", "TypeScript", "Firebase", "Redux"],
+    github: "https://github.com/Rhixin/GesturbeeCamera",
+    demo: "",
+    video: "",
+  },
+  // ── Web ──
+  {
+    id: "roomradar",
+    title: "RoomRadar",
+    category: ["web"] as const,
+    description:
+      "A web platform that helps users find nearby boarding houses through real-time listings integrated with Google Maps. Landlords post property details while tenants browse, filter by budget and proximity, chat with landlords, and explore through an interactive map-based interface.",
+    images: [
+      "/imagesv2/roomradarweb/1.webp",
+      "/imagesv2/roomradarweb/2.webp",
+      "/imagesv2/roomradarweb/3.webp",
+      "/imagesv2/roomradarweb/4.webp",
+      "/imagesv2/roomradarweb/5.webp",
+      "/imagesv2/roomradarweb/6.webp",
+      "/imagesv2/roomradarweb/7.webp",
+      "/imagesv2/roomradarweb/8.webp",
+    ],
+    technology: ["React", "Next.js", "ASP.NET", "MySQL", "Google Maps API", "Bootstrap"],
+    github: "https://github.com/Rhixin/RoomRadarWeb",
+    demo: "",
+    video: "https://drive.google.com/file/d/1DF99Y3fcrSaBvUIVIAv3vX1_3yNsSvDV/view?usp=sharing",
+  },
+  {
+    id: "sinehan",
+    title: "Sinehan",
+    category: ["web"] as const,
+    description:
+      "An online cinema ticketing system that lets users browse real-time movie schedules, choose screening times, and reserve specific seats through an interactive seating layout. Includes a full admin dashboard for managing movies, schedules, and seat availability.",
+    images: [
+      "/imagesv2/sinehan/1.webp",
+      "/imagesv2/sinehan/2.webp",
+      "/imagesv2/sinehan/3.webp",
+      "/imagesv2/sinehan/4.webp",
+      "/imagesv2/sinehan/5.webp",
+      "/imagesv2/sinehan/6.webp",
+      "/imagesv2/sinehan/7.webp",
+      "/imagesv2/sinehan/8.webp",
+    ],
+    technology: ["HTML", "CSS", "JavaScript", "Python Django", "SQLite"],
+    github: "https://github.com/elib00/sinehan",
+    demo: "",
+    video: "https://drive.google.com/file/d/1e6CuNI87NsXNQK-vW9J3zvgkvF6M5bA_/view?usp=sharing",
+  },
+  {
+    id: "powersystems",
+    title: "Power Systems Inc.",
+    category: ["web"] as const,
+    description:
+      "An internal company website for Power Systems Inc., transitioning paper-based forms to a fully digital system. Centralizes all company forms and workflows, features a searchable data management dashboard, and an integrated AI-powered chatbot for quick data retrieval.",
+    images: [
+      "/imagesv2/powersystemsinc/1.webp",
+      "/imagesv2/powersystemsinc/2.webp",
+      "/imagesv2/powersystemsinc/3.webp",
+      "/imagesv2/powersystemsinc/4.webp",
+      "/imagesv2/powersystemsinc/5.webp",
+      "/imagesv2/powersystemsinc/6.webp",
+      "/imagesv2/powersystemsinc/7.webp",
+      "/imagesv2/powersystemsinc/8.webp",
+      "/imagesv2/powersystemsinc/9.webp",
+    ],
+    technology: ["Next.js", "PostgreSQL", "NestJS", "Render", "Tailwind"],
+    github: "https://github.com/Rhixin/powersystemsinc",
+    demo: "",
+    video: "",
+  },
+  {
+    id: "mnsts-ims",
+    title: "MNSTS IMS",
+    category: ["web"] as const,
+    description:
+      "An Inventory Management System for Medellin National Science and Technology School featuring stock tracking, reporting dashboards, and full administrative tools for managing school resources.",
+    images: [
+      "/imagesv2/ims/1.webp",
+      "/imagesv2/ims/2.webp",
+      "/imagesv2/ims/3.webp",
+      "/imagesv2/ims/4.webp",
+      "/imagesv2/ims/5.webp",
+      "/imagesv2/ims/6.webp",
+      "/imagesv2/ims/7.webp",
+      "/imagesv2/ims/8.webp",
+      "/imagesv2/ims/9.webp",
+      "/imagesv2/ims/10.webp",
+    ],
+    technology: ["Next.js", "Tailwind", "MongoDB"],
+    github: "https://github.com/Rhixin/MNSTS-IMS",
+    demo: "",
+    video: "",
+  },
+  {
+    id: "mnsts-website",
+    title: "MNSTS Website",
+    category: ["web"] as const,
+    description:
+      "Developed and deployed a school website enabling students to access news, announcements, events, organizations, and achievements. Features an admin dashboard and an automated email notification system for subscribed students.",
+    images: [
+      "/imagesv2/mnsts/1.webp",
+      "/imagesv2/mnsts/2.webp",
+      "/imagesv2/mnsts/3.webp",
+      "/imagesv2/mnsts/4.webp",
+      "/imagesv2/mnsts/5.webp",
+      "/imagesv2/mnsts/6.webp",
+      "/imagesv2/mnsts/7.webp",
+    ],
+    technology: ["Next.js", "Tailwind", "MongoDB", "Cloudinary"],
+    github: "https://github.com/Rhixin/MNSTS",
+    demo: "https://mnsts.vercel.app/home",
+    video: "https://drive.google.com/file/d/1jUZ5zXoGHEWfjZdQjqx3Bz9p-w/view?usp=sharing",
+  },
+  // ── Automations ──
+  {
+    id: "pitchfully",
+    title: "Pitchfully",
+    category: ["automations", "web"] as const,
+    description:
+      "An AI-powered sales and marketing platform for freelancers and agencies. Connects to Meta Ads for full campaign management, Creative & Audience Insights, automated rules, and a leads dashboard. AI generates personalized ad copy and pitch messages, manages follow-ups, and actively controls ad spend. Built on ASP.NET Core with AES-GCM encryption and JWT authentication.",
+    images: [
+      "/imagesv2/pitchfully/pitch1.webp",
+      "/imagesv2/pitchfully/pitch2.webp",
+      "/imagesv2/pitchfully/pitch3.webp",
+      "/imagesv2/pitchfully/pitch4.webp",
+      "/imagesv2/pitchfully/pitch5.webp",
+    ],
+    technology: ["ASP.NET Core", "JavaScript", "Meta Ads API", "Azure", "AES-GCM"],
+    github: "https://github.com/Everincrease/pitchai",
+    demo: "https://app-uat.pitchfully.io/pages/sign-in.html",
+    video: "",
+  },
+  {
+    id: "court-rentals",
+    title: "Court Rentals",
+    category: ["automations", "web"] as const,
+    description:
+      "A fully automated sport court booking platform. Browse real-time court availability, select a schedule, and pay securely via Stripe. Automated booking confirmations are sent instantly. Includes an AI chatbot that answers questions about court availability, rates, and more.",
+    images: [
+      "/imagesv2/sports/sport1.webp",
+      "/imagesv2/sports/sport2.webp",
+      "/imagesv2/sports/sport3.webp",
+      "/imagesv2/sports/sport4.webp",
+      "/imagesv2/sports/sport5.webp",
+      "/imagesv2/sports/sport6.webp",
+      "/imagesv2/sports/sport7.webp",
+      "/imagesv2/sports/sport8.webp",
+    ],
+    technology: ["Next.js", "Supabase", "Python", "Stripe"],
+    github: "",
+    demo: "",
+    video: "",
+  },
+  {
+    id: "jobless",
+    title: "JobLess",
+    category: ["automations", "web"] as const,
+    description:
+      "A platform that automates job hunting by matching your resume against job listings and scoring each one from 1–100. Generates a personalized draft application letter tailored to the job description, lets you edit it, and submits your application with a single click.",
+    images: [
+      "/imagesv2/jobless/jobless1.webp",
+      "/imagesv2/jobless/jobless2.webp",
+      "/imagesv2/jobless/jobless3.webp",
+      "/imagesv2/jobless/jobless4.webp",
+      "/imagesv2/jobless/jobless5.webp",
+      "/imagesv2/jobless/jobless6.webp",
+    ],
+    technology: ["Next.js", "Supabase", "Python", "OpenClaw"],
+    github: "https://github.com/ZhaztedValles/ai-job-seeker",
+    demo: "",
+    video: "",
+  },
+  {
+    id: "leadgen",
+    title: "Lead Gen & Outreach Automation",
+    category: ["automations", "web"] as const,
+    description:
+      "Automates B2B lead generation for wine products by scraping Google Maps and social media data via APIFY to find wine shops and pub bars. Scores each lead with a custom ranking system, generates personalized outreach emails, and manages replies — all in one pipeline.",
+    images: [
+      "/imagesv2/leadgen/lead1.webp",
+      "/imagesv2/leadgen/lead2.webp",
+      "/imagesv2/leadgen/lead3.webp",
+      "/imagesv2/leadgen/lead4.webp",
+      "/imagesv2/leadgen/lead5.webp",
+      "/imagesv2/leadgen/lead6.webp",
+      "/imagesv2/leadgen/lead7.webp",
+    ],
+    technology: ["Next.js", "Supabase", "Python", "APIFY"],
+    github: "",
+    demo: "",
+    video: "",
+  },
+  {
+    id: "rent-collection",
+    title: "Automated Tenant Rent Collection",
+    category: ["automations", "web"] as const,
+    description:
+      "A platform that automates rent collection by sending SMS messages via Twilio to tenants with overdue balances. Negotiates payment plans through automated messaging, detects incoming payments, and escalates unresolved cases to admin with notifications.",
+    images: [
+      "/imagesv2/collections/stanton_1.webp",
+      "/imagesv2/collections/stanton_2.webp",
+      "/imagesv2/collections/stanton_3.webp",
+      "/imagesv2/collections/stanton_4.webp",
+      "/imagesv2/collections/stanton_5.webp",
+      "/imagesv2/collections/stanton_6.webp",
+      "/imagesv2/collections/stanton_7.webp",
+      "/imagesv2/collections/stanton_8.webp",
+    ],
+    technology: ["Next.js", "Supabase", "Twilio"],
+    github: "https://github.com/Rhixin/collections_dash_v2",
+    demo: "",
+    video: "",
+  },
+  {
+    id: "asl",
+    title: "Real-Time Sign Language Recognition",
+    category: ["automations"] as const,
+    description:
+      "A real-time sign language recognition system using computer vision and deep learning, achieving 98.6% accuracy in gesture classification. Uses Flask and Socket.IO for real-time backend communication with a React frontend for live hand tracking and gesture detection.",
+    images: [
+      "/imagesv2/asl/1.webp",
+      "/imagesv2/asl/2.webp",
+      "/imagesv2/asl/3.webp",
+    ],
+    technology: ["React", "TensorFlow", "Keras", "Flask", "Socket.IO", "Python", "NumPy"],
+    github: "https://github.com/Rhixin/GesturbeeCamera",
+    demo: "",
+    video: "",
+  },
+  {
+    id: "disease",
+    title: "Disease Symptoms Analysis",
+    category: ["automations"] as const,
+    description:
+      "Implemented the Apriori algorithm to identify frequent symptom sets and disease associations from a preprocessed dataset. Analyzed disease relationships via shared symptoms and produced visualizations including heatmaps and network graphs.",
+    images: [
+      "/imagesv2/disease/1.webp",
+      "/imagesv2/disease/2.webp",
+      "/imagesv2/disease/3.webp",
+      "/imagesv2/disease/4.webp",
+    ],
+    technology: ["Python", "Matplotlib", "Pandas", "Seaborn", "Apriori"],
+    github: "https://github.com/Rhixin/SymptomsDiseaseAnalysis",
+    demo: "",
+    video: "",
+  },
+  // ── Games ──
+  {
+    id: "maze",
+    title: "3D Horror Maze",
+    category: ["games"] as const,
+    description:
+      "A 3D game built from 2D materials using Raycasting — a rendering technique that simulates light rays to create the illusion of depth and perspective. Navigate through dark mazes while avoiding terrifying creatures with atmospheric sound design.",
+    images: [
+      "/imagesv2/maze/1.webp",
+      "/imagesv2/maze/2.webp",
+      "/imagesv2/maze/3.webp",
+      "/imagesv2/maze/4.webp",
+      "/imagesv2/maze/5.webp",
+    ],
+    technology: ["Java", "Raycasting", "JavaFX", "JDBC"],
+    github: "https://github.com/Rhixin/EscapeSerato",
+    demo: "",
+    video: "https://drive.google.com/file/d/12972LaKNp6Q0kfXUXT4n-uHyKxs9-N5r/view?usp=sharing",
+  },
+  {
+    id: "terraria",
+    title: "Terraria Duplicate",
+    category: ["games"] as const,
+    description:
+      "A 2D game inspired by Terraria where players mine resources and craft materials to survive. Independently designed and implemented all game mechanics except graphics. Boss battles are the core mechanic — victory requires defeating the final boss.",
+    images: [
+      "/imagesv2/terraria/1.webp",
+      "/imagesv2/terraria/2.webp",
+      "/imagesv2/terraria/3.webp",
+    ],
+    technology: ["Java", "libGDX"],
+    github: "https://github.com/Rhixin/TERRARIA",
+    demo: "",
+    video: "https://drive.google.com/file/d/1tJHA7ckE2qhamNhosbw1WbB9_P3gRNBa/view?usp=sharing",
+  },
+];
 
 export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [activeProjectCategory, setActiveProjectCategory] = useState<
+    "all" | "mobile" | "web" | "automations" | "games"
+  >("all");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentSection, setCurrentSection] = useState(0);
   const [roadmapProgress, setRoadmapProgress] = useState(0);
   const [activeEducationIndex, setActiveEducationIndex] = useState(-1);
@@ -847,7 +1155,7 @@ export default function Home() {
 
   const AnimatedBackground = () => {
     return (
-      <div className="fixed inset-0 opacity-20 pointer-events-none">
+      <div className="fixed inset-0 opacity-20 pointer-events-none -z-10">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 rounded-full blur-3xl animate-ping"></div>
@@ -1832,2757 +2140,176 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3D Phone Showcase Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-4 py-24 relative overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-7xl w-full"
-        >
-          {/* Section Title */}
-          <motion.h2
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+      {/* Projects Section */}
+      <section
+        ref={(el) => { sectionsRef.current[3] = el; }}
+        id="projects-section"
+        className="min-h-screen py-20 px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20"
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.6 }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-center mb-8 sm:mb-16 md:mb-32"
+            className="text-center mb-12"
           >
-            <span className="bg-gradient-to-r from-[#FF6B35] via-[#FF8C5A] to-[#FFB088] bg-clip-text text-transparent">
-              Project Arsenal
-            </span>
-          </motion.h2>
-
-          {/* 3D Phone Container */}
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
-            {/* Phone 3D Model */}
-            <motion.div
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
+            <motion.h2
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative perspective-[2000px]"
+              transition={{ duration: 0.6 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-center mb-4"
             >
-              <div
-                className={`relative w-[200px] h-[400px] sm:w-[260px] sm:h-[520px] md:w-[300px] md:h-[600px] cursor-grab active:cursor-grabbing ${
-                  !isDragging &&
-                  phoneRotation.x === -10 &&
-                  phoneRotation.y === 20
-                    ? "phone-idle"
-                    : ""
-                }`}
-                style={{
-                  transformStyle: "preserve-3d",
-                  transform:
-                    isDragging ||
-                    phoneRotation.x !== -10 ||
-                    phoneRotation.y !== 20
-                      ? `rotateX(${phoneRotation.x}deg) rotateY(${phoneRotation.y}deg)`
-                      : undefined,
-                  transition: isDragging ? "none" : "transform 0.3s ease-out",
-                }}
-                onMouseDown={(e) => {
-                  setIsDragging(true);
+              <span className="bg-gradient-to-r from-[#FF6B35] via-[#FF8C5A] to-[#FFB088] bg-clip-text text-transparent">
+                Projects
+              </span>
+            </motion.h2>
+            <p className="text-xl text-gray-400">
+              A collection of things I&apos;ve built — from mobile apps and web platforms to automations and games.
+            </p>
+          </motion.div>
 
-                  // Clear any existing reset timeout
-                  if (phoneResetTimeout.current) {
-                    clearTimeout(phoneResetTimeout.current);
-                  }
-
-                  const startX = e.clientX;
-                  const startY = e.clientY;
-                  const startRotation = { ...phoneRotation };
-
-                  const handleMouseMove = (moveEvent: MouseEvent) => {
-                    const deltaX = moveEvent.clientX - startX;
-                    const deltaY = moveEvent.clientY - startY;
-                    setPhoneRotation({
-                      x: Math.max(
-                        -45,
-                        Math.min(45, startRotation.x - deltaY * 0.5)
-                      ),
-                      y: Math.max(
-                        -45,
-                        Math.min(45, startRotation.y + deltaX * 0.5)
-                      ),
-                    });
-                  };
-
-                  const handleMouseUp = () => {
-                    setIsDragging(false);
-                    document.removeEventListener("mousemove", handleMouseMove);
-                    document.removeEventListener("mouseup", handleMouseUp);
-
-                    // Reset phone to idle position after 3 seconds of inactivity
-                    phoneResetTimeout.current = setTimeout(() => {
-                      setPhoneRotation({ x: -10, y: 20 });
-                    }, 3000);
-                  };
-
-                  document.addEventListener("mousemove", handleMouseMove);
-                  document.addEventListener("mouseup", handleMouseUp);
-                }}
-              >
-                {/* Phone Body */}
-                <div
-                  className="absolute inset-0 rounded-[40px] border-8 border-gray-900"
-                  style={{
-                    background:
-                      "linear-gradient(145deg, #1a1a2e 0%, #0f1419 100%)",
-                    boxShadow:
-                      "0 25px 50px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.1)",
-                    transformStyle: "preserve-3d",
-                    transform: "translateZ(10px)",
-                  }}
+          {/* Category Tabs */}
+          <div className="flex flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-10">
+            {(
+              [
+                { id: "all", label: "All" },
+                { id: "mobile", label: "Mobile" },
+                { id: "web", label: "Web" },
+                { id: "automations", label: "AI & Automations" },
+                { id: "games", label: "Games" },
+              ] as const
+            ).map((cat) => {
+              const count = cat.id === "all" ? allProjects.length : allProjects.filter((p) => (p.category as readonly string[]).includes(cat.id)).length;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveProjectCategory(cat.id)}
+                  className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-sm transition-all duration-300 flex items-center gap-2 ${
+                    activeProjectCategory === cat.id
+                      ? "bg-gradient-to-r from-[#FF6B35] to-[#FF8C5A] text-white shadow-lg shadow-[#FF6B35]/30"
+                      : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10"
+                  }`}
                 >
-                  {/* Screen */}
-                  <div className="absolute inset-4 rounded-[32px] overflow-hidden bg-black">
-                    {/* Notch */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-10"></div>
-
-                    {/* Screen Content - Screenshot Carousel */}
-                    <div className="w-full h-full relative">
-                      <AnimatePresence initial={false} custom={slideDirection}>
-                        <motion.div
-                          key={currentScreenshot}
-                          custom={slideDirection}
-                          initial={{ x: "100%", opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          exit={{ x: "-100%", opacity: 0 }}
-                          transition={{ duration: 0.4, ease: "easeInOut" }}
-                          className="w-full h-full absolute inset-0"
-                        >
-                          <Image
-                            src={`/imagesv2/gesturbee/${
-                              currentScreenshot + 1
-                            }.webp`}
-                            alt={`GesturBee Screenshot ${
-                              currentScreenshot + 1
-                            }`}
-                            fill
-                            className="object-cover"
-                            style={{ objectFit: "cover" }}
-                          />
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
-                  </div>
-
-                  {/* Side Button */}
-                  <div
-                    className="absolute right-0 top-32 w-1 h-16 bg-gray-800 rounded-l"
-                    style={{ transform: "translateZ(12px)" }}
-                  ></div>
-
-                  {/* Volume Buttons */}
-                  <div
-                    className="absolute left-0 top-28 w-1 h-10 bg-gray-800 rounded-r"
-                    style={{ transform: "translateZ(12px)" }}
-                  ></div>
-                  <div
-                    className="absolute left-0 top-40 w-1 h-10 bg-gray-800 rounded-r"
-                    style={{ transform: "translateZ(12px)" }}
-                  ></div>
-                </div>
-
-                {/* Glow Effect */}
-                <div
-                  className="absolute inset-0 rounded-[40px] opacity-50 pointer-events-none"
-                  style={{
-                    background:
-                      "radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.3), transparent 70%)",
-                    filter: "blur(20px)",
-                    transform: "translateZ(-10px)",
-                  }}
-                ></div>
-              </div>
-            </motion.div>
-
-            {/* Project Details */}
-            <motion.div
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="max-w-xl"
-            >
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                GesturBee
-              </h3>
-              <p className="text-gray-300 text-lg mb-6 leading-relaxed text-justify">
-                GesturBee is a{" "}
-                <span className="text-[#FF6B35]">
-                  gamified e-learning mobile app
-                </span>{" "}
-                designed to make learning{" "}
-                <span className="text-[#FF6B35]">
-                  Filipino Sign Language (FSL)
-                </span>{" "}
-                fun, accessible, and engaging. It features progressive learning
-                stages such as{" "}
-                <span className="text-[#FF6B35]">
-                  Alphabets, Numbers, Greetings, and Common Phrases
-                </span>{" "}
-                , along with <span className="text-[#FF6B35]">mini-games</span>{" "}
-                , quizzes, and performance tracking.
-              </p>
-              <p className="text-gray-300 text-lg mb-6 leading-relaxed text-justify">
-                The app is powered by a{" "}
-                <span className="text-[#FF6B35]">
-                  custom-built AI model developed by my team
-                </span>{" "}
-                from scratch to recognize FSL gestures in real time. It analyzes
-                hand shape, orientation, and movement, providing instant{" "}
-                <span className="text-[#FF6B35]">
-                  feedback on sign accuracy
-                </span>{" "}
-                to ensure proper execution.
-              </p>
-
-              {/* Tech Stack */}
-              <div className="flex flex-wrap gap-3 mb-8">
-                {["React Native", "TypeScript", "Firebase", "Redux"].map(
-                  (tech) => (
-                    <span
-                      key={tech}
-                      className="px-4 py-2 bg-gradient-to-r from-[#FF6B35]/10 to-[#FF8C5A]/10  rounded-lg text-[#FF6B35] text-sm font-semibold"
-                    >
-                      {tech}
-                    </span>
-                  )
-                )}
-              </div>
-
-              {/* Project Links */}
-              <div className="flex gap-4">
-                <a
-                  href="https://github.com/Rhixin/GesturbeeCamera"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF6B35] to-[#FF8C5A] rounded-lg text-white font-semibold hover:scale-105 transition-transform duration-300 shadow-lg shadow-[#FF6B35]/50"
-                >
-                  <FontAwesomeIcon icon={faGithub} className="text-xl" />
-                  <span>GitHub</span>
-                </a>
-              </div>
-            </motion.div>
+                  {cat.label}
+                  <span
+                    className={`text-xs px-1.5 py-0.5 rounded-full ${
+                      activeProjectCategory === cat.id
+                        ? "bg-white/20 text-white"
+                        : "bg-white/10 text-gray-500"
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
-        </motion.div>
+
+          {/* Cards Grid */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeProjectCategory}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+            >
+              {allProjects
+                .filter((p) => activeProjectCategory === "all" || (p.category as readonly string[]).includes(activeProjectCategory))
+                .map((project, index) => (
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: index * 0.07 }}
+                    className="group flex flex-col bg-[#0d0d14] border border-white/10 rounded-2xl overflow-hidden hover:border-[#FF6B35]/40 hover:bg-[#111118] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#FF6B35]/10 cursor-pointer"
+                    onClick={() => setSelectedProject(project as Project)}
+                  >
+                    {/* Thumbnail */}
+                    <div className="relative h-48 overflow-hidden bg-black/40 flex-shrink-0">
+                      <Image
+                        src={project.images[0]}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    </div>
+
+                    {/* Body */}
+                    <div className="p-5 flex flex-col flex-1 gap-3">
+                      <h3 className="text-white font-bold text-base sm:text-lg leading-tight group-hover:text-[#FF8C5A] transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                      <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 flex-1">
+                        {project.description}
+                      </p>
+
+                      {/* Tech badges */}
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.technology.slice(0, 4).map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-2 py-0.5 bg-[#FF6B35]/10 text-[#FF6B35] text-xs font-medium rounded-md border border-[#FF6B35]/20"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.technology.length > 4 && (
+                          <span className="px-2 py-0.5 bg-white/5 text-gray-500 text-xs rounded-md">
+                            +{project.technology.length - 4}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Links */}
+                      {(project.github || project.demo || project.video) && (
+                        <div className="flex gap-2 pt-1">
+                          {project.github && (
+                            <a
+                              href={project.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg transition-all duration-200 hover:scale-105"
+                            >
+                              <FontAwesomeIcon icon={faGithub} />
+                              GitHub
+                            </a>
+                          )}
+                          {project.demo && (
+                            <a
+                              href={project.demo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg transition-all duration-200 hover:scale-105"
+                            >
+                              <FontAwesomeIcon icon={faLink} />
+                              Link
+                            </a>
+                          )}
+                          {project.video && (
+                            <a
+                              href={project.video}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg transition-all duration-200 hover:scale-105"
+                            >
+                              <FontAwesomeIcon icon={faVideo} />
+                              Video
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </section>
-
-      {/* Stacking Sections Container */}
-      <div className="relative">
-        {/* 3D Computer Model Showcase Section */}
-        <section
-          ref={laptopSectionRef}
-          id="computer-section"
-          className="min-h-[1000vh] relative bg-transparent"
-        >
-          <div
-            className="h-screen w-full sticky top-0 flex items-center justify-center"
-            style={{ zIndex: 10 }}
-          >
-            <div
-              className="w-full h-full grid grid-cols-1 lg:grid-cols-2 transition-opacity duration-500"
-              style={{ opacity: computerSectionOpacity }}
-            >
-              {/* 3D Computer Model - Left Side */}
-              <div className="w-full h-full flex items-center justify-center">
-                <div
-                  className={`relative w-[320px] h-[217px] sm:w-[480px] sm:h-[325px] lg:w-[638px] lg:h-[433px] cursor-grab active:cursor-grabbing ${
-                    !isLaptopDragging &&
-                    laptopRotation.x === -5 &&
-                    laptopRotation.y === 15
-                      ? "laptop-idle"
-                      : ""
-                  }`}
-                  style={{
-                    transformStyle: "preserve-3d",
-                    transform:
-                      isLaptopDragging ||
-                      laptopRotation.x !== -5 ||
-                      laptopRotation.y !== 15
-                        ? `rotateX(${laptopRotation.x}deg) rotateY(${laptopRotation.y}deg)`
-                        : undefined,
-                    transition: isLaptopDragging
-                      ? "none"
-                      : "transform 0.3s ease-out",
-                  }}
-                  onMouseDown={(e) => {
-                    setIsLaptopDragging(true);
-
-                    if (laptopResetTimeout.current) {
-                      clearTimeout(laptopResetTimeout.current);
-                    }
-
-                    const startX = e.clientX;
-                    const startY = e.clientY;
-                    const startRotation = { ...laptopRotation };
-
-                    const handleMouseMove = (moveEvent: MouseEvent) => {
-                      const deltaX = moveEvent.clientX - startX;
-                      const deltaY = moveEvent.clientY - startY;
-                      setLaptopRotation({
-                        x: Math.max(
-                          -30,
-                          Math.min(30, startRotation.x - deltaY * 0.3)
-                        ),
-                        y: Math.max(
-                          -30,
-                          Math.min(30, startRotation.y + deltaX * 0.3)
-                        ),
-                      });
-                    };
-
-                    const handleMouseUp = () => {
-                      setIsLaptopDragging(false);
-                      document.removeEventListener(
-                        "mousemove",
-                        handleMouseMove
-                      );
-                      document.removeEventListener("mouseup", handleMouseUp);
-
-                      laptopResetTimeout.current = setTimeout(() => {
-                        setLaptopRotation({ x: -5, y: 15 });
-                      }, 3000);
-                    };
-
-                    document.addEventListener("mousemove", handleMouseMove);
-                    document.addEventListener("mouseup", handleMouseUp);
-                  }}
-                >
-                  {/* Screen/Monitor Part */}
-                  <div
-                    className="absolute top-0 left-0 right-0 h-[80%]"
-                    style={{
-                      transformStyle: "preserve-3d",
-                    }}
-                  >
-                    <div
-                      className="absolute inset-0 rounded-t-lg"
-                      style={{
-                        background:
-                          "linear-gradient(145deg, #2a2a2e 0%, #1a1a1e 100%)",
-                        boxShadow:
-                          "0 15px 30px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.05)",
-                        transformStyle: "preserve-3d",
-                        transform: "translateZ(5px) rotateX(8deg)",
-                        transformOrigin: "bottom center",
-                      }}
-                    >
-                      {/* Screen */}
-                      <div className="absolute inset-4 rounded-md overflow-hidden bg-black">
-                        {/* Bezel */}
-                        <div className="absolute inset-0 border-4 border-gray-900 rounded-md z-10 pointer-events-none"></div>
-
-                        {/* Screen Content - Transitioning Screenshots */}
-                        <div className="w-full h-full relative bg-black">
-                          {/* Room Radar - Project 0 (0-2) */}
-                          <div
-                            className="w-full h-full absolute inset-0 transition-opacity duration-700"
-                            style={{
-                              opacity:
-                                projectTransitionProgress <= 1.6
-                                  ? 1
-                                  : projectTransitionProgress <= 2
-                                  ? 1 - (projectTransitionProgress - 1.6) / 0.4
-                                  : 0,
-                            }}
-                          >
-                            <Image
-                              src={`/imagesv2/roomradarweb/${
-                                currentRoomRadarImage + 1
-                              }.webp`}
-                              alt="Room Radar Screenshot"
-                              fill
-                              className="object-cover"
-                              style={{ objectFit: "cover" }}
-                            />
-                          </div>
-
-                          {/* Sinehan - Project 1 (2-4) */}
-                          <div
-                            className="w-full h-full absolute inset-0 transition-opacity duration-700"
-                            style={{
-                              opacity:
-                                projectTransitionProgress < 2
-                                  ? 0
-                                  : projectTransitionProgress <= 2.4
-                                  ? (projectTransitionProgress - 2) / 0.4
-                                  : projectTransitionProgress <= 3.6
-                                  ? 1
-                                  : projectTransitionProgress <= 4
-                                  ? 1 - (projectTransitionProgress - 3.6) / 0.4
-                                  : 0,
-                            }}
-                          >
-                            <Image
-                              src={`/imagesv2/sinehan/${
-                                currentRoomRadarImage + 1
-                              }.webp`}
-                              alt="Sinehan Screenshot"
-                              fill
-                              className="object-cover"
-                              style={{ objectFit: "cover" }}
-                            />
-                          </div>
-
-                          {/* Power Systems Inc - Project 2 (4-6) */}
-                          <div
-                            className="w-full h-full absolute inset-0 transition-opacity duration-700"
-                            style={{
-                              opacity:
-                                projectTransitionProgress < 4
-                                  ? 0
-                                  : projectTransitionProgress <= 4.4
-                                  ? (projectTransitionProgress - 4) / 0.4
-                                  : projectTransitionProgress <= 5.6
-                                  ? 1
-                                  : projectTransitionProgress <= 6
-                                  ? 1 - (projectTransitionProgress - 5.6) / 0.4
-                                  : 0,
-                            }}
-                          >
-                            <Image
-                              src={`/imagesv2/powersystemsinc/${Math.min(
-                                currentRoomRadarImage + 1,
-                                9
-                              )}.webp`}
-                              alt="Power Systems Inc Screenshot"
-                              fill
-                              className="object-cover"
-                              style={{ objectFit: "cover" }}
-                            />
-                          </div>
-
-                          {/* MNSTS IMS - Project 3 (6-8) */}
-                          <div
-                            className="w-full h-full absolute inset-0 transition-opacity duration-700"
-                            style={{
-                              opacity:
-                                projectTransitionProgress < 6
-                                  ? 0
-                                  : projectTransitionProgress <= 6.4
-                                  ? (projectTransitionProgress - 6) / 0.4
-                                  : projectTransitionProgress <= 7.6
-                                  ? 1
-                                  : projectTransitionProgress <= 8
-                                  ? 1 - (projectTransitionProgress - 7.6) / 0.4
-                                  : 0,
-                            }}
-                          >
-                            <Image
-                              src={`/imagesv2/ims/${Math.min(
-                                currentRoomRadarImage + 1,
-                                10
-                              )}.webp`}
-                              alt="MNSTS IMS Screenshot"
-                              fill
-                              className="object-cover"
-                              style={{ objectFit: "cover" }}
-                            />
-                          </div>
-
-                          {/* MNSTS Website - Project 4 (8-10) */}
-                          <div
-                            className="w-full h-full absolute inset-0 transition-opacity duration-700"
-                            style={{
-                              opacity:
-                                projectTransitionProgress < 8
-                                  ? 0
-                                  : projectTransitionProgress <= 8.4
-                                  ? (projectTransitionProgress - 8) / 0.4
-                                  : 1,
-                            }}
-                          >
-                            <Image
-                              src={`/imagesv2/mnsts/${Math.min(
-                                currentRoomRadarImage + 1,
-                                7
-                              )}.webp`}
-                              alt="MNSTS Website Screenshot"
-                              fill
-                              className="object-cover"
-                              style={{ objectFit: "cover" }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Hinge */}
-                  <div
-                    className="absolute left-0 right-0 h-[3%]"
-                    style={{
-                      top: "72%",
-                      background:
-                        "linear-gradient(180deg, #1a1a1e 0%, #0f0f12 50%, #1a1a1e 100%)",
-                      transformStyle: "preserve-3d",
-                      transform: "translateZ(8px)",
-                      boxShadow:
-                        "0 2px 4px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 -1px 1px rgba(0, 0, 0, 0.5)",
-                    }}
-                  >
-                    {/* Hinge details - small circular elements */}
-                    <div className="absolute inset-0 flex items-center justify-center gap-8">
-                      <div
-                        className="w-2 h-2 rounded-full bg-gray-800 border border-gray-900"
-                        style={{
-                          boxShadow:
-                            "inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 1px rgba(255, 255, 255, 0.1)",
-                        }}
-                      ></div>
-                      <div
-                        className="w-2 h-2 rounded-full bg-gray-800 border border-gray-900"
-                        style={{
-                          boxShadow:
-                            "inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 1px rgba(255, 255, 255, 0.1)",
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  {/* Keyboard Base Part */}
-                  <div
-                    className="absolute left-0 right-0 h-[60%] rounded-b-lg"
-                    style={{
-                      top: "75%",
-                      background:
-                        "linear-gradient(145deg, #3a3a3e 0%, #2a2a2e 100%)",
-                      transformStyle: "preserve-3d",
-                      transform: "translateZ(10px) rotateX(-15deg)",
-                      transformOrigin: "top center",
-                      boxShadow:
-                        "inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.4)",
-                    }}
-                  >
-                    {/* Keyboard Keys */}
-                    <div className="absolute top-7 left-3 right-3 flex flex-col gap-1.5">
-                      {/* Row 1 - Function keys */}
-                      <div className="flex gap-1.5 justify-center">
-                        {[...Array(16)].map((_, i) => (
-                          <div
-                            key={`k1-${i}`}
-                            className="w-8 h-4 bg-gray-700 rounded-sm"
-                            style={{
-                              boxShadow:
-                                "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                            }}
-                          ></div>
-                        ))}
-                      </div>
-                      {/* Row 2 - Number row */}
-                      <div className="flex gap-1.5 justify-center">
-                        {[...Array(16)].map((_, i) => (
-                          <div
-                            key={`k2-${i}`}
-                            className="w-8 h-4 bg-gray-700 rounded-sm"
-                            style={{
-                              boxShadow:
-                                "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                            }}
-                          ></div>
-                        ))}
-                      </div>
-                      {/* Row 3 - Top letter row */}
-                      <div className="flex gap-1.5 justify-center">
-                        {[...Array(15)].map((_, i) => (
-                          <div
-                            key={`k3-${i}`}
-                            className="w-8 h-4 bg-gray-700 rounded-sm"
-                            style={{
-                              boxShadow:
-                                "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                            }}
-                          ></div>
-                        ))}
-                      </div>
-                      {/* Row 4 - Middle row */}
-                      <div className="flex gap-1.5 justify-center">
-                        {[...Array(14)].map((_, i) => (
-                          <div
-                            key={`k4-${i}`}
-                            className="w-8 h-4 bg-gray-700 rounded-sm"
-                            style={{
-                              boxShadow:
-                                "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                            }}
-                          ></div>
-                        ))}
-                      </div>
-                      {/* Row 5 - Bottom letter row */}
-                      <div className="flex gap-1.5 justify-center">
-                        {[...Array(13)].map((_, i) => (
-                          <div
-                            key={`k5-${i}`}
-                            className="w-8 h-4 bg-gray-700 rounded-sm"
-                            style={{
-                              boxShadow:
-                                "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                            }}
-                          ></div>
-                        ))}
-                      </div>
-                      {/* Row 6 - Space bar row */}
-                      <div className="flex gap-1.5 justify-center items-center">
-                        <div
-                          className="w-10 h-4 bg-gray-700 rounded-sm"
-                          style={{
-                            boxShadow:
-                              "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                          }}
-                        ></div>
-                        <div
-                          className="w-10 h-4 bg-gray-700 rounded-sm"
-                          style={{
-                            boxShadow:
-                              "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                          }}
-                        ></div>
-                        <div
-                          className="w-10 h-4 bg-gray-700 rounded-sm"
-                          style={{
-                            boxShadow:
-                              "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                          }}
-                        ></div>
-                        <div
-                          className="w-48 h-4 bg-gray-700 rounded-sm"
-                          style={{
-                            boxShadow:
-                              "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                          }}
-                        ></div>
-                        <div
-                          className="w-7 h-4 bg-gray-700 rounded-sm"
-                          style={{
-                            boxShadow:
-                              "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                          }}
-                        ></div>
-
-                        <div
-                          className="w-7 h-4 bg-gray-700 rounded-sm"
-                          style={{
-                            boxShadow:
-                              "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                          }}
-                        ></div>
-                        <div
-                          className="w-7 h-4 bg-gray-700 rounded-sm"
-                          style={{
-                            boxShadow:
-                              "inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05)",
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-
-                    {/* Trackpad */}
-                    <div
-                      className="absolute bottom-3 left-1/2 -translate-x-1/2 w-28 h-14 bg-gray-800 rounded border border-gray-700"
-                      style={{
-                        boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.4)",
-                      }}
-                    ></div>
-                  </div>
-
-                  {/* Glow Effect */}
-                  <div
-                    className="absolute inset-0 rounded-lg opacity-40 pointer-events-none"
-                    style={{
-                      background:
-                        "radial-gradient(circle at 50% 50%, rgba(100, 181, 246, 0.3), transparent 70%)",
-                      filter: "blur(20px)",
-                      transform: "translateZ(-10px)",
-                    }}
-                  ></div>
-                </div>
-              </div>
-
-              {/* Room Radar Info - Right Side */}
-              <motion.div
-                initial={{ opacity: 0, x: 100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="w-full h-full flex flex-col justify-center"
-              >
-                {/* Toggle Button - At top */}
-                <div className="mb-12">
-                  <div className="relative bg-white/5 backdrop-blur-sm rounded-full p-1 w-fit grid grid-cols-2">
-                    {/* Sliding Background */}
-                    <div
-                      className={`absolute top-1 bottom-1 w-[calc(50%-0.25rem)] bg-gradient-to-r from-[#FF6B35] to-[#FF8C5A] rounded-full transition-transform duration-300 ease-out ${
-                        showRoomRadarImages
-                          ? "translate-x-[calc(100%+0.5rem)]"
-                          : "translate-x-0"
-                      }`}
-                      style={{ left: "0.25rem" }}
-                    ></div>
-
-                    {/* Toggle Options */}
-                    <button
-                      onClick={() => setShowRoomRadarImages(false)}
-                      className={`px-6 py-2 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center relative z-10 ${
-                        !showRoomRadarImages ? "text-white" : "text-gray-400"
-                      }`}
-                    >
-                      Description
-                    </button>
-                    <button
-                      onClick={() => setShowRoomRadarImages(true)}
-                      className={`px-6 py-2 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center relative z-10 ${
-                        showRoomRadarImages ? "text-white" : "text-gray-400"
-                      }`}
-                    >
-                      Images
-                    </button>
-                  </div>
-                </div>
-
-                {/* Description View - Transitioning Content */}
-                {!showRoomRadarImages && (
-                  <div
-                    className="relative flex flex-col max-w-3xl min-h-[350px]"
-                    style={{
-                      perspective: "1000px",
-                      transformStyle: "preserve-3d",
-                    }}
-                  >
-                    {/* Room Radar Content - Project 0 (0-2) */}
-                    <div
-                      className="absolute inset-0 flex flex-col will-change-transform"
-                      style={{
-                        opacity:
-                          projectTransitionProgress <= 1.6
-                            ? 1
-                            : projectTransitionProgress <= 2
-                            ? 1 - (projectTransitionProgress - 1.6) / 0.4
-                            : 0,
-                        transform:
-                          projectTransitionProgress <= 1.6
-                            ? "rotateY(0deg)"
-                            : projectTransitionProgress <= 2
-                            ? `rotateY(${
-                                ((projectTransitionProgress - 1.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        pointerEvents:
-                          projectTransitionProgress < 1 ? "auto" : "none",
-                        zIndex: projectTransitionProgress < 1 ? 2 : 1,
-                        backfaceVisibility: "hidden",
-                      }}
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-bold text-xl">
-                            1
-                          </span>
-                        </div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
-                          RoomRadar
-                        </h3>
-                      </div>
-                      <p className="text-gray-300 text-lg mb-6 leading-relaxed text-justify">
-                        Developed a web platform that helps users easily{" "}
-                        <span className="text-[#FF6B35]">
-                          find nearby boarding houses
-                        </span>{" "}
-                        through real-time listings integrated with{" "}
-                        <span className="text-[#FF6B35]">Google Maps</span> .
-                        The system allows landlords to post property details
-                        while tenants can{" "}
-                        <span className="text-[#FF6B35]">
-                          browse available rooms
-                        </span>{" "}
-                        , view monthly prices, check amenities, and filter
-                        results based on budget, proximity, and personal needs.
-                        Users can see property reviews,{" "}
-                        <span className="text-[#FF6B35]">
-                          chat directly with landlords for inquiries
-                        </span>{" "}
-                        , and explore listings through an{" "}
-                        <span className="text-[#FF6B35]">
-                          intuitive map-based interface
-                        </span>{" "}
-                        . Built with modern web technologies ensuring a smooth,
-                        responsive, and user-friendly experience.
-                      </p>
-
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap gap-3 mb-8">
-                        {[
-                          "React",
-                          "Next.js",
-                          "ASP.NET",
-                          "MySQL",
-                          "Google Maps API",
-                          "Bootstrap",
-                        ].map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-4 py-2 bg-gradient-to-r from-[#FF6B35]/10 to-[#FF8C5A]/10  rounded-lg text-[#FF6B35] text-sm font-semibold"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Project Links */}
-                      <div className="flex gap-4">
-                        <a
-                          href="https://github.com/Rhixin/RoomRadarWeb"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faGithub} className="text-xl" />
-                          <span>GitHub</span>
-                        </a>
-                        <a
-                          href="https://drive.google.com/file/d/1DF99Y3fcrSaBvUIVIAv3vX1_3yNsSvDV/view?usp=sharing"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faVideo} className="text-xl" />
-                          <span>Video</span>
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* Sinehan Content - Project 1 (2-4) */}
-                    <div
-                      className="absolute inset-0 flex flex-col will-change-transform"
-                      style={{
-                        opacity:
-                          projectTransitionProgress < 2
-                            ? 0
-                            : projectTransitionProgress <= 2.4
-                            ? (projectTransitionProgress - 2) / 0.4
-                            : projectTransitionProgress <= 3.6
-                            ? 1
-                            : projectTransitionProgress <= 4
-                            ? 1 - (projectTransitionProgress - 3.6) / 0.4
-                            : 0,
-                        transform:
-                          projectTransitionProgress < 2
-                            ? "rotateY(-90deg)"
-                            : projectTransitionProgress <= 2.4
-                            ? `rotateY(${
-                                -90 +
-                                ((projectTransitionProgress - 2) / 0.4) * 90
-                              }deg)`
-                            : projectTransitionProgress <= 3.6
-                            ? "rotateY(0deg)"
-                            : projectTransitionProgress <= 4
-                            ? `rotateY(${
-                                ((projectTransitionProgress - 3.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        pointerEvents:
-                          projectTransitionProgress >= 2 &&
-                          projectTransitionProgress < 4
-                            ? "auto"
-                            : "none",
-                        zIndex:
-                          projectTransitionProgress >= 2 &&
-                          projectTransitionProgress < 4
-                            ? 2
-                            : 1,
-                        backfaceVisibility: "hidden",
-                      }}
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-bold text-xl">
-                            2
-                          </span>
-                        </div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
-                          Sinehan
-                        </h3>
-                      </div>
-                      <p className="text-gray-300 text-lg mb-6 leading-relaxed text-justify">
-                        Developed an{" "}
-                        <span className="text-[#FF6B35]">
-                          online cinema ticketing system
-                        </span>{" "}
-                        that lets users browse real-time movie schedules, choose
-                        their preferred screening time, and{" "}
-                        <span className="text-[#FF6B35]">
-                          reserve specific seats
-                        </span>{" "}
-                        through an{" "}
-                        <span className="text-[#FF6B35]">
-                          interactive seating layout
-                        </span>{" "}
-                        . The platform streamlines the entire booking process
-                        from movie selection to payment confirmation. It also
-                        includes a full{" "}
-                        <span className="text-[#FF6B35]">admin dashboard</span>{" "}
-                        where cinema staff can manage movies, add or edit
-                        screening schedules, update seat availability, and
-                        oversee all system operations. Built with a focus on
-                        usability, accuracy, and a seamless ticketing
-                        experience.
-                      </p>
-
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap gap-3 mb-8">
-                        {["HTML", "CSS", "Javascript", "Python Django"].map(
-                          (tech) => (
-                            <span
-                              key={tech}
-                              className="px-4 py-2 bg-gradient-to-r from-[#FF6B35]/10 to-[#FF8C5A]/10  rounded-lg text-[#FF6B35] text-sm font-semibold"
-                            >
-                              {tech}
-                            </span>
-                          )
-                        )}
-                      </div>
-
-                      {/* Project Links */}
-                      <div className="flex gap-4">
-                        <a
-                          href="https://github.com/elib00/sinehan"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faGithub} className="text-xl" />
-                          <span>GitHub</span>
-                        </a>
-                        <a
-                          href="https://drive.google.com/file/d/1e6CuNI87NsXNQK-vW9J3zvgkvF6M5bA_/view?usp=sharing"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faVideo} className="text-xl" />
-                          <span>Video</span>
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* Power Systems Inc - Project 2 (4-6) */}
-                    <div
-                      className="absolute inset-0 flex flex-col will-change-transform"
-                      style={{
-                        opacity:
-                          projectTransitionProgress < 4
-                            ? 0
-                            : projectTransitionProgress <= 4.4
-                            ? (projectTransitionProgress - 4) / 0.4
-                            : projectTransitionProgress <= 5.6
-                            ? 1
-                            : projectTransitionProgress <= 6
-                            ? 1 - (projectTransitionProgress - 5.6) / 0.4
-                            : 0,
-                        pointerEvents:
-                          projectTransitionProgress >= 4 &&
-                          projectTransitionProgress < 6
-                            ? "auto"
-                            : "none",
-                        zIndex:
-                          projectTransitionProgress >= 4 &&
-                          projectTransitionProgress < 6
-                            ? 2
-                            : 1,
-                        transform:
-                          projectTransitionProgress < 4
-                            ? "rotateY(-90deg)"
-                            : projectTransitionProgress <= 4.4
-                            ? `rotateY(${
-                                -90 +
-                                ((projectTransitionProgress - 4) / 0.4) * 90
-                              }deg)`
-                            : projectTransitionProgress <= 5.6
-                            ? "rotateY(0deg)"
-                            : projectTransitionProgress <= 6
-                            ? `rotateY(${
-                                ((projectTransitionProgress - 5.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        backfaceVisibility: "hidden",
-                      }}
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-bold text-xl">
-                            3
-                          </span>
-                        </div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
-                          Power Systems Inc.
-                        </h3>
-                      </div>
-                      <p className="text-gray-300 text-lg mb-6 leading-relaxed text-justify">
-                        Developed an{" "}
-                        <span className="text-[#FF6B35]">
-                          internal company website
-                        </span>{" "}
-                        for Power Systems Inc. as part of a freelance project,
-                        transitioning their paper-based forms into a fully
-                        digital system. The platform{" "}
-                        <span className="text-[#FF6B35]">
-                          centralizes all company forms
-                        </span>{" "}
-                        related to services, job orders, and operational
-                        workflows, allowing staff to easily submit, track, and
-                        browse records. It features a searchable data management
-                        dashboard and an integrated{" "}
-                        <span className="text-[#FF6B35]">
-                          AI-powered chatbot that can
-                        </span>{" "}
-                        answer queries about existing data, helping employees
-                        quickly retrieve information without manually going
-                        through files. Built with a focus on accessibility,
-                        efficiency, and improving the company’s internal
-                        processes.
-                      </p>
-
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap gap-3 mb-8">
-                        {[
-                          "Next.js",
-                          "PostgreSQL",
-                          "NestJS",
-                          "Render",
-                          "Tailwind",
-                        ].map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-4 py-2 bg-gradient-to-r from-[#FF6B35]/10 to-[#FF8C5A]/10  rounded-lg text-[#FF6B35] text-sm font-semibold"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Project Links */}
-                      <div className="flex gap-4 flex-wrap">
-                        <a
-                          href="https://powersystemsinc.vercel.app/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faLink} className="text-xl" />
-                          <span>Website</span>
-                        </a>
-                        <a
-                          href="https://github.com/Rhixin/powersystemsinc"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faGithub} className="text-xl" />
-                          <span>GitHub</span>
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* MNSTS IMS - Project 3 (6-8) */}
-                    <div
-                      className="absolute inset-0 flex flex-col will-change-transform"
-                      style={{
-                        opacity:
-                          projectTransitionProgress < 6
-                            ? 0
-                            : projectTransitionProgress <= 6.4
-                            ? (projectTransitionProgress - 6) / 0.4
-                            : projectTransitionProgress <= 7.6
-                            ? 1
-                            : projectTransitionProgress <= 8
-                            ? 1 - (projectTransitionProgress - 7.6) / 0.4
-                            : 0,
-                        pointerEvents:
-                          projectTransitionProgress >= 6 &&
-                          projectTransitionProgress < 8
-                            ? "auto"
-                            : "none",
-                        zIndex:
-                          projectTransitionProgress >= 6 &&
-                          projectTransitionProgress < 8
-                            ? 2
-                            : 1,
-                        transform:
-                          projectTransitionProgress < 6
-                            ? "rotateY(-90deg)"
-                            : projectTransitionProgress <= 6.4
-                            ? `rotateY(${
-                                -90 +
-                                ((projectTransitionProgress - 6) / 0.4) * 90
-                              }deg)`
-                            : projectTransitionProgress <= 7.6
-                            ? "rotateY(0deg)"
-                            : projectTransitionProgress <= 8
-                            ? `rotateY(${
-                                ((projectTransitionProgress - 7.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        backfaceVisibility: "hidden",
-                      }}
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-bold text-xl">
-                            4
-                          </span>
-                        </div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
-                          MNSTS IMS
-                        </h3>
-                      </div>
-                      <p className="text-gray-300 text-lg mb-6 leading-relaxed text-justify">
-                        Developed an{" "}
-                        <span className="text-[#FF6B35]">
-                          Inventory Management System (IMS)
-                        </span>{" "}
-                        for MNSTS as part of a{" "}
-                        <span className="text-[#FF6B35]">
-                          freelance project
-                        </span>{" "}
-                        , designed to help the school efficiently track all
-                        inventory items such as books, equipment, and sports
-                        materials. The platform allows staff to record, monitor,
-                        and update item quantities while generating automated
-                        reports for easier administration. It includes an{" "}
-                        <span className="text-[#FF6B35]">
-                          AI-powered chatbot
-                        </span>{" "}
-                        that can answer queries about the current inventory
-                        status and assist in retrieving information quickly. The
-                        system also features{" "}
-                        <span className="text-[#FF6B35]">
-                          automated email alerts via Gmail
-                        </span>{" "}
-                        for low-stock items, ensuring timely restocking and
-                        smoother school operations.
-                      </p>
-
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap gap-3 mb-8">
-                        {[
-                          "Next.js",
-                          "PostgreSQL",
-                          "Tailwind",
-                          "Cloudinary",
-                        ].map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-4 py-2 bg-gradient-to-r from-[#FF6B35]/10 to-[#FF8C5A]/10  rounded-lg text-[#FF6B35] text-sm font-semibold"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Project Links */}
-                      <div className="flex gap-4 flex-wrap">
-                        <a
-                          href="https://mnsts-ims.vercel.app/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faLink} className="text-xl" />
-                          <span>Website</span>
-                        </a>
-                        <a
-                          href="https://github.com/Rhixin/MNSTS-IMS"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faGithub} className="text-xl" />
-                          <span>GitHub</span>
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* MNSTS Website - Project 4 (8-10) */}
-                    <div
-                      className="absolute inset-0 flex flex-col will-change-transform"
-                      style={{
-                        opacity:
-                          projectTransitionProgress < 8
-                            ? 0
-                            : projectTransitionProgress <= 8.4
-                            ? (projectTransitionProgress - 8) / 0.4
-                            : 1,
-                        pointerEvents:
-                          projectTransitionProgress >= 8 ? "auto" : "none",
-                        zIndex: projectTransitionProgress >= 8 ? 2 : 1,
-                        transform:
-                          projectTransitionProgress < 8
-                            ? "rotateY(-90deg)"
-                            : projectTransitionProgress <= 8.4
-                            ? `rotateY(${
-                                -90 +
-                                ((projectTransitionProgress - 8) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(0deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        backfaceVisibility: "hidden",
-                      }}
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-bold text-xl">
-                            5
-                          </span>
-                        </div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
-                          MNSTS School Website
-                        </h3>
-                      </div>
-                      <p className="text-gray-300 text-lg mb-6 leading-relaxed text-justify">
-                        Developed a full-featured school website for MNSTS as a{" "}
-                        <span className="text-[#FF6B35]">
-                          freelance project
-                        </span>{" "}
-                        , designed to centralize news articles, announcements,
-                        event calendars, and school achievements in one
-                        accessible platform. The website includes an{" "}
-                        <span className="text-[#FF6B35]">admin dashboard</span>{" "}
-                        where school staff can easily publish and manage all
-                        content. It also supports{" "}
-                        <span className="text-[#FF6B35]">
-                          automated Gmail notifications
-                        </span>{" "}
-                        for important announcements , ensuring that students and
-                        parents stay updated. Built to enhance the school’s
-                        online presence and streamline communication across the
-                        community.
-                      </p>
-
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap gap-3 mb-8">
-                        {["Next.js", "Tailwind", "MongoDB", "Cloudinary"].map(
-                          (tech) => (
-                            <span
-                              key={tech}
-                              className="px-4 py-2 bg-gradient-to-r from-[#FF6B35]/10 to-[#FF8C5A]/10  rounded-lg text-[#FF6B35] text-sm font-semibold"
-                            >
-                              {tech}
-                            </span>
-                          )
-                        )}
-                      </div>
-
-                      {/* Project Links */}
-                      <div className="flex gap-4 flex-wrap">
-                        <a
-                          href="https://mnsts.vercel.app/home"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faLink} className="text-xl" />
-                          <span>Website</span>
-                        </a>
-                        <a
-                          href="https://github.com/Rhixin/MNSTS"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faGithub} className="text-xl" />
-                          <span>GitHub</span>
-                        </a>
-                        <a
-                          href="https://drive.google.com/file/d/1jUZ5zXoWPSDYqGhEWfjZdQjqx3Bz9p-w/view?usp=sharing"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faVideo} className="text-xl" />
-                          <span>Video</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Images View */}
-                {showRoomRadarImages && (
-                  <div
-                    className="flex flex-col max-w-2xl relative h-[50vh]"
-                    style={{
-                      perspective: "1000px",
-                      transformStyle: "preserve-3d",
-                    }}
-                  >
-                    {/* Room Radar Images - Project 0 (0-2) */}
-                    <div
-                      className="h-[50vh] w-full absolute inset-0 rounded-lg overflow-hidden group"
-                      style={{
-                        opacity:
-                          projectTransitionProgress <= 1.6
-                            ? 1
-                            : projectTransitionProgress <= 2
-                            ? 1 - (projectTransitionProgress - 1.6) / 0.4
-                            : 0,
-                        pointerEvents:
-                          projectTransitionProgress < 1 ? "auto" : "none",
-                        zIndex: projectTransitionProgress < 1 ? 2 : 1,
-                        transform:
-                          projectTransitionProgress <= 1.6
-                            ? "rotateY(0deg)"
-                            : projectTransitionProgress <= 2
-                            ? `rotateY(${
-                                ((projectTransitionProgress - 1.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        backfaceVisibility: "hidden",
-                      }}
-                      onMouseEnter={() => setIsHoveringRoomRadarImage(true)}
-                      onMouseLeave={() => setIsHoveringRoomRadarImage(false)}
-                    >
-                      <Image
-                        src={`/imagesv2/roomradarweb/${
-                          currentRoomRadarImage + 1
-                        }.webp`}
-                        alt="Background"
-                        fill
-                        className="object-cover blur-2xl scale-110"
-                      />
-                      <div className="absolute inset-0">
-                        <Image
-                          src={`/imagesv2/roomradarweb/${
-                            currentRoomRadarImage + 1
-                          }.webp`}
-                          alt={`Room Radar Screenshot ${
-                            currentRoomRadarImage + 1
-                          }`}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <div
-                        className={`absolute inset-0 flex items-center justify-between px-6 z-30 transition-opacity duration-300 ${
-                          isHoveringRoomRadarImage ? "opacity-100" : "opacity-0"
-                        }`}
-                      >
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev > 0 ? prev - 1 : 7
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronBack size={24} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev < 7 ? prev + 1 : 0
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronForward size={24} />
-                        </button>
-                      </div>
-                      <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-3 z-30">
-                        <span className="text-white bg-black/30 backdrop-blur-md px-4 py-1 rounded-full text-sm font-medium border border-white/10 pointer-events-none">
-                          {currentRoomRadarImage + 1} / 8
-                        </span>
-                        <div
-                          className="flex gap-2 px-4"
-                          style={{
-                            scrollbarWidth: "none",
-                            msOverflowStyle: "none",
-                          }}
-                        >
-                          {[0, 1, 2, 3, 4, 5, 6, 7].map((index) => (
-                            <button
-                              key={index}
-                              onClick={() => setCurrentRoomRadarImage(index)}
-                              className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
-                                currentRoomRadarImage === index
-                                  ? "border-[#FF6B35] scale-110 shadow-lg shadow-[#FF6B35]/50"
-                                  : "border-white/30 hover:border-white/60 hover:scale-105"
-                              }`}
-                            >
-                              <Image
-                                src={`/imagesv2/roomradarweb/${index + 1}.webp`}
-                                alt={`Thumbnail ${index + 1}`}
-                                width={48}
-                                height={48}
-                                className="w-full h-full object-cover pointer-events-none"
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Sinehan Images - Project 1 (2-4) */}
-                    <div
-                      className="h-[50vh] w-full absolute inset-0 rounded-lg overflow-hidden group"
-                      style={{
-                        opacity:
-                          projectTransitionProgress < 2
-                            ? 0
-                            : projectTransitionProgress <= 2.4
-                            ? (projectTransitionProgress - 2) / 0.4
-                            : projectTransitionProgress <= 3.6
-                            ? 1
-                            : projectTransitionProgress <= 4
-                            ? 1 - (projectTransitionProgress - 3.6) / 0.4
-                            : 0,
-                        pointerEvents:
-                          projectTransitionProgress >= 2 &&
-                          projectTransitionProgress < 4
-                            ? "auto"
-                            : "none",
-                        zIndex:
-                          projectTransitionProgress >= 2 &&
-                          projectTransitionProgress < 4
-                            ? 2
-                            : 1,
-                        transform:
-                          projectTransitionProgress < 2
-                            ? "rotateY(-90deg)"
-                            : projectTransitionProgress <= 2.4
-                            ? `rotateY(${
-                                -90 +
-                                ((projectTransitionProgress - 2) / 0.4) * 90
-                              }deg)`
-                            : projectTransitionProgress <= 3.6
-                            ? "rotateY(0deg)"
-                            : projectTransitionProgress <= 4
-                            ? `rotateY(${
-                                ((projectTransitionProgress - 3.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        backfaceVisibility: "hidden",
-                      }}
-                      onMouseEnter={() => setIsHoveringRoomRadarImage(true)}
-                      onMouseLeave={() => setIsHoveringRoomRadarImage(false)}
-                    >
-                      <Image
-                        src={`/imagesv2/sinehan/${
-                          currentRoomRadarImage + 1
-                        }.webp`}
-                        alt="Background"
-                        fill
-                        className="object-cover blur-2xl scale-110"
-                      />
-                      <div className="absolute inset-0">
-                        <Image
-                          src={`/imagesv2/sinehan/${
-                            currentRoomRadarImage + 1
-                          }.webp`}
-                          alt={`Sinehan Screenshot ${
-                            currentRoomRadarImage + 1
-                          }`}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <div
-                        className={`absolute inset-0 flex items-center justify-between px-6 z-30 transition-opacity duration-300 ${
-                          isHoveringRoomRadarImage ? "opacity-100" : "opacity-0"
-                        }`}
-                      >
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev > 0 ? prev - 1 : 7
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronBack size={24} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev < 7 ? prev + 1 : 0
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronForward size={24} />
-                        </button>
-                      </div>
-                      <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-3 z-30">
-                        <span className="text-white bg-black/30 backdrop-blur-md px-4 py-1 rounded-full text-sm font-medium border border-white/10 pointer-events-none">
-                          {currentRoomRadarImage + 1} / 8
-                        </span>
-                        <div
-                          className="flex gap-2 px-4"
-                          style={{
-                            scrollbarWidth: "none",
-                            msOverflowStyle: "none",
-                          }}
-                        >
-                          {[0, 1, 2, 3, 4, 5, 6, 7].map((index) => (
-                            <button
-                              key={index}
-                              onClick={() => setCurrentRoomRadarImage(index)}
-                              className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
-                                currentRoomRadarImage === index
-                                  ? "border-[#8B5CF6] scale-110 shadow-lg shadow-[#8B5CF6]/50"
-                                  : "border-white/30 hover:border-white/60 hover:scale-105"
-                              }`}
-                            >
-                              <Image
-                                src={`/imagesv2/sinehan/${index + 1}.webp`}
-                                alt={`Thumbnail ${index + 1}`}
-                                width={48}
-                                height={48}
-                                className="w-full h-full object-cover pointer-events-none"
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Power Systems Inc Images - Project 2 (4-6) */}
-                    <div
-                      className="h-[50vh] w-full absolute inset-0 rounded-lg overflow-hidden group transition-opacity duration-700"
-                      style={{
-                        opacity:
-                          projectTransitionProgress < 4
-                            ? 0
-                            : projectTransitionProgress <= 4.4
-                            ? (projectTransitionProgress - 4) / 0.4
-                            : projectTransitionProgress <= 5.6
-                            ? 1
-                            : projectTransitionProgress <= 6
-                            ? 1 - (projectTransitionProgress - 5.6) / 0.4
-                            : 0,
-                        pointerEvents:
-                          projectTransitionProgress >= 4 &&
-                          projectTransitionProgress < 6
-                            ? "auto"
-                            : "none",
-                        zIndex:
-                          projectTransitionProgress >= 4 &&
-                          projectTransitionProgress < 6
-                            ? 2
-                            : 1,
-                      }}
-                      onMouseEnter={() => setIsHoveringRoomRadarImage(true)}
-                      onMouseLeave={() => setIsHoveringRoomRadarImage(false)}
-                    >
-                      <Image
-                        src={`/imagesv2/powersystemsinc/${Math.min(
-                          currentRoomRadarImage + 1,
-                          9
-                        )}.webp`}
-                        alt="Background"
-                        fill
-                        className="object-cover blur-2xl scale-110"
-                      />
-                      <div className="absolute inset-0">
-                        <Image
-                          src={`/imagesv2/powersystemsinc/${Math.min(
-                            currentRoomRadarImage + 1,
-                            9
-                          )}.webp`}
-                          alt={`Power Systems Inc Screenshot ${
-                            currentRoomRadarImage + 1
-                          }`}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <div
-                        className={`absolute inset-0 flex items-center justify-between px-6 z-30 transition-opacity duration-300 ${
-                          isHoveringRoomRadarImage ? "opacity-100" : "opacity-0"
-                        }`}
-                      >
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev > 0 ? prev - 1 : 8
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronBack size={24} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev < 8 ? prev + 1 : 0
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronForward size={24} />
-                        </button>
-                      </div>
-                      <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-3 z-30">
-                        <span className="text-white bg-black/30 backdrop-blur-md px-4 py-1 rounded-full text-sm font-medium border border-white/10 pointer-events-none">
-                          {currentRoomRadarImage + 1} / 9
-                        </span>
-                        <div
-                          className="flex gap-2 px-4"
-                          style={{
-                            scrollbarWidth: "none",
-                            msOverflowStyle: "none",
-                          }}
-                        >
-                          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-                            <button
-                              key={index}
-                              onClick={() => setCurrentRoomRadarImage(index)}
-                              className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
-                                currentRoomRadarImage === index
-                                  ? "border-[#F59E0B] scale-110 shadow-lg shadow-[#F59E0B]/50"
-                                  : "border-white/30 hover:border-white/60 hover:scale-105"
-                              }`}
-                            >
-                              <Image
-                                src={`/imagesv2/powersystemsinc/${
-                                  index + 1
-                                }.webp`}
-                                alt={`Thumbnail ${index + 1}`}
-                                width={48}
-                                height={48}
-                                className="w-full h-full object-cover pointer-events-none"
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* MNSTS IMS Images - Project 3 (6-8) */}
-                    <div
-                      className="h-[50vh] w-full absolute inset-0 rounded-lg overflow-hidden group transition-opacity duration-700"
-                      style={{
-                        opacity:
-                          projectTransitionProgress < 6
-                            ? 0
-                            : projectTransitionProgress <= 6.4
-                            ? (projectTransitionProgress - 6) / 0.4
-                            : projectTransitionProgress <= 7.6
-                            ? 1
-                            : projectTransitionProgress <= 8
-                            ? 1 - (projectTransitionProgress - 7.6) / 0.4
-                            : 0,
-                        pointerEvents:
-                          projectTransitionProgress >= 6 &&
-                          projectTransitionProgress < 8
-                            ? "auto"
-                            : "none",
-                        zIndex:
-                          projectTransitionProgress >= 6 &&
-                          projectTransitionProgress < 8
-                            ? 2
-                            : 1,
-                      }}
-                      onMouseEnter={() => setIsHoveringRoomRadarImage(true)}
-                      onMouseLeave={() => setIsHoveringRoomRadarImage(false)}
-                    >
-                      <Image
-                        src={`/imagesv2/ims/${Math.min(
-                          currentRoomRadarImage + 1,
-                          10
-                        )}.webp`}
-                        alt="Background"
-                        fill
-                        className="object-cover blur-2xl scale-110"
-                      />
-                      <div className="absolute inset-0">
-                        <Image
-                          src={`/imagesv2/ims/${Math.min(
-                            currentRoomRadarImage + 1,
-                            10
-                          )}.webp`}
-                          alt={`MNSTS IMS Screenshot ${
-                            currentRoomRadarImage + 1
-                          }`}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <div
-                        className={`absolute inset-0 flex items-center justify-between px-6 z-30 transition-opacity duration-300 ${
-                          isHoveringRoomRadarImage ? "opacity-100" : "opacity-0"
-                        }`}
-                      >
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev > 0 ? prev - 1 : 9
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronBack size={24} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev < 9 ? prev + 1 : 0
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronForward size={24} />
-                        </button>
-                      </div>
-                      <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-3 z-30">
-                        <span className="text-white bg-black/30 backdrop-blur-md px-4 py-1 rounded-full text-sm font-medium border border-white/10 pointer-events-none">
-                          {currentRoomRadarImage + 1} / 10
-                        </span>
-                        <div
-                          className="flex gap-2 px-4"
-                          style={{
-                            scrollbarWidth: "none",
-                            msOverflowStyle: "none",
-                          }}
-                        >
-                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                            <button
-                              key={index}
-                              onClick={() => setCurrentRoomRadarImage(index)}
-                              className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
-                                currentRoomRadarImage === index
-                                  ? "border-[#10B981] scale-110 shadow-lg shadow-[#10B981]/50"
-                                  : "border-white/30 hover:border-white/60 hover:scale-105"
-                              }`}
-                            >
-                              <Image
-                                src={`/imagesv2/ims/${index + 1}.webp`}
-                                alt={`Thumbnail ${index + 1}`}
-                                width={48}
-                                height={48}
-                                className="w-full h-full object-cover pointer-events-none"
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* MNSTS Website Images - Project 4 (8-10) */}
-                    <div
-                      className="h-[50vh] w-full absolute inset-0 rounded-lg overflow-hidden group transition-opacity duration-700"
-                      style={{
-                        opacity:
-                          projectTransitionProgress < 8
-                            ? 0
-                            : projectTransitionProgress <= 8.4
-                            ? (projectTransitionProgress - 8) / 0.4
-                            : 1,
-                        pointerEvents:
-                          projectTransitionProgress >= 8 ? "auto" : "none",
-                        zIndex: projectTransitionProgress >= 8 ? 2 : 1,
-                      }}
-                      onMouseEnter={() => setIsHoveringRoomRadarImage(true)}
-                      onMouseLeave={() => setIsHoveringRoomRadarImage(false)}
-                    >
-                      <Image
-                        src={`/imagesv2/mnsts/${Math.min(
-                          currentRoomRadarImage + 1,
-                          7
-                        )}.webp`}
-                        alt="Background"
-                        fill
-                        className="object-cover blur-2xl scale-110"
-                      />
-                      <div className="absolute inset-0">
-                        <Image
-                          src={`/imagesv2/mnsts/${Math.min(
-                            currentRoomRadarImage + 1,
-                            7
-                          )}.webp`}
-                          alt={`MNSTS Website Screenshot ${
-                            currentRoomRadarImage + 1
-                          }`}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <div
-                        className={`absolute inset-0 flex items-center justify-between px-6 z-30 transition-opacity duration-300 ${
-                          isHoveringRoomRadarImage ? "opacity-100" : "opacity-0"
-                        }`}
-                      >
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev > 0 ? prev - 1 : 6
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronBack size={24} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentRoomRadarImage((prev) =>
-                              prev < 6 ? prev + 1 : 0
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl   hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronForward size={24} />
-                        </button>
-                      </div>
-                      <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-3 z-30">
-                        <span className="text-white bg-black/30 backdrop-blur-md px-4 py-1 rounded-full text-sm font-medium border border-white/10 pointer-events-none">
-                          {currentRoomRadarImage + 1} / 7
-                        </span>
-                        <div
-                          className="flex gap-2 px-4"
-                          style={{
-                            scrollbarWidth: "none",
-                            msOverflowStyle: "none",
-                          }}
-                        >
-                          {[0, 1, 2, 3, 4, 5, 6].map((index) => (
-                            <button
-                              key={index}
-                              onClick={() => setCurrentRoomRadarImage(index)}
-                              className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
-                                currentRoomRadarImage === index
-                                  ? "border-[#3B82F6] scale-110 shadow-lg shadow-[#3B82F6]/50"
-                                  : "border-white/30 hover:border-white/60 hover:scale-105"
-                              }`}
-                            >
-                              <Image
-                                src={`/imagesv2/mnsts/${index + 1}.webp`}
-                                alt={`Thumbnail ${index + 1}`}
-                                width={48}
-                                height={48}
-                                className="w-full h-full object-cover pointer-events-none"
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* 3D Console Game Development Section */}
-        <section
-          ref={consoleSectionRef}
-          id="console-section"
-          className="min-h-[400vh] relative bg-transparent"
-        >
-          <div
-            className="h-screen w-full sticky top-0 flex items-center justify-center"
-            style={{ zIndex: 10 }}
-          >
-            <div
-              className="w-full h-full grid grid-cols-1 lg:grid-cols-2 transition-opacity duration-500"
-              style={{ opacity: 1 }}
-            >
-              {/* Description/Images Content - Left Side */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="w-full h-full flex flex-col justify-center pl-4 sm:pl-8 md:pl-12 lg:pl-16 pr-4 sm:pr-8"
-              >
-                {/* Toggle Button */}
-                <div className="mb-6 sm:mb-12 w-full">
-                  <div className="relative bg-white/5 backdrop-blur-sm rounded-full p-1 w-fit grid grid-cols-2">
-                    <div
-                      className={`absolute top-1 bottom-1 w-[calc(50%-0.25rem)] bg-gradient-to-r from-[#FF6B35] to-[#FF8C5A] rounded-full transition-transform duration-300 ease-out ${
-                        showGameImages
-                          ? "translate-x-[calc(100%+0.5rem)]"
-                          : "translate-x-0"
-                      }`}
-                      style={{ left: "0.25rem" }}
-                    ></div>
-
-                    <button
-                      onClick={() => setShowGameImages(false)}
-                      className={`px-6 py-2 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center relative z-10 ${
-                        !showGameImages ? "text-white" : "text-gray-400"
-                      }`}
-                    >
-                      Description
-                    </button>
-                    <button
-                      onClick={() => setShowGameImages(true)}
-                      className={`px-6 py-2 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center relative z-10 ${
-                        showGameImages ? "text-white" : "text-gray-400"
-                      }`}
-                    >
-                      Images
-                    </button>
-                  </div>
-                </div>
-
-                {/* Description View */}
-                {!showGameImages && (
-                  <div
-                    className="relative flex flex-col w-full min-h-[350px]"
-                    style={{
-                      perspective: "1000px",
-                      transformStyle: "preserve-3d",
-                    }}
-                  >
-                    {/* Maze Horror Game - Game 0 (0-2) */}
-                    <div
-                      className="absolute inset-0 flex flex-col will-change-transform"
-                      style={{
-                        opacity:
-                          gameTransitionProgress <= 1.6
-                            ? 1
-                            : gameTransitionProgress <= 2
-                            ? 1 - (gameTransitionProgress - 1.6) / 0.4
-                            : 0,
-                        transform:
-                          gameTransitionProgress <= 1.6
-                            ? "rotateY(0deg)"
-                            : gameTransitionProgress <= 2
-                            ? `rotateY(${
-                                ((gameTransitionProgress - 1.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        pointerEvents:
-                          gameTransitionProgress < 1 ? "auto" : "none",
-                        zIndex: gameTransitionProgress < 1 ? 2 : 1,
-                        backfaceVisibility: "hidden",
-                      }}
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-bold text-xl">
-                            1
-                          </span>
-                        </div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
-                          Maze Horror Game
-                        </h3>
-                      </div>
-                      <p className="text-gray-300 text-lg mb-6 leading-relaxed">
-                        A thrilling{" "}
-                        <span className="text-[#FF6B35]">
-                          first-person horror experience
-                        </span>{" "}
-                        where players navigate through dark mazes while avoiding
-                        terrifying creatures. Built with immersive 3D graphics
-                        and atmospheric sound design.
-                      </p>
-
-                      <div className="flex flex-wrap gap-3 mb-8">
-                        {["Java", "Raycasting", "3D Graphics", "JDBC"].map(
-                          (tech) => (
-                            <span
-                              key={tech}
-                              className="px-4 py-2 bg-gradient-to-r from-[#FF6B35]/10 to-[#FF8C5A]/10  rounded-lg text-[#FF6B35] text-sm font-semibold"
-                            >
-                              {tech}
-                            </span>
-                          )
-                        )}
-                      </div>
-
-                      {/* Project Links */}
-                      <div className="flex gap-4">
-                        <a
-                          href="https://github.com/Rhixin/EscapeSerato"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faGithub} className="text-xl" />
-                          <span>GitHub</span>
-                        </a>
-                        <a
-                          href="https://drive.google.com/file/d/12972LaKNp6Q0kfXUXT4n-uHyKxs9-N5r/view?usp=sharing"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faVideo} className="text-xl" />
-                          <span>Video</span>
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* CITerraria - Game 1 (2-4) */}
-                    <div
-                      className="absolute inset-0 flex flex-col will-change-transform"
-                      style={{
-                        opacity:
-                          gameTransitionProgress < 2
-                            ? 0
-                            : gameTransitionProgress <= 2.4
-                            ? (gameTransitionProgress - 2) / 0.4
-                            : gameTransitionProgress <= 3.6
-                            ? 1
-                            : gameTransitionProgress <= 4
-                            ? 1 - (gameTransitionProgress - 3.6) / 0.4
-                            : 0,
-                        transform:
-                          gameTransitionProgress < 2
-                            ? "rotateY(-90deg)"
-                            : gameTransitionProgress <= 2.4
-                            ? `rotateY(${
-                                -90 + ((gameTransitionProgress - 2) / 0.4) * 90
-                              }deg)`
-                            : gameTransitionProgress <= 3.6
-                            ? "rotateY(0deg)"
-                            : gameTransitionProgress <= 4
-                            ? `rotateY(${
-                                ((gameTransitionProgress - 3.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        pointerEvents:
-                          gameTransitionProgress >= 2 &&
-                          gameTransitionProgress < 4
-                            ? "auto"
-                            : "none",
-                        zIndex:
-                          gameTransitionProgress >= 2 &&
-                          gameTransitionProgress < 4
-                            ? 2
-                            : 1,
-                        backfaceVisibility: "hidden",
-                      }}
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-bold text-xl">
-                            2
-                          </span>
-                        </div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">
-                          CITerraria
-                        </h3>
-                      </div>
-                      <p className="text-gray-300 text-lg mb-6 leading-relaxed">
-                        A 2D sandbox adventure game inspired by{" "}
-                        <span className="text-[#FF6B35]">Terraria</span> ,
-                        featuring exploration, crafting, and building mechanics.
-                        Players can{" "}
-                        <span className="text-[#FF6B35]">
-                          mine resources, craft items, and build
-                        </span>{" "}
-                        structures in a procedurally generated world.
-                      </p>
-
-                      <div className="flex flex-wrap gap-3 mb-8">
-                        {["Java", "JDBC", "2D Graphics", "OpenGL"].map(
-                          (tech) => (
-                            <span
-                              key={tech}
-                              className="px-4 py-2 bg-gradient-to-r from-[#FF6B35]/10 to-[#FF8C5A]/10  rounded-lg text-[#FF6B35] text-sm font-semibold"
-                            >
-                              {tech}
-                            </span>
-                          )
-                        )}
-                      </div>
-
-                      {/* Project Links */}
-                      <div className="flex gap-4">
-                        <a
-                          href="https://github.com/Rhixin/TERRARIA"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faGithub} className="text-xl" />
-                          <span>GitHub</span>
-                        </a>
-                        <a
-                          href="https://drive.google.com/file/d/1tJHA7ckE2qhamNhosbw1WbB9_P3gRNBa/view?usp=sharing"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-xl rounded-lg text-white font-semibold hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/20"
-                        >
-                          <FontAwesomeIcon icon={faVideo} className="text-xl" />
-                          <span>Video</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Images View - Game Images */}
-                {showGameImages && (
-                  <div
-                    className="flex flex-col w-full relative h-[50vh]"
-                    style={{
-                      perspective: "1000px",
-                      transformStyle: "preserve-3d",
-                    }}
-                  >
-                    {/* Maze Horror Game Images (0-2) */}
-                    <div
-                      className="h-[50vh] w-full absolute inset-0 rounded-lg overflow-hidden group"
-                      style={{
-                        opacity:
-                          gameTransitionProgress <= 1.6
-                            ? 1
-                            : gameTransitionProgress <= 2
-                            ? 1 - (gameTransitionProgress - 1.6) / 0.4
-                            : 0,
-                        pointerEvents:
-                          gameTransitionProgress < 1 ? "auto" : "none",
-                        zIndex: gameTransitionProgress < 1 ? 2 : 1,
-                        transform:
-                          gameTransitionProgress <= 1.6
-                            ? "rotateY(0deg)"
-                            : gameTransitionProgress <= 2
-                            ? `rotateY(${
-                                ((gameTransitionProgress - 1.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        backfaceVisibility: "hidden",
-                      }}
-                      onMouseEnter={() => setIsHoveringGameImage(true)}
-                      onMouseLeave={() => setIsHoveringGameImage(false)}
-                    >
-                      <Image
-                        src={`/imagesv2/maze/${Math.min(
-                          currentGameImage + 1,
-                          5
-                        )}.webp`}
-                        alt="Background"
-                        fill
-                        className="object-cover blur-2xl scale-110"
-                      />
-                      <div className="absolute inset-0">
-                        <Image
-                          src={`/imagesv2/maze/${Math.min(
-                            currentGameImage + 1,
-                            5
-                          )}.webp`}
-                          alt={`Maze Horror Game Screenshot ${
-                            currentGameImage + 1
-                          }`}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      {/* Navigation Arrows */}
-                      <div
-                        className={`absolute inset-0 flex items-center justify-between px-6 z-30 transition-opacity duration-300 ${
-                          isHoveringGameImage ? "opacity-100" : "opacity-0"
-                        }`}
-                      >
-                        <button
-                          onClick={() =>
-                            setCurrentGameImage((prev) =>
-                              prev > 0 ? prev - 1 : 4
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronBack size={24} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentGameImage((prev) =>
-                              prev < 4 ? prev + 1 : 0
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronForward size={24} />
-                        </button>
-                      </div>
-                      {/* Image Counter and Thumbnails */}
-                      <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-3 z-30">
-                        <span className="text-white bg-black/30 backdrop-blur-md px-4 py-1 rounded-full text-sm font-medium border border-white/10 pointer-events-none">
-                          {currentGameImage + 1} / 5
-                        </span>
-                        <div
-                          className="flex gap-2 px-4"
-                          style={{
-                            scrollbarWidth: "none",
-                            msOverflowStyle: "none",
-                          }}
-                        >
-                          {[0, 1, 2, 3, 4].map((index) => (
-                            <button
-                              key={index}
-                              onClick={() => setCurrentGameImage(index)}
-                              className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
-                                currentGameImage === index
-                                  ? "border-[#FF6B35] scale-110 shadow-lg shadow-[#FF6B35]/50"
-                                  : "border-white/30 hover:border-white/60 hover:scale-105"
-                              }`}
-                            >
-                              <Image
-                                src={`/imagesv2/maze/${index + 1}.webp`}
-                                alt={`Thumbnail ${index + 1}`}
-                                width={48}
-                                height={48}
-                                className="w-full h-full object-cover pointer-events-none"
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* CITerraria Images (2-4) */}
-                    <div
-                      className="h-[50vh] w-full absolute inset-0 rounded-lg overflow-hidden group"
-                      style={{
-                        opacity:
-                          gameTransitionProgress < 2
-                            ? 0
-                            : gameTransitionProgress <= 2.4
-                            ? (gameTransitionProgress - 2) / 0.4
-                            : gameTransitionProgress <= 3.6
-                            ? 1
-                            : gameTransitionProgress <= 4
-                            ? 1 - (gameTransitionProgress - 3.6) / 0.4
-                            : 0,
-                        pointerEvents:
-                          gameTransitionProgress >= 2 &&
-                          gameTransitionProgress < 4
-                            ? "auto"
-                            : "none",
-                        zIndex:
-                          gameTransitionProgress >= 2 &&
-                          gameTransitionProgress < 4
-                            ? 2
-                            : 1,
-                        transform:
-                          gameTransitionProgress < 2
-                            ? "rotateY(-90deg)"
-                            : gameTransitionProgress <= 2.4
-                            ? `rotateY(${
-                                -90 + ((gameTransitionProgress - 2) / 0.4) * 90
-                              }deg)`
-                            : gameTransitionProgress <= 3.6
-                            ? "rotateY(0deg)"
-                            : gameTransitionProgress <= 4
-                            ? `rotateY(${
-                                ((gameTransitionProgress - 3.6) / 0.4) * 90
-                              }deg)`
-                            : "rotateY(90deg)",
-                        transformStyle: "preserve-3d",
-                        transition: "transform 0.7s ease, opacity 0.7s ease",
-                        backfaceVisibility: "hidden",
-                      }}
-                      onMouseEnter={() => setIsHoveringGameImage(true)}
-                      onMouseLeave={() => setIsHoveringGameImage(false)}
-                    >
-                      <Image
-                        src={`/imagesv2/terraria/${Math.min(
-                          currentGameImage + 1,
-                          3
-                        )}.webp`}
-                        alt="Background"
-                        fill
-                        className="object-cover blur-2xl scale-110"
-                      />
-                      <div className="absolute inset-0">
-                        <Image
-                          src={`/imagesv2/terraria/${Math.min(
-                            currentGameImage + 1,
-                            3
-                          )}.webp`}
-                          alt={`CITerraria Screenshot ${currentGameImage + 1}`}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      {/* Navigation Arrows */}
-                      <div
-                        className={`absolute inset-0 flex items-center justify-between px-6 z-30 transition-opacity duration-300 ${
-                          isHoveringGameImage ? "opacity-100" : "opacity-0"
-                        }`}
-                      >
-                        <button
-                          onClick={() =>
-                            setCurrentGameImage((prev) =>
-                              prev > 0 ? prev - 1 : 2
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronBack size={24} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentGameImage((prev) =>
-                              prev < 2 ? prev + 1 : 0
-                            )
-                          }
-                          className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white rounded-full transition-all shadow-lg hover:scale-110"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                            boxShadow:
-                              "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3)",
-                          }}
-                        >
-                          <IoChevronForward size={24} />
-                        </button>
-                      </div>
-                      {/* Image Counter and Thumbnails */}
-                      <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-3 z-30">
-                        <span className="text-white bg-black/30 backdrop-blur-md px-4 py-1 rounded-full text-sm font-medium border border-white/10 pointer-events-none">
-                          {currentGameImage + 1} / 3
-                        </span>
-                        <div
-                          className="flex gap-2 px-4"
-                          style={{
-                            scrollbarWidth: "none",
-                            msOverflowStyle: "none",
-                          }}
-                        >
-                          {[0, 1, 2].map((index) => (
-                            <button
-                              key={index}
-                              onClick={() => setCurrentGameImage(index)}
-                              className={`flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
-                                currentGameImage === index
-                                  ? "border-[#8B5CF6] scale-110 shadow-lg shadow-[#8B5CF6]/50"
-                                  : "border-white/30 hover:border-white/60 hover:scale-105"
-                              }`}
-                            >
-                              <Image
-                                src={`/imagesv2/terraria/${index + 1}.webp`}
-                                alt={`Thumbnail ${index + 1}`}
-                                width={48}
-                                height={48}
-                                className="w-full h-full object-cover pointer-events-none"
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-
-              {/* 3D Console Device - Right Side */}
-              <div className="w-full h-full flex items-center justify-center">
-                <div
-                  className={`relative w-[300px] h-[210px] sm:w-[450px] sm:h-[315px] lg:w-[600px] lg:h-[420px] cursor-grab active:cursor-grabbing ${
-                    !isConsoleDragging &&
-                    consoleRotation.x === -5 &&
-                    consoleRotation.y === -15
-                      ? "console-idle"
-                      : ""
-                  }`}
-                  style={{
-                    transformStyle: "preserve-3d",
-                    transform:
-                      isConsoleDragging ||
-                      consoleRotation.x !== -5 ||
-                      consoleRotation.y !== -15
-                        ? `rotateX(${consoleRotation.x}deg) rotateY(${consoleRotation.y}deg)`
-                        : undefined,
-                    transition: isConsoleDragging
-                      ? "none"
-                      : "transform 0.3s ease-out",
-                  }}
-                  onMouseDown={(e) => {
-                    setIsConsoleDragging(true);
-
-                    if (consoleResetTimeout.current) {
-                      clearTimeout(consoleResetTimeout.current);
-                    }
-
-                    const startX = e.clientX;
-                    const startY = e.clientY;
-                    const startRotation = { ...consoleRotation };
-
-                    const handleMouseMove = (moveEvent: MouseEvent) => {
-                      const deltaX = moveEvent.clientX - startX;
-                      const deltaY = moveEvent.clientY - startY;
-
-                      const newRotationY = startRotation.y + deltaX * 0.3;
-                      const newRotationX = Math.max(
-                        -30,
-                        Math.min(30, startRotation.x - deltaY * 0.3)
-                      );
-
-                      setConsoleRotation({
-                        x: newRotationX,
-                        y: newRotationY,
-                      });
-                    };
-
-                    const handleMouseUp = () => {
-                      setIsConsoleDragging(false);
-                      document.removeEventListener(
-                        "mousemove",
-                        handleMouseMove
-                      );
-                      document.removeEventListener("mouseup", handleMouseUp);
-
-                      consoleResetTimeout.current = setTimeout(() => {
-                        setConsoleRotation({ x: -5, y: -15 });
-                      }, 2000);
-                    };
-
-                    document.addEventListener("mousemove", handleMouseMove);
-                    document.addEventListener("mouseup", handleMouseUp);
-                  }}
-                >
-                  {/* Main Console Body */}
-                  <div
-                    className="absolute inset-0 rounded-2xl"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #1a1a1e 0%, #0f0f12 100%)",
-                      boxShadow:
-                        "0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(255, 255, 255, 0.1)",
-                      transform: "translateZ(0px)",
-                      border: "2px solid rgba(255, 255, 255, 0.1)",
-                    }}
-                  >
-                    {/* Screen Area */}
-                    <div
-                      className="absolute top-4 left-16 right-16 h-[280px] rounded-lg overflow-hidden"
-                      style={{
-                        background: "#000",
-                        boxShadow: "inset 0 2px 8px rgba(0, 0, 0, 0.8)",
-                        border: "3px solid #0a0a0f",
-                      }}
-                    >
-                      {/* Screen Bezel */}
-                      <div className="absolute inset-0 border-4 border-gray-900 rounded-lg z-10 pointer-events-none"></div>
-
-                      {/* Game Screenshots - Transitioning */}
-                      <div className="w-full h-full relative bg-black">
-                        {/* Maze Horror Game Screen */}
-                        <div
-                          className="w-full h-full absolute inset-0 transition-opacity duration-700"
-                          style={{
-                            opacity:
-                              gameTransitionProgress <= 1.6
-                                ? 1
-                                : gameTransitionProgress <= 2
-                                ? 1 - (gameTransitionProgress - 1.6) / 0.4
-                                : 0,
-                          }}
-                        >
-                          <Image
-                            src={`/imagesv2/maze/${Math.min(
-                              currentGameImage + 1,
-                              5
-                            )}.webp`}
-                            alt="Maze Horror Game"
-                            fill
-                            className="object-cover"
-                            style={{ objectFit: "cover" }}
-                          />
-                        </div>
-
-                        {/* CITerraria Screen */}
-                        <div
-                          className="w-full h-full absolute inset-0 transition-opacity duration-700"
-                          style={{
-                            opacity:
-                              gameTransitionProgress < 2
-                                ? 0
-                                : gameTransitionProgress <= 2.4
-                                ? (gameTransitionProgress - 2) / 0.4
-                                : gameTransitionProgress <= 3.6
-                                ? 1
-                                : gameTransitionProgress <= 4
-                                ? 1 - (gameTransitionProgress - 3.6) / 0.4
-                                : 0,
-                          }}
-                        >
-                          <Image
-                            src={`/imagesv2/terraria/${Math.min(
-                              currentGameImage + 1,
-                              3
-                            )}.webp`}
-                            alt="CITerraria"
-                            fill
-                            className="object-cover"
-                            style={{ objectFit: "cover" }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Left D-Pad Area */}
-                    <div className="absolute bottom-8 left-8 w-16 h-16">
-                      {/* D-Pad Cross */}
-                      <div className="relative w-full h-full">
-                        {/* Up */}
-                        <div
-                          className="absolute top-0 left-1/2 -translate-x-1/2 w-5 h-6 rounded-t"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                            boxShadow:
-                              "inset 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.1)",
-                          }}
-                        ></div>
-                        {/* Down */}
-                        <div
-                          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-6 rounded-b"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                            boxShadow:
-                              "inset 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.1)",
-                          }}
-                        ></div>
-                        {/* Left */}
-                        <div
-                          className="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-5 rounded-l"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                            boxShadow:
-                              "inset 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.1)",
-                          }}
-                        ></div>
-                        {/* Right */}
-                        <div
-                          className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-5 rounded-r"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                            boxShadow:
-                              "inset 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.1)",
-                          }}
-                        ></div>
-                        {/* Center */}
-                        <div
-                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #1a1a1e 0%, #0f0f12 100%)",
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-
-                    {/* Right Action Buttons */}
-                    <div className="absolute bottom-8 right-8 w-16 h-16">
-                      <div className="relative w-full h-full">
-                        {/* Triangle (Top) */}
-                        <div
-                          className="absolute top-0 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                            boxShadow:
-                              "inset 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.1)",
-                          }}
-                        ></div>
-                        {/* Cross (Bottom) */}
-                        <div
-                          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                            boxShadow:
-                              "inset 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.1)",
-                          }}
-                        ></div>
-                        {/* Square (Left) */}
-                        <div
-                          className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                            boxShadow:
-                              "inset 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.1)",
-                          }}
-                        ></div>
-                        {/* Circle (Right) */}
-                        <div
-                          className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                            boxShadow:
-                              "inset 0 -1px 2px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.1)",
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-
-                    {/* Shoulder Buttons (L/R) */}
-                    <div
-                      className="absolute -top-2 left-12 w-16 h-3 rounded-t-lg"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                        boxShadow: "0 -2px 4px rgba(0, 0, 0, 0.5)",
-                        transform: "translateZ(2px)",
-                      }}
-                    ></div>
-                    <div
-                      className="absolute -top-2 right-12 w-16 h-3 rounded-t-lg"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                        boxShadow: "0 -2px 4px rgba(0, 0, 0, 0.5)",
-                        transform: "translateZ(2px)",
-                      }}
-                    ></div>
-
-                    {/* Start/Select Buttons */}
-                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-4">
-                      <div
-                        className="w-8 h-2 rounded-full"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                          boxShadow: "inset 0 -1px 1px rgba(0, 0, 0, 0.5)",
-                        }}
-                      ></div>
-                      <div
-                        className="w-8 h-2 rounded-full"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, #2a2a2e 0%, #1a1a1e 100%)",
-                          boxShadow: "inset 0 -1px 1px rgba(0, 0, 0, 0.5)",
-                        }}
-                      ></div>
-                    </div>
-
-                    {/* Speakers */}
-                    <div className="absolute top-2 left-4 right-4 flex justify-between">
-                      <div className="flex gap-0.5">
-                        {[...Array(6)].map((_, i) => (
-                          <div
-                            key={`speaker-l-${i}`}
-                            className="w-1 h-8 rounded-full bg-black/50"
-                          ></div>
-                        ))}
-                      </div>
-                      <div className="flex gap-0.5">
-                        {[...Array(6)].map((_, i) => (
-                          <div
-                            key={`speaker-r-${i}`}
-                            className="w-1 h-8 rounded-full bg-black/50"
-                          ></div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      {/* End of Stacking Sections Container */}
 
       {/* 3D Picture Frame Certifications Gallery */}
       <section className="min-h-screen bg-[#0a0a0f] py-12 sm:py-20 px-4 sm:px-8">
@@ -5408,6 +3135,16 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Project Detail Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Fixed Chat Icon Button - Lower Right within content space */}
       <div className="fixed bottom-12 right-8 md:right-16 lg:right-24 z-50">

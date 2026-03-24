@@ -12,64 +12,25 @@ export default function Navbar() {
   // Track active section with intersection observer
   useEffect(() => {
     const sections = document.querySelectorAll("section");
-    const projectsSection = document.querySelector("#computer-section");
 
     const observer = new IntersectionObserver(
       (entries) => {
-        let visibleSections = entries.filter((entry) => entry.isIntersecting);
+        const visibleSections = entries.filter((e) => e.isIntersecting);
+        if (visibleSections.length === 0) return;
 
-        if (visibleSections.length > 0) {
-          // Get the section that's most visible
-          const mostVisible = visibleSections.reduce((prev, current) => {
-            return current.intersectionRatio > prev.intersectionRatio
-              ? current
-              : prev;
-          });
+        const mostVisible = visibleSections.reduce((prev, current) =>
+          current.intersectionRatio > prev.intersectionRatio ? current : prev
+        );
 
-          const sectionElement = mostVisible.target as HTMLElement;
-
-          // Check if it's the projects section
-          if (sectionElement.id === "computer-section") {
-            setActiveIndex(3); // Projects
-            return;
-          }
-
-          const sectionIndex = Array.from(sections).indexOf(sectionElement);
-
-          // Map sections to navbar items correctly
-          // Section order: 0=Hero/About, 1=Skills, 2=Experience, 3=3D Phone, 4=Certifications, 5=Contact
-          if (sectionIndex === 0) {
-            setActiveIndex(0); // Hero -> About Me
-          } else if (sectionIndex === 1) {
-            setActiveIndex(1); // Skills -> Skills
-          } else if (sectionIndex === 2) {
-            setActiveIndex(2); // Experience -> Experience
-          } else if (sectionIndex === 3) {
-            setActiveIndex(3); // 3D Phone -> Projects
-          } else if (sectionIndex === 4) {
-            setActiveIndex(4); // Certifications -> Certifications
-          } else if (sectionIndex >= 5) {
-            setActiveIndex(5); // Contact -> Contact
-          }
-        }
+        const idx = Array.from(sections).indexOf(mostVisible.target as HTMLElement);
+        // sections: 0=Hero, 1=Skills, 2=Experience, 3=Projects, 4=Certifications, 5=Contact
+        if (idx >= 0 && idx <= 5) setActiveIndex(idx);
       },
-      {
-        threshold: [0.1, 0.25, 0.5, 0.75], // Multiple thresholds for better detection
-        rootMargin: "-20% 0px -20% 0px", // Better detection area
-      }
+      { threshold: [0.1, 0.25, 0.5], rootMargin: "-20% 0px -20% 0px" }
     );
 
-    sections.forEach((section) => observer.observe(section));
-    if (projectsSection) {
-      observer.observe(projectsSection);
-    }
-
-    return () => {
-      sections.forEach((section) => observer.unobserve(section));
-      if (projectsSection) {
-        observer.unobserve(projectsSection);
-      }
-    };
+    sections.forEach((s) => observer.observe(s));
+    return () => sections.forEach((s) => observer.unobserve(s));
   }, []);
 
   // Track scroll direction and expand/collapse navbar
@@ -151,29 +112,10 @@ export default function Navbar() {
   }, []);
 
   const scrollToSection = (index: number) => {
-    // Special handling for Projects since it's in the stacking container
-    if (index === 3) {
-      // Find the computer section (laptop projects)
-      const projectsSection = document.querySelector('#computer-section');
-      if (projectsSection) {
-        projectsSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-        setActiveIndex(index);
-        return;
-      }
-    }
-
     const sections = document.querySelectorAll("section");
-    // Map navbar items to sections: About Me(0)->0, Skills(1)->1, Experience(2)->2, Projects(3)->computer, Certifications(4)->4, Contact(5)->5
-    const sectionMap = [0, 1, 2, 3, 6, 7]; // navbar index -> section index
-    const targetSection = sections[sectionMap[index]];
-    if (targetSection) {
-      targetSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+    const target = sections[index];
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
       setActiveIndex(index);
     }
   };
