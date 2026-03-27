@@ -190,6 +190,21 @@ const allProjects = [
   },
   // ── Automations ──
   {
+    id: "cyberbully",
+    title: "Cyber Bullying Detector Extension",
+    category: ["automations"] as const,
+    description:
+      "A browser extension that detects and covers cyberbullying content in real time. Trained a custom deep learning model using Python and Keras via KGGN on the Hateful Memes dataset to identify both hateful text and hateful images. When harmful content is detected on a webpage, the extension automatically covers it to protect the user.",
+    images: [
+      "/imagesv2/cyber/cyber1.webp",
+      "/imagesv2/cyber/cyber2.webp",
+    ],
+    technology: ["JavaScript", "Python", "Keras", "Flask", "Uvicorn"],
+    github: "https://github.com/KennLoyd/Cyberbullying-Detection-on-X",
+    demo: "",
+    video: "https://drive.google.com/file/d/1huReq6k0xBERgOn9wqbckeZC84uuXecF/view",
+  },
+  {
     id: "pitchfully",
     title: "Pitchfully",
     category: ["automations", "web"] as const,
