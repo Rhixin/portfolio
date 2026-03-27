@@ -34,6 +34,7 @@ export default function ProjectModal({
 }) {
   const [activeImage, setActiveImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const isMobile = project.category.includes("mobile");
 
   // Close on Escape, lock body scroll
   useEffect(() => {
@@ -91,8 +92,8 @@ export default function ProjectModal({
 
               {/* Main image */}
               <div
-                className="relative w-full rounded-xl overflow-hidden bg-black/40 cursor-zoom-in group"
-                style={{ aspectRatio: "16/10" }}
+                className={`relative rounded-xl overflow-hidden bg-black/40 cursor-zoom-in group ${isMobile ? "mx-auto w-[60%]" : "w-full"}`}
+                style={{ aspectRatio: isMobile ? "9/16" : "16/10" }}
                 onClick={() => setLightboxOpen(true)}
               >
                 <AnimatePresence mode="wait">
@@ -108,7 +109,7 @@ export default function ProjectModal({
                       src={project.images[activeImage]}
                       alt={`${project.title} screenshot ${activeImage + 1}`}
                       fill
-                      className="object-cover"
+                      className={isMobile ? "object-contain" : "object-cover"}
                     />
                   </motion.div>
                 </AnimatePresence>
@@ -144,7 +145,7 @@ export default function ProjectModal({
                   <button
                     key={i}
                     onClick={() => setActiveImage(i)}
-                    className={`relative w-16 h-11 rounded-lg overflow-hidden flex-shrink-0 transition-all duration-200 ${
+                    className={`relative rounded-lg overflow-hidden flex-shrink-0 transition-all duration-200 ${isMobile ? "w-9 h-16" : "w-16 h-11"} ${
                       activeImage === i
                         ? "ring-2 ring-[#FF6B35] opacity-100 scale-105"
                         : "opacity-50 hover:opacity-80"

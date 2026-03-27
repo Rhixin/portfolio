@@ -143,7 +143,7 @@ export default function Navbar() {
     >
       {/* Navigation Bar */}
       <div
-        className="rounded-full relative shadow-md sm:shadow-lg md:shadow-2xl py-2 sm:py-2.5 md:py-3"
+        className="rounded-full relative shadow-md sm:shadow-lg md:shadow-2xl py-1 sm:py-1.5 md:py-2"
         style={{
           opacity: scrollOpacity,
           background: "rgba(10, 10, 15, 0.95)",
@@ -183,7 +183,7 @@ export default function Navbar() {
               }}
             >
               <button
-                className={`px-2 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 transition-all duration-300 font-medium cursor-pointer rounded-full relative overflow-hidden group text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap ${
+                className={`px-2 sm:px-2.5 md:px-3 lg:px-4 py-1 sm:py-1.5 transition-all duration-300 font-medium cursor-pointer rounded-full relative overflow-hidden group text-[9px] sm:text-[10px] md:text-xs lg:text-sm whitespace-nowrap ${
                   activeIndex === index
                     ? "bg-[#FF6B35] text-white font-bold shadow-lg shadow-[#FF6B35]/30"
                     : "text-gray-300 hover:text-white hover:bg-white/5"
@@ -203,7 +203,7 @@ export default function Navbar() {
             alt="ZCreations"
             width={120}
             height={40}
-            className="h-6 sm:h-8 md:h-10 w-auto object-contain"
+            className="h-5 sm:h-6 md:h-7 w-auto object-contain"
           />
         </div>
 
@@ -232,7 +232,7 @@ export default function Navbar() {
                 }}
               >
                 <button
-                  className={`px-2 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 transition-all duration-300 font-medium cursor-pointer rounded-full relative overflow-hidden group text-[10px] sm:text-xs md:text-sm lg:text-base whitespace-nowrap ${
+                  className={`px-2 sm:px-2.5 md:px-3 lg:px-4 py-1 sm:py-1.5 transition-all duration-300 font-medium cursor-pointer rounded-full relative overflow-hidden group text-[9px] sm:text-[10px] md:text-xs lg:text-sm whitespace-nowrap ${
                     activeIndex === actualIndex
                       ? "bg-[#FF6B35] text-white font-bold shadow-lg shadow-[#FF6B35]/30"
                       : "text-gray-300 hover:text-white hover:bg-white/5"
