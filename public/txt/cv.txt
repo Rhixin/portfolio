@@ -1,44 +1,125 @@
 TECHNICAL SKILLS
 ###
 Languages: C, C++, C#, Java, PHP, JavaScript, SQL, Python
-Frameworks: Next.js, Bootstrap, ASP.NET, Django, NestJS
-Libraries: Nodejs, React, jQuery, libGDX, PyGame, PyTurtle
-Machine Learning & Data Science Libraries: Pandas, TensorFlow, Keras, Seaborn, Matplotlib
-Database: Cloud Firestore, MySQL, Firebase Storage
-Developer Tools: Android Studio, github, IntelliJ, VS Code
-Others: Leetcode (250+ problems solved)	
+Frameworks: Next.js, Bootstrap, ASP.NET, ASP.NET Core, Django, NestJS
+Libraries: Node.js, React, React Native, jQuery, libGDX, PyGame, PyTurtle, Socket.IO
+Machine Learning & Data Science: Pandas, TensorFlow, Keras, Seaborn, Matplotlib
+Database: Cloud Firestore, MySQL, PostgreSQL, MongoDB, Supabase, SQLite, Firebase Storage
+Developer Tools: Android Studio, GitHub, IntelliJ, VS Code
+Others: LeetCode (250+ problems solved)
 ###
 
 SOFT SKILLS
 ###
-Adaptability 
+Adaptability
 Critical Thinking
 Project Management
 Time Management
+Accountability
 ###
 
 EXPERIENCE
 ###
-Freelancing January-Present 2025
-Full Stack Software Developer Internship | Full Scale Teams June-September 2025 
-Full Stack Software Developer Internship | Sun* Inc. March-June  2025 
-Scholarship Technopreneurship Training Program (STTP) March-August 2025
+Freelancing — Automations & Full Stack Developer | January 2020 – Present (6+ years)
+
+Automations Engineer | Everincrease LLC | February 2024 – December 2025 (1 yr 10 mos)
+
+Automations Engineer | Stanton Management | January 2025 – February 2026 (1 yr 1 mo)
+
+Full Stack Software Developer Intern | Full Scale Teams Inc. | June – September 2025 (4 months)
+
+Full Stack Software Developer Intern | Sun* Inc. | March – June 2025 (4 months)
+
+Scholarship Technopreneurship Training Program (STTP) | March – August 2025 (6 months)
 ###
 
 PROJECTS
 ###
-1. GesturBee
-GesturBee is a gamified e-learning mobile app designed to make learning Filipino Sign Language (FSL) fun, accessible, and engaging. It features progressive learning stages such as Alphabets, Numbers, Greetings, and Common Phrases , along with mini-games , quizzes, and performance tracking.
+1. Automated Tenant Rent Collection
+A platform that automates rent collection by sending SMS messages via Twilio to tenants with overdue balances. Automated payment plan negotiations through messaging, detects incoming payments, and escalates unresolved cases to admin with notifications.
 
-The app is powered by a custom-built AI model developed by my team from scratch to recognize FSL gestures in real time. It analyzes hand shape, orientation, and movement, providing instant feedback on sign accuracy to ensure proper execution.
+Next.js
+Supabase
+Twilio
+
+
+2. Lead Gen & Outreach Automation
+Automates B2B lead generation for wine products by scraping Google Maps and social media via APIFY to find wine shops and pub bars. Scores each lead with a custom ranking system, generates personalized outreach emails, and manages replies — all in one pipeline.
+
+Next.js
+Supabase
+Python
+APIFY
+
+
+3. JobLess
+A platform that automates job hunting by matching a resume against job listings and scoring each from 1–100. Generates a personalized draft application letter tailored to the job description, with one-click submission.
+
+Next.js
+Supabase
+Python
+OpenClaw
+
+
+4. Court Rentals
+A fully automated sport court booking platform with real-time availability, Stripe payment integration, and instant booking confirmation emails. Includes an AI chatbot for answering questions about availability, rates, and scheduling.
+
+Next.js
+Supabase
+Python
+Stripe
+
+
+5. Pitchfully
+An AI-powered sales and marketing platform for freelancers and agencies connecting to Meta Ads for full campaign management, Creative & Audience Insights, automated rules, and a leads dashboard. AI generates personalized ad copy and pitch messages, manages follow-ups, and actively controls ad spend. Built with AES-GCM encryption and JWT authentication.
+
+ASP.NET Core
+JavaScript
+Meta Ads API
+Azure
+AES-GCM
+
+
+6. Cyber Bullying Detector Extension
+A browser extension that detects and covers cyberbullying content in real time. Trained a custom deep learning model using Python and Keras on the Hateful Memes dataset to identify both hateful text and hateful images. When harmful content is detected on a webpage, the extension automatically covers it to protect the user.
+
+JavaScript
+Python
+Keras
+Flask
+Uvicorn
+
+
+7. GesturBee
+A gamified e-learning mobile app designed to make learning Filipino Sign Language (FSL) fun, accessible, and engaging. Features progressive learning stages, mini-games, quizzes, and performance tracking powered by a custom-built AI gesture recognition model achieving 98.6% classification accuracy.
 
 React Native
 TypeScript
 Firebase
 Redux
 
-2. RoomRadar
-Developed a web platform that helps users easily find nearby boarding houses through real-time listings integrated with Google Maps . The system allows landlords to post property details while tenants can browse available rooms , view monthly prices, check amenities, and filter results based on budget, proximity, and personal needs. Users can see property reviews, chat directly with landlords for inquiries , and explore listings through an intuitive map-based interface . Built with modern web technologies ensuring a smooth, responsive, and user-friendly experience.
+
+8. MNSTS Inventory Management System
+A freelance inventory management system for a school featuring stock tracking, automated Gmail alerts for low-stock items, and an AI-powered chatbot for real-time inventory queries. Designed to enhance efficiency in monitoring, tracking, and managing school resources.
+
+Next.js
+PostgreSQL
+Tailwind
+Cloudinary
+
+
+9. MNSTS School Website
+A full-featured school website centralizing news, announcements, events, organizations, and achievements. Includes an admin dashboard and automated Gmail notifications for subscribed students when new content is published.
+
+Next.js
+Tailwind
+MongoDB
+Cloudinary
+
+
+10. RoomRadar
+A web platform that helps users find nearby boarding houses through real-time listings integrated with Google Maps. Landlords post property details while tenants browse, filter by budget and proximity, chat with landlords, and explore through an interactive map-based interface.
+
 React
 Next.js
 ASP.NET
@@ -47,17 +128,8 @@ Google Maps API
 Bootstrap
 
 
-3. Sinehan
-Developed an online cinema ticketing system that lets users browse real-time movie schedules, choose their preferred screening time, and reserve specific seats through an interactive seating layout . The platform streamlines the entire booking process from movie selection to payment confirmation. It also includes a full admin dashboard where cinema staff can manage movies, add or edit screening schedules, update seat availability, and oversee all system operations. Built with a focus on usability, accuracy, and a seamless ticketing experience.
-
-HTML
-CSS
-Javascript
-Python Django
-
-
-4. Power Systems Inc.
-Developed an internal company website for Power Systems Inc. as part of a freelance project, transitioning their paper-based forms into a fully digital system. The platform centralizes all company forms related to services, job orders, and operational workflows, allowing staff to easily submit, track, and browse records. It features a searchable data management dashboard and an integrated AI-powered chatbot that can answer queries about existing data, helping employees quickly retrieve information without manually going through files. Built with a focus on accessibility, efficiency, and improving the company’s internal processes.
+11. Power Systems Inc.
+An internal company website for Power Systems Inc., transitioning paper-based forms to a fully digital system. Centralizes all company forms and workflows, features a searchable data management dashboard, and an integrated AI-powered chatbot for quick data retrieval.
 
 Next.js
 PostgreSQL
@@ -66,49 +138,61 @@ Render
 Tailwind
 
 
-5. MNSTS IMS
-Developed an Inventory Management System (IMS) for MNSTS as part of a freelance project , designed to help the school efficiently track all inventory items such as books, equipment, and sports materials. The platform allows staff to record, monitor, and update item quantities while generating automated reports for easier administration. It includes an AI-powered chatbot that can answer queries about the current inventory status and assist in retrieving information quickly. The system also features automated email alerts via Gmail for low-stock items, ensuring timely restocking and smoother school operations.
+12. Cinema Ticketing System with Reserved Seating
+A cinema ticketing website with an admin panel for listing movies and an interactive reserved seating feature that allows users to select seats based on their preferences.
 
-Next.js
-PostgreSQL
-Tailwind
-Cloudinary
+HTML
+CSS
+JavaScript
+Python Django
+SQLite
 
-6. MNSTS School Website
-Developed a full-featured school website for MNSTS as a freelance project , designed to centralize news articles, announcements, event calendars, and school achievements in one accessible platform. The website includes an admin dashboard where school staff can easily publish and manage all content. It also supports automated Gmail notifications for important announcements , ensuring that students and parents stay updated. Built to enhance the school’s online presence and streamline communication across the community.
 
-Next.js
-Tailwind
-MongoDB
-Cloudinary
+13. Disease Symptoms Analysis
+Implemented the Apriori algorithm to identify frequent symptom sets and disease associations from a preprocessed dataset. Analyzed disease relationships via shared symptoms and produced visualizations including heatmaps and network graphs.
 
-7. Maze Horror Game
-A thrilling first-person horror experience where players navigate through dark mazes while avoiding terrifying creatures. Built with immersive 3D graphics and atmospheric sound design.
+Python
+Matplotlib
+Pandas
+Seaborn
+Apriori
+
+
+14. 3D Horror Maze
+A first-person 3D horror game built from 2D materials using Raycasting — a rendering technique that simulates light rays to create the illusion of depth and perspective. Navigate through dark mazes while avoiding terrifying creatures with atmospheric sound design.
 
 Java
 Raycasting
-3D Graphics
+JavaFX
 JDBC
 
 
-8. CITerraria
-A 2D sandbox adventure game inspired by Terraria , featuring exploration, crafting, and building mechanics. Players can mine resources, craft items, and build structures in a procedurally generated world.
+15. Terraria Duplicate
+A 2D game inspired by Terraria where players mine resources and craft materials to survive. Independently designed and implemented all game mechanics except graphics. Boss battles are the core mechanic — victory requires defeating the final boss.
 
 Java
-JDBC
-2D Graphics
-OpenGL
+libGDX
 ###
 
+
+EDUCATION
+###
+DOST JLSS Scholar | August 2024 – Present
+Cebu Institute of Technology – University | August 2022 – Present
+Bachelor of Science in Computer Science | Cebu City, Philippines
+
+Medellin National Science and Technology School | June 2016 – June 2022
+Graduated as Class Salutatorian | Medellin, Cebu, Philippines
+###
 
 CERTIFICATIONS
 ###
-AWS Cloud Foundations - AWS Academy Graduate 
-TOPCIT LEVEL III PASSER
-PhilNITS Fundamental Information Technology Engineers (FE) Certification 
-Python  (Udemy 100 Days of Code: The Complete Python Pro Bootcamp)
-React 	(Udemy React - The Complete Guide 2024)
-JavaScript (Udemy The Complete JavaScript Course 2024: From Zero to Expert!)
-C (CodeChum Certification Exam)                                  
-Java (CodeChum Certification Exam (3rd Place))
+AWS Cloud Foundations — AWS Academy Graduate
+TOPCIT — Level III Passer (400–649 points)
+PhilNITS — Fundamental Information Technology Engineers (FE) Certification
+Python — Udemy: 100 Days of Code: The Complete Python Pro Bootcamp
+React — Udemy: React – The Complete Guide 2024
+JavaScript — Udemy: The Complete JavaScript Course 2024: From Zero to Expert!
+C — CodeChum Certification Exam | Cebu Institute of Technology – University
+Java — CodeChum Certification Exam (3rd Place) | Cebu Institute of Technology – University
 ###
