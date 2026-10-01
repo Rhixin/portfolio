@@ -79,8 +79,9 @@ export default function ImageUploader({
         type="file"
         accept="image/*"
         multiple={multiple}
+        disabled={uploading}
         onChange={(e) => handleFiles(e.target.files)}
-        className="block w-full text-sm text-gray-300 mb-3"
+        className="block w-full text-sm text-gray-300 mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
       />
       {uploading && <p className="text-gray-400 text-sm mb-2">Uploading...</p>}
       {error && <p className="text-red-400 text-sm mb-2">{error}</p>}
@@ -94,7 +95,8 @@ export default function ImageUploader({
             <button
               type="button"
               onClick={() => removeAt(i)}
-              className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center bg-black/70 rounded-full text-white text-xs"
+              disabled={uploading}
+              className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center bg-black/70 rounded-full text-white text-xs disabled:opacity-50 disabled:cursor-not-allowed"
             >
               ×
             </button>
