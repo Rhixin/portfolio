@@ -6,7 +6,9 @@ const EXPERIENCE_TYPES = ["Full-time", "Part-time", "Internship", "Contract"];
 export type ProjectInput = Omit<ProjectRecord, "created_at">;
 export type ExperienceInput = Omit<ExperienceRecord, "created_at" | "id">;
 
-type Result<T> = { data: T; error?: undefined } | { data?: undefined; error: string };
+type Result<T> =
+  | { ok: true; data: T; error?: undefined }
+  | { ok: false; data?: undefined; error: string };
 
 function toStringArray(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
@@ -24,21 +26,22 @@ function toNullableString(value: unknown): string | null {
 
 export function sanitizeProjectInput(body: unknown): Result<ProjectInput> {
   if (typeof body !== "object" || body === null) {
-    return { error: "Request body must be an object" };
+    return { ok: false, error: "Request body must be an object" };
   }
   const b = body as Record<string, unknown>;
 
   const id = typeof b.id === "string" ? b.id.trim() : "";
-  if (!id) return { error: "id is required" };
+  if (!id) return { ok: false, error: "id is required" };
 
   const title = typeof b.title === "string" ? b.title.trim() : "";
-  if (!title) return { error: "title is required" };
+  if (!title) return { ok: false, error: "title is required" };
 
   const category = toStringArray(b.category).filter((c) =>
     ALLOWED_CATEGORIES.includes(c)
   );
 
   return {
+    ok: true,
     data: {
       id,
       title,
@@ -56,12 +59,12 @@ export function sanitizeProjectInput(body: unknown): Result<ProjectInput> {
 
 export function sanitizeExperienceInput(body: unknown): Result<ExperienceInput> {
   if (typeof body !== "object" || body === null) {
-    return { error: "Request body must be an object" };
+    return { ok: false, error: "Request body must be an object" };
   }
   const b = body as Record<string, unknown>;
 
   const name = typeof b.name === "string" ? b.name.trim() : "";
-  if (!name) return { error: "name is required" };
+  if (!name) return { ok: false, error: "name is required" };
 
   const rawType = typeof b.type === "string" ? b.type : null;
   const type = EXPERIENCE_TYPES.includes(rawType ?? "")
@@ -69,6 +72,7 @@ export function sanitizeExperienceInput(body: unknown): Result<ExperienceInput> 
     : null;
 
   return {
+    ok: true,
     data: {
       name,
       logo: toNullableString(b.logo),

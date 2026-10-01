@@ -5,7 +5,7 @@ import { sanitizeProjectInput } from "@/lib/validation";
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   const result = sanitizeProjectInput(body);
-  if (result.error) {
+  if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
 

@@ -9,7 +9,7 @@ export async function PUT(
   const { id } = await params;
   const body = await req.json().catch(() => null);
   const result = sanitizeProjectInput({ ...(typeof body === "object" && body ? body : {}), id });
-  if (result.error) {
+  if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
 
