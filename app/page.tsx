@@ -145,8 +145,14 @@ export default function Home() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/projects").then((r) => r.json()),
-      fetch("/api/experience").then((r) => r.json()),
+      fetch("/api/projects").then((r) => {
+        if (!r.ok) throw new Error("Failed to fetch projects");
+        return r.json();
+      }),
+      fetch("/api/experience").then((r) => {
+        if (!r.ok) throw new Error("Failed to fetch experience");
+        return r.json();
+      }),
     ])
       .then(([projectsRes, experienceRes]) => {
         setAllProjects(projectsRes.projects ?? []);

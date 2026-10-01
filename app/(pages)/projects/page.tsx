@@ -10,7 +10,10 @@ export default function Projects() {
 
   useEffect(() => {
     fetch("/api/projects")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Failed to fetch projects");
+        return r.json();
+      })
       .then((json) => {
         setProjects(json.projects ?? []);
         setLoaded(true);
