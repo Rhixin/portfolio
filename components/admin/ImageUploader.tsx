@@ -15,27 +15,54 @@ export default function ImageUploader({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+
   const handleFiles = async (fileList: FileList | null) => {
     if (!fileList || fileList.length === 0) return;
+    const files = Array.from(fileList);
+
+    for (const file of files) {
+      if (!file.type.startsWith("image/")) {
+        setError(`"${file.name}" is not an image file`);
+        return;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        setError(`"${file.name}" exceeds the 4MB size limit`);
+        return;
+      }
+    }
+
     setUploading(true);
     setError(null);
 
-    const formData = new FormData();
-    Array.from(fileList).forEach((file) => formData.append("files", file));
+    const uploadedUrls: string[] = [];
 
     try {
-      const res = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const json = await res.json();
-      if (!res.ok) {
-        setError(json.error ?? "Upload failed");
-        return;
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append("files", file);
+
+        try {
+          const res = await fetch("/api/admin/upload", {
+            method: "POST",
+            body: formData,
+          });
+          const json = await res.json();
+          if (!res.ok) {
+            setError(json.error ?? `Upload failed for "${file.name}"`);
+            return;
+          }
+          const newUrls: string[] = json.urls;
+          uploadedUrls.push(...newUrls);
+        } catch {
+          setError(`Upload failed for "${file.name}"`);
+          return;
+        }
       }
-      const newUrls: string[] = json.urls;
-      onChange(multiple ? [...images, ...newUrls] : newUrls.slice(0, 1));
     } finally {
+      if (uploadedUrls.length > 0) {
+        onChange(multiple ? [...images, ...uploadedUrls] : uploadedUrls.slice(0, 1));
+      }
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
     }

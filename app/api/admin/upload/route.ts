@@ -3,6 +3,7 @@ import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { requireAdmin } from "@/lib/adminAuth";
 
 const BUCKET = "project-images";
+const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB, comfortably under Vercel's 4.5MB request body limit
 
 export async function POST(req: NextRequest) {
   const authError = requireAdmin(req);
@@ -13,6 +14,21 @@ export async function POST(req: NextRequest) {
 
   if (files.length === 0) {
     return NextResponse.json({ error: "No files provided" }, { status: 400 });
+  }
+
+  for (const file of files) {
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json(
+        { error: `"${file.name}" is not an image file` },
+        { status: 400 }
+      );
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        { error: `"${file.name}" exceeds the 4MB size limit` },
+        { status: 400 }
+      );
+    }
   }
 
   const supabase = getSupabaseAdmin();
