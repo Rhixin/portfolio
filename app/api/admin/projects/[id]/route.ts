@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { sanitizeProjectInput } from "@/lib/validation";
+import { requireAdmin } from "@/lib/adminAuth";
 
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const { id } = await params;
   const body = await req.json().catch(() => null);
   const result = sanitizeProjectInput({ ...(typeof body === "object" && body ? body : {}), id });
@@ -30,9 +34,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const { id } = await params;
   const supabase = getSupabaseAdmin();
   const { error } = await supabase.from("projects").delete().eq("id", id);

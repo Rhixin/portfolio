@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { requireAdmin } from "@/lib/adminAuth";
 
 const BUCKET = "project-images";
 
 export async function POST(req: NextRequest) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const formData = await req.formData().catch(() => null);
   const files = (formData?.getAll("files") ?? []).filter((f): f is File => f instanceof File);
 

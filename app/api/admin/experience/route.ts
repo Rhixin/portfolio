@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { sanitizeExperienceInput } from "@/lib/validation";
+import { requireAdmin } from "@/lib/adminAuth";
 
 export async function POST(req: NextRequest) {
+  const authError = requireAdmin(req);
+  if (authError) return authError;
+
   const body = await req.json().catch(() => null);
   const result = sanitizeExperienceInput(body);
   if (!result.ok) {

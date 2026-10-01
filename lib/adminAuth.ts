@@ -1,3 +1,5 @@
+import { NextRequest, NextResponse } from "next/server";
+
 const COOKIE_NAME = "admin_session";
 
 export function getAdminCookieName(): string {
@@ -22,4 +24,12 @@ export function getAdminSessionSecret(): string {
     throw new Error("ADMIN_SESSION_SECRET is not set");
   }
   return secret;
+}
+
+export function requireAdmin(req: NextRequest): NextResponse | null {
+  const cookie = req.cookies.get(getAdminCookieName())?.value;
+  if (!verifyAdminSessionCookie(cookie)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return null;
 }
