@@ -80,6 +80,7 @@ export function sanitizeExperienceInput(body: unknown): Result<ExperienceInput> 
       type,
       year: toNullableString(b.year),
       duration: toNullableString(b.duration),
+      link: toNullableString(b.link),
       sort_order: typeof b.sort_order === "number" ? b.sort_order : 0,
     },
   };

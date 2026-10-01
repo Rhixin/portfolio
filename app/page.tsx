@@ -1510,29 +1510,16 @@ export default function Home() {
 
               {/* Experience Shops - Positioned across the scrolling background */}
               {experience.map((exp, index) => {
-                const positions = [15, 28, 43, 58, 73, 88];
-                const logos = [
-                  "/imagesv2/experiences/sttp.webp",
-                  "/imagesv2/others/sun.webp",
-                  "/imagesv2/others/fullscale.webp",
-                  "/imagesv2/experiences/everincrease.webp",
-                  "/imagesv2/experiences/stanton.webp",
-                  "/imagesv2/others/zv2.webp",
-                ];
-                const links = [
-                  "https://www.linkedin.com/in/zhazted-rhixin-valles-051152258",
-                  "https://en.sun-asterisk.com/about/",
-                  "https://fullscale.io/",
-                  "https://everincreasellc.com/",
-                  "https://www.stantonpm.com/",
-                  "https://www.linkedin.com/in/zhazted-rhixin-valles-051152258",
-                ];
+                const position =
+                  15 +
+                  (index * (88 - 15)) /
+                    Math.max(experience.length - 1, 1);
                 return (
                   <div
                     key={index}
                     className="absolute bottom-32"
                     style={{
-                      left: `${positions[index]}%`,
+                      left: `${position}%`,
                       transform: "translateX(-50%)",
                     }}
                   >
@@ -1540,12 +1527,14 @@ export default function Home() {
                     <div className="absolute -top-36 left-1/2 -translate-x-1/2 text-center w-64">
                       {/* Logo */}
                       <div className="flex justify-center">
-                        <Image
-                          src={logos[index]}
-                          alt={exp.name}
-                          width={160}
-                          height={160}
-                        />
+                        {exp.logo && (
+                          <Image
+                            src={exp.logo}
+                            alt={exp.name}
+                            width={160}
+                            height={160}
+                          />
+                        )}
                       </div>
                       {/* Company Name */}
                       <div className="flex justify-center items-center gap-2 mb-1">
@@ -1553,7 +1542,7 @@ export default function Home() {
                           {exp.name}
                         </h3>
                         {/* Clients count for Freelance */}
-                        {index === 5 && (
+                        {exp.name === "Freelancing" && (
                           <p className="text-[#00f5ff] text-xs font-bold">
                             40+ Clients
                           </p>
@@ -1576,7 +1565,7 @@ export default function Home() {
 
                     {/* Shop - 8 tiles wide (384px) with hover effects */}
                     <a
-                      href={links[index]}
+                      href={exp.link ?? "#"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block relative transition-all duration-300 hover:scale-102 cursor-pointer"

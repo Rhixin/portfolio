@@ -15,6 +15,7 @@ export default function ExperienceForm({ initial }: { initial?: ExperienceRecord
   const [type, setType] = useState<string>(initial?.type ?? "");
   const [year, setYear] = useState(initial?.year ?? "");
   const [duration, setDuration] = useState(initial?.duration ?? "");
+  const [link, setLink] = useState(initial?.link ?? "");
   const [logo, setLogo] = useState<string[]>(initial?.logo ? [initial.logo] : []);
   const [sortOrder, setSortOrder] = useState(initial?.sort_order ?? 0);
   const [error, setError] = useState<string | null>(null);
@@ -36,6 +37,7 @@ export default function ExperienceForm({ initial }: { initial?: ExperienceRecord
       type: type || null,
       year,
       duration,
+      link,
       logo: logo[0] ?? null,
       sort_order: Number(sortOrder) || 0,
     };
@@ -119,6 +121,16 @@ export default function ExperienceForm({ initial }: { initial?: ExperienceRecord
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
           placeholder="e.g. 6 months"
+          className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
+        />
+      </div>
+
+      <div>
+        <label className="block text-gray-300 text-sm mb-1">Link (e.g. company website or LinkedIn)</label>
+        <input
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder="https://..."
           className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
         />
       </div>

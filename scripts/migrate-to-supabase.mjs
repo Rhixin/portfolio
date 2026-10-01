@@ -38,12 +38,12 @@ const projects = [
 // as null except where the role is unambiguously an internship. Fill the
 // rest in via /admin after migrating.
 const experience = [
-  { logo: "/imagesv2/experiences/sttp.webp", name: "STTP", additional: "Scholarship Technopreneurship Training Program", type: null, year: "Mar 2025 – Aug 2025", duration: "6 months", sort_order: 0 },
-  { logo: "/imagesv2/others/sun.webp", name: "Sun* Inc.", additional: "Full Stack Software Developer Intern", type: "Internship", year: "Mar 2025 – Jun 2025", duration: "4 months", sort_order: 1 },
-  { logo: "/imagesv2/others/fullscale.webp", name: "Full Scale Teams Inc.", additional: "Full Stack Software Developer Intern", type: "Internship", year: "Jun 2025 – Sep 2025", duration: "4 months", sort_order: 2 },
-  { logo: "/imagesv2/experiences/everincrease.webp", name: "Everincrease LLC", additional: "Automations Engineer", type: null, year: "Feb 2024 – Dec 2025", duration: "1 yr 10 mos", sort_order: 3 },
-  { logo: "/imagesv2/experiences/stanton.webp", name: "Stanton Management", additional: "Automations Engineer", type: null, year: "Jan 2025 – Feb 2026", duration: "1 yr 1 mo", sort_order: 4 },
-  { logo: "/imagesv2/others/zv2.webp", name: "Freelancing", additional: "Automations & Full Stack Developer", type: null, year: "Jan 2020 – Present", duration: "6+ years", sort_order: 5 },
+  { logo: "/imagesv2/experiences/sttp.webp", name: "STTP", additional: "Scholarship Technopreneurship Training Program", type: null, year: "Mar 2025 – Aug 2025", duration: "6 months", link: "https://www.linkedin.com/in/zhazted-rhixin-valles-051152258", sort_order: 0 },
+  { logo: "/imagesv2/others/sun.webp", name: "Sun* Inc.", additional: "Full Stack Software Developer Intern", type: "Internship", year: "Mar 2025 – Jun 2025", duration: "4 months", link: "https://en.sun-asterisk.com/about/", sort_order: 1 },
+  { logo: "/imagesv2/others/fullscale.webp", name: "Full Scale Teams Inc.", additional: "Full Stack Software Developer Intern", type: "Internship", year: "Jun 2025 – Sep 2025", duration: "4 months", link: "https://fullscale.io/", sort_order: 2 },
+  { logo: "/imagesv2/experiences/everincrease.webp", name: "Everincrease LLC", additional: "Automations Engineer", type: null, year: "Feb 2024 – Dec 2025", duration: "1 yr 10 mos", link: "https://everincreasellc.com/", sort_order: 3 },
+  { logo: "/imagesv2/experiences/stanton.webp", name: "Stanton Management", additional: "Automations Engineer", type: null, year: "Jan 2025 – Feb 2026", duration: "1 yr 1 mo", link: "https://www.stantonpm.com/", sort_order: 4 },
+  { logo: "/imagesv2/others/zv2.webp", name: "Freelancing", additional: "Automations & Full Stack Developer", type: null, year: "Jan 2020 – Present", duration: "6+ years", link: "https://www.linkedin.com/in/zhazted-rhixin-valles-051152258", sort_order: 5 },
 ];
 
 async function run() {

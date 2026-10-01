@@ -76,6 +76,7 @@ describe("sanitizeExperienceInput", () => {
       type: null,
       year: null,
       duration: null,
+      link: null,
       sort_order: 0,
     });
   });

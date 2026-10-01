@@ -20,6 +20,7 @@ export interface ExperienceRecord {
   type: "Full-time" | "Part-time" | "Internship" | "Contract" | null;
   year: string | null;
   duration: string | null;
+  link: string | null;
   sort_order: number;
   created_at: string;
 }
