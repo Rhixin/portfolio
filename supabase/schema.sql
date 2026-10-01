@@ -25,9 +25,14 @@ create table if not exists public.experience (
   type text check (type in ('Full-time', 'Part-time', 'Internship', 'Contract')),
   year text,
   duration text,
+  link text,
   sort_order int not null default 0,
   created_at timestamptz not null default now()
 );
+
+-- Added after initial creation (final-review fix: experience section was
+-- rendering from hardcoded arrays instead of this column).
+alter table public.experience add column if not exists link text;
 
 alter table public.projects enable row level security;
 alter table public.experience enable row level security;
