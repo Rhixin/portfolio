@@ -17,6 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faVideo, faLink, faFilter, faXmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import type { ProjectRecord, ExperienceRecord } from "@/lib/types";
 
 // Website projects data for tabs
 const websiteProjects = [
@@ -54,334 +55,22 @@ const websiteProjects = [
   },
 ];
 
-const allProjects = [
-  // ── Mobile ──
-  {
-    id: "gesturbee",
-    title: "GesturBee",
-    category: ["mobile", "automations"] as const,
-    description:
-      "A gamified e-learning mobile app designed to make learning Filipino Sign Language (FSL) fun, accessible, and engaging. Features progressive learning stages, mini-games, quizzes, and performance tracking powered by a custom-built AI gesture recognition model built from scratch.",
-    images: [
-      "/imagesv2/gesturbee/1.webp",
-      "/imagesv2/gesturbee/2.webp",
-      "/imagesv2/gesturbee/3.webp",
-      "/imagesv2/gesturbee/4.webp",
-      "/imagesv2/gesturbee/5.webp",
-      "/imagesv2/gesturbee/6.webp",
-      "/imagesv2/gesturbee/7.webp",
-      "/imagesv2/gesturbee/8.webp",
-      "/imagesv2/gesturbee/9.webp",
-      "/imagesv2/gesturbee/10.webp",
-      "/imagesv2/gesturbee/11.webp",
-    ],
-    technology: ["React Native", "TypeScript", "Firebase", "Redux"],
-    github: "https://github.com/Rhixin/GesturbeeCamera",
-    demo: "",
-    video: "",
-  },
-  // ── Web ──
-  {
-    id: "roomradar",
-    title: "RoomRadar",
-    category: ["web"] as const,
-    description:
-      "A web platform that helps users find nearby boarding houses through real-time listings integrated with Google Maps. Landlords post property details while tenants browse, filter by budget and proximity, chat with landlords, and explore through an interactive map-based interface.",
-    images: [
-      "/imagesv2/roomradarweb/1.webp",
-      "/imagesv2/roomradarweb/2.webp",
-      "/imagesv2/roomradarweb/3.webp",
-      "/imagesv2/roomradarweb/4.webp",
-      "/imagesv2/roomradarweb/5.webp",
-      "/imagesv2/roomradarweb/6.webp",
-      "/imagesv2/roomradarweb/7.webp",
-      "/imagesv2/roomradarweb/8.webp",
-    ],
-    technology: ["React", "Next.js", "ASP.NET", "MySQL", "Google Maps API", "Bootstrap"],
-    github: "https://github.com/Rhixin/RoomRadarWeb",
-    demo: "",
-    video: "https://drive.google.com/file/d/1DF99Y3fcrSaBvUIVIAv3vX1_3yNsSvDV/view?usp=sharing",
-  },
-  {
-    id: "sinehan",
-    title: "Sinehan",
-    category: ["web"] as const,
-    description:
-      "An online cinema ticketing system that lets users browse real-time movie schedules, choose screening times, and reserve specific seats through an interactive seating layout. Includes a full admin dashboard for managing movies, schedules, and seat availability.",
-    images: [
-      "/imagesv2/sinehan/1.webp",
-      "/imagesv2/sinehan/2.webp",
-      "/imagesv2/sinehan/3.webp",
-      "/imagesv2/sinehan/4.webp",
-      "/imagesv2/sinehan/5.webp",
-      "/imagesv2/sinehan/6.webp",
-      "/imagesv2/sinehan/7.webp",
-      "/imagesv2/sinehan/8.webp",
-    ],
-    technology: ["HTML", "CSS", "JavaScript", "Python Django", "SQLite"],
-    github: "https://github.com/elib00/sinehan",
-    demo: "",
-    video: "https://drive.google.com/file/d/1e6CuNI87NsXNQK-vW9J3zvgkvF6M5bA_/view?usp=sharing",
-  },
-  {
-    id: "powersystems",
-    title: "Power Systems Inc.",
-    category: ["web"] as const,
-    description:
-      "An internal company website for Power Systems Inc., transitioning paper-based forms to a fully digital system. Centralizes all company forms and workflows, features a searchable data management dashboard, and an integrated AI-powered chatbot for quick data retrieval.",
-    images: [
-      "/imagesv2/powersystemsinc/1.webp",
-      "/imagesv2/powersystemsinc/2.webp",
-      "/imagesv2/powersystemsinc/3.webp",
-      "/imagesv2/powersystemsinc/4.webp",
-      "/imagesv2/powersystemsinc/5.webp",
-      "/imagesv2/powersystemsinc/6.webp",
-      "/imagesv2/powersystemsinc/7.webp",
-      "/imagesv2/powersystemsinc/8.webp",
-      "/imagesv2/powersystemsinc/9.webp",
-    ],
-    technology: ["Next.js", "PostgreSQL", "NestJS", "Render", "Tailwind"],
-    github: "https://github.com/Rhixin/powersystemsinc",
-    demo: "",
-    video: "",
-  },
-  {
-    id: "mnsts-ims",
-    title: "MNSTS IMS",
-    category: ["web"] as const,
-    description:
-      "An Inventory Management System for Medellin National Science and Technology School featuring stock tracking, reporting dashboards, and full administrative tools for managing school resources.",
-    images: [
-      "/imagesv2/ims/1.webp",
-      "/imagesv2/ims/2.webp",
-      "/imagesv2/ims/3.webp",
-      "/imagesv2/ims/4.webp",
-      "/imagesv2/ims/5.webp",
-      "/imagesv2/ims/6.webp",
-      "/imagesv2/ims/7.webp",
-      "/imagesv2/ims/8.webp",
-      "/imagesv2/ims/9.webp",
-      "/imagesv2/ims/10.webp",
-    ],
-    technology: ["Next.js", "Tailwind", "MongoDB"],
-    github: "https://github.com/Rhixin/MNSTS-IMS",
-    demo: "",
-    video: "",
-  },
-  {
-    id: "mnsts-website",
-    title: "MNSTS Website",
-    category: ["web"] as const,
-    description:
-      "Developed and deployed a school website enabling students to access news, announcements, events, organizations, and achievements. Features an admin dashboard and an automated email notification system for subscribed students.",
-    images: [
-      "/imagesv2/mnsts/1.webp",
-      "/imagesv2/mnsts/2.webp",
-      "/imagesv2/mnsts/3.webp",
-      "/imagesv2/mnsts/4.webp",
-      "/imagesv2/mnsts/5.webp",
-      "/imagesv2/mnsts/6.webp",
-      "/imagesv2/mnsts/7.webp",
-    ],
-    technology: ["Next.js", "Tailwind", "MongoDB", "Cloudinary"],
-    github: "https://github.com/Rhixin/MNSTS",
-    demo: "https://mnsts.vercel.app/home",
-    video: "https://drive.google.com/file/d/1jUZ5zXoGHEWfjZdQjqx3Bz9p-w/view?usp=sharing",
-  },
-  // ── Automations ──
-  {
-    id: "cyberbully",
-    title: "Cyber Bullying Detector Extension",
-    category: ["automations"] as const,
-    description:
-      "A browser extension that detects and covers cyberbullying content in real time. Trained a custom deep learning model using Python and Keras via KGGN on the Hateful Memes dataset to identify both hateful text and hateful images. When harmful content is detected on a webpage, the extension automatically covers it to protect the user.",
-    images: [
-      "/imagesv2/cyber/cyber1.webp",
-      "/imagesv2/cyber/cyber2.webp",
-    ],
-    technology: ["JavaScript", "Python", "Keras", "Flask", "Uvicorn"],
-    github: "https://github.com/KennLoyd/Cyberbullying-Detection-on-X",
-    demo: "",
-    video: "https://drive.google.com/file/d/1huReq6k0xBERgOn9wqbckeZC84uuXecF/view",
-  },
-  {
-    id: "pitchfully",
-    title: "Pitchfully",
-    category: ["automations", "web"] as const,
-    description:
-      "An AI-powered sales and marketing platform for freelancers and agencies. Connects to Meta Ads for full campaign management, Creative & Audience Insights, automated rules, and a leads dashboard. AI generates personalized ad copy and pitch messages, manages follow-ups, and actively controls ad spend. Built on ASP.NET Core with AES-GCM encryption and JWT authentication.",
-    images: [
-      "/imagesv2/pitchfully/pitch1.webp",
-      "/imagesv2/pitchfully/pitch2.webp",
-      "/imagesv2/pitchfully/pitch3.webp",
-      "/imagesv2/pitchfully/pitch4.webp",
-      "/imagesv2/pitchfully/pitch5.webp",
-    ],
-    technology: ["ASP.NET Core", "JavaScript", "Meta Ads API", "Azure", "AES-GCM"],
-    github: "https://github.com/Everincrease/pitchai",
-    demo: "https://app-uat.pitchfully.io/pages/sign-in.html",
-    video: "",
-  },
-  {
-    id: "court-rentals",
-    title: "Court Rentals",
-    category: ["automations", "web"] as const,
-    description:
-      "A fully automated sport court booking platform. Browse real-time court availability, select a schedule, and pay securely via Stripe. Automated booking confirmations are sent instantly. Includes an AI chatbot that answers questions about court availability, rates, and more.",
-    images: [
-      "/imagesv2/sports/sport1.webp",
-      "/imagesv2/sports/sport2.webp",
-      "/imagesv2/sports/sport3.webp",
-      "/imagesv2/sports/sport4.webp",
-      "/imagesv2/sports/sport5.webp",
-      "/imagesv2/sports/sport6.webp",
-      "/imagesv2/sports/sport7.webp",
-      "/imagesv2/sports/sport8.webp",
-    ],
-    technology: ["Next.js", "Supabase", "Python", "Stripe"],
-    github: "",
-    demo: "",
-    video: "",
-  },
-  {
-    id: "jobless",
-    title: "JobLess",
-    category: ["automations", "web"] as const,
-    description:
-      "A platform that automates job hunting by matching your resume against job listings and scoring each one from 1–100. Generates a personalized draft application letter tailored to the job description, lets you edit it, and submits your application with a single click.",
-    images: [
-      "/imagesv2/jobless/jobless1.webp",
-      "/imagesv2/jobless/jobless2.webp",
-      "/imagesv2/jobless/jobless3.webp",
-      "/imagesv2/jobless/jobless4.webp",
-      "/imagesv2/jobless/jobless5.webp",
-      "/imagesv2/jobless/jobless6.webp",
-    ],
-    technology: ["Next.js", "Supabase", "Python", "OpenClaw"],
-    github: "https://github.com/ZhaztedValles/ai-job-seeker",
-    demo: "",
-    video: "",
-  },
-  {
-    id: "leadgen",
-    title: "Lead Gen & Outreach Automation",
-    category: ["automations", "web"] as const,
-    description:
-      "Automates B2B lead generation for wine products by scraping Google Maps and social media data via APIFY to find wine shops and pub bars. Scores each lead with a custom ranking system, generates personalized outreach emails, and manages replies — all in one pipeline.",
-    images: [
-      "/imagesv2/leadgen/lead1.webp",
-      "/imagesv2/leadgen/lead2.webp",
-      "/imagesv2/leadgen/lead3.webp",
-      "/imagesv2/leadgen/lead4.webp",
-      "/imagesv2/leadgen/lead5.webp",
-      "/imagesv2/leadgen/lead6.webp",
-      "/imagesv2/leadgen/lead7.webp",
-    ],
-    technology: ["Next.js", "Supabase", "Python", "APIFY"],
-    github: "",
-    demo: "",
-    video: "",
-  },
-  {
-    id: "rent-collection",
-    title: "Automated Tenant Rent Collection",
-    category: ["automations", "web"] as const,
-    description:
-      "A platform that automates rent collection by sending SMS messages via Twilio to tenants with overdue balances. Negotiates payment plans through automated messaging, detects incoming payments, and escalates unresolved cases to admin with notifications.",
-    images: [
-      "/imagesv2/collections/stanton_1.webp",
-      "/imagesv2/collections/stanton_2.webp",
-      "/imagesv2/collections/stanton_3.webp",
-      "/imagesv2/collections/stanton_4.webp",
-      "/imagesv2/collections/stanton_5.webp",
-      "/imagesv2/collections/stanton_6.webp",
-      "/imagesv2/collections/stanton_7.webp",
-      "/imagesv2/collections/stanton_8.webp",
-    ],
-    technology: ["Next.js", "Supabase", "Twilio"],
-    github: "https://github.com/Rhixin/collections_dash_v2",
-    demo: "",
-    video: "",
-  },
-  {
-    id: "asl",
-    title: "Real-Time Sign Language Recognition",
-    category: ["automations"] as const,
-    description:
-      "A real-time sign language recognition system using computer vision and deep learning, achieving 98.6% accuracy in gesture classification. Uses Flask and Socket.IO for real-time backend communication with a React frontend for live hand tracking and gesture detection.",
-    images: [
-      "/imagesv2/asl/1.webp",
-      "/imagesv2/asl/2.webp",
-      "/imagesv2/asl/3.webp",
-    ],
-    technology: ["React", "TensorFlow", "Keras", "Flask", "Socket.IO", "Python", "NumPy"],
-    github: "https://github.com/Rhixin/GesturbeeCamera",
-    demo: "",
-    video: "",
-  },
-  {
-    id: "disease",
-    title: "Disease Symptoms Analysis",
-    category: ["automations"] as const,
-    description:
-      "Implemented the Apriori algorithm to identify frequent symptom sets and disease associations from a preprocessed dataset. Analyzed disease relationships via shared symptoms and produced visualizations including heatmaps and network graphs.",
-    images: [
-      "/imagesv2/disease/1.webp",
-      "/imagesv2/disease/2.webp",
-      "/imagesv2/disease/3.webp",
-      "/imagesv2/disease/4.webp",
-    ],
-    technology: ["Python", "Matplotlib", "Pandas", "Seaborn", "Apriori"],
-    github: "https://github.com/Rhixin/SymptomsDiseaseAnalysis",
-    demo: "",
-    video: "",
-  },
-  // ── Games ──
-  {
-    id: "maze",
-    title: "3D Horror Maze",
-    category: ["games"] as const,
-    description:
-      "A 3D game built from 2D materials using Raycasting — a rendering technique that simulates light rays to create the illusion of depth and perspective. Navigate through dark mazes while avoiding terrifying creatures with atmospheric sound design.",
-    images: [
-      "/imagesv2/maze/1.webp",
-      "/imagesv2/maze/2.webp",
-      "/imagesv2/maze/3.webp",
-      "/imagesv2/maze/4.webp",
-      "/imagesv2/maze/5.webp",
-    ],
-    technology: ["Java", "Raycasting", "JavaFX", "JDBC"],
-    github: "https://github.com/Rhixin/EscapeSerato",
-    demo: "",
-    video: "https://drive.google.com/file/d/12972LaKNp6Q0kfXUXT4n-uHyKxs9-N5r/view?usp=sharing",
-  },
-  {
-    id: "terraria",
-    title: "Terraria Duplicate",
-    category: ["games"] as const,
-    description:
-      "A 2D game inspired by Terraria where players mine resources and craft materials to survive. Independently designed and implemented all game mechanics except graphics. Boss battles are the core mechanic — victory requires defeating the final boss.",
-    images: [
-      "/imagesv2/terraria/1.webp",
-      "/imagesv2/terraria/2.webp",
-      "/imagesv2/terraria/3.webp",
-    ],
-    technology: ["Java", "libGDX"],
-    github: "https://github.com/Rhixin/TERRARIA",
-    demo: "",
-    video: "https://drive.google.com/file/d/1tJHA7ckE2qhamNhosbw1WbB9_P3gRNBa/view?usp=sharing",
-  },
-];
-
 export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [allProjects, setAllProjects] = useState<ProjectRecord[]>([]);
+  const [experience, setExperience] = useState<ExperienceRecord[]>([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [dataError, setDataError] = useState(false);
   const [activeProjectCategory, setActiveProjectCategory] = useState<
     "all" | "mobile" | "web" | "automations" | "games"
   >("all");
   const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
   const [showTechFilter, setShowTechFilter] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedCertification, setSelectedCertification] = useState<
+    { src: string; alt: string } | null
+  >(null);
   const [currentSection, setCurrentSection] = useState(0);
   const [roadmapProgress, setRoadmapProgress] = useState(0);
   const [activeEducationIndex, setActiveEducationIndex] = useState(-1);
@@ -453,6 +142,32 @@ export default function Home() {
     setIsMounted(true);
     setIsVisible(true);
   }, []);
+
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/projects").then((r) => r.json()),
+      fetch("/api/experience").then((r) => r.json()),
+    ])
+      .then(([projectsRes, experienceRes]) => {
+        setAllProjects(projectsRes.projects ?? []);
+        setExperience(experienceRes.experience ?? []);
+        setDataLoaded(true);
+      })
+      .catch(() => {
+        setDataError(true);
+        setDataLoaded(true);
+      });
+  }, []);
+
+  // Close certification lightbox on Escape
+  useEffect(() => {
+    if (!selectedCertification) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedCertification(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedCertification]);
 
   // Auto-advance screenshots
   useEffect(() => {
@@ -971,51 +686,6 @@ export default function Home() {
     "Attention to Detail",
   ];
 
-  const experience = [
-    {
-      logo: "/imagesv2/experiences/sttp.webp",
-      name: "STTP",
-      additional: "Scholarship Technopreneurship Training Program",
-      year: "Mar 2025 – Aug 2025",
-      duration: "6 months",
-    },
-    {
-      logo: "/imagesv2/others/sun.webp",
-      name: "Sun* Inc.",
-      additional: "Full Stack Software Developer Intern",
-      year: "Mar 2025 – Jun 2025",
-      duration: "4 months",
-    },
-    {
-      logo: "/imagesv2/others/fullscale.webp",
-      name: "Full Scale Teams Inc.",
-      additional: "Full Stack Software Developer Intern",
-      year: "Jun 2025 – Sep 2025",
-      duration: "4 months",
-    },
-    {
-      logo: "/imagesv2/experiences/everincrease.webp",
-      name: "Everincrease LLC",
-      additional: "Automations Engineer",
-      year: "Feb 2024 – Dec 2025",
-      duration: "1 yr 10 mos",
-    },
-    {
-      logo: "/imagesv2/experiences/stanton.webp",
-      name: "Stanton Management",
-      additional: "Automations Engineer",
-      year: "Jan 2025 – Feb 2026",
-      duration: "1 yr 1 mo",
-    },
-    {
-      logo: "/imagesv2/others/zv2.webp",
-      name: "Freelancing",
-      additional: "Automations & Full Stack Developer",
-      year: "Jan 2020 – Present",
-      duration: "6+ years",
-    },
-  ];
-
   // Contact data
   const contactInfo = [
     {
@@ -1057,143 +727,6 @@ export default function Home() {
   ];
 
   // Projects data
-  const projectsData = [
-    {
-      title: "Real-Time Sign Language Recognition",
-      description:
-        "Built a real-time sign language recognition system leveraging computer vision and deep learning. Integrated TensorFlow and Keras for model training, achieving 98.6% accuracy in gesture classification. Used Flask and Socket.IO for real-time backend communication, and a React-based frontend for live hand tracking and gesture detection. Implemented a responsive UI with Tailwind and deployed the model through a Python-based API. Focused on seamless real-time video processing and improving accessibility for sign language users.",
-      images: ["/images/asl/1.webp", "/images/asl/2.webp", "/images/asl/3.webp"],
-      technology: [
-        "React",
-        "Next.js",
-        "Tailwind",
-        "Tensorflow",
-        "Keras",
-        "Flask",
-        "SocketIo",
-        "Python",
-        "Numpy",
-        "Matplotlib",
-      ],
-      weblink: "",
-      github: "https://github.com/Rhixin/GesturbeeCamera",
-      video: "",
-    },
-    {
-      title: "RoomRadar Website",
-      description:
-        "Developed a landlord-tenant platform that streamlines the process of finding and listing boarding houses, integrating Google Maps API for interactive property listings and advanced search filters for tenants. Built an interactive landlord dashboard for managing listings and a tenant search system with filters for proximity, price range, and availability.",
-      images: [
-        "/images/roomradarweb/1.webp",
-        "/images/roomradarweb/2.webp",
-        "/images/roomradarweb/3.webp",
-        "/images/roomradarweb/4.webp",
-        "/images/roomradarweb/5.webp",
-        "/images/roomradarweb/6.webp",
-        "/images/roomradarweb/7.webp",
-        "/images/roomradarweb/8.webp",
-      ],
-      technology: [
-        "React",
-        "Next.js",
-        "Bootstrap",
-        "ASP.NET",
-        "MySQL",
-        "Google Maps API",
-      ],
-      weblink: "",
-      github: "https://github.com/Rhixin/RoomRadarWeb",
-      video:
-        "https://drive.google.com/file/d/1DF99Y3fcrSaBvUIVIAv3vX1_3yNsSvDV/view?usp=sharing",
-    },
-    {
-      title: "MNSTS School Website",
-      description:
-        "Developed and deployed a school website on my own using MongoDB for the backend and Next.js for the frontend. The website enables students to access news, announcements, events, organizations, and school achievements while featuring an admin dashboard for managing displayed content. Additionally, it includes an automated email notification system that informs subscribed students about newly added news, announcements, and events.",
-      images: [
-        "/images/mnsts/1.webp",
-        "/images/mnsts/2.webp",
-        "/images/mnsts/3.webp",
-        "/images/mnsts/4.webp",
-        "/images/mnsts/5.webp",
-        "/images/mnsts/6.webp",
-        "/images/mnsts/7.webp",
-      ],
-      technology: ["Next.js", "Tailwind", "MongoDB", "Cloudinary"],
-      weblink: "https://mnsts.vercel.app/home",
-      github: "https://github.com/Rhixin/MNSTS",
-      video:
-        "https://drive.google.com/file/d/1jUZ5zXoWPSDYqGhEWfjZdQjqx3Bz9p-w/view?usp=sharing",
-    },
-    {
-      title: "Cinema System with Reserved Seating",
-      description:
-        "Developed a cinema ticketing website with an admin panel for listing movies, using SQLite as the database. Implemented a reserved seating feature that allows users to select seats based on their preferences.",
-      images: [
-        "/images/sinehan/1.webp",
-        "/images/sinehan/2.webp",
-        "/images/sinehan/3.webp",
-        "/images/sinehan/4.webp",
-        "/images/sinehan/5.webp",
-        "/images/sinehan/6.webp",
-        "/images/sinehan/7.webp",
-        "/images/sinehan/8.webp",
-      ],
-      technology: ["HTML", "CSS", "Javascript", "Python Django", "SQLite"],
-      weblink: "",
-      github: "https://github.com/elib00/sinehan",
-      video:
-        "https://drive.google.com/file/d/1e6CuNI87NsXNQK-vW9J3zvgkvF6M5bA_/view?usp=sharing",
-    },
-    {
-      title: "Terraria Game Duplicate",
-      description:
-        "Developed a 2D game inspired by Terraria, where players mine resources and craft materials to survive. Independently designed and implemented all aspects of the game, except for the graphics. Integrated boss battles as a core mechanic, making victory achievable only by defeating the final boss.",
-      images: [
-        "/images/terraria/1.webp",
-        "/images/terraria/2.webp",
-        "/images/terraria/3.webp",
-      ],
-      technology: ["Java", "libGDX"],
-      weblink: "",
-      github: "https://github.com/Rhixin/TERRARIA",
-      video:
-        "https://drive.google.com/file/d/1tJHA7ckE2qhamNhosbw1WbB9_P3gRNBa/view?usp=sharing",
-    },
-    {
-      title: "3D Horror Maze",
-      description:
-        "I developed a 3D game out of 2D materials using a technique called Raycasting. Raycasting is a rendering technique where virtual rays are cast from the camera into the game world to determine what objects are visible in the scene. It essentially simulates how light rays travel in the real world, allowing a 2D engine to display 3D-like environments. By tracing these rays to detect intersections with objects, I was able to create the illusion of depth and perspective, transforming flat 2D assets into a dynamic 3D experience.",
-      images: [
-        "/images/maze/1.webp",
-        "/images/maze/2.webp",
-        "/images/maze/3.webp",
-        "/images/maze/4.webp",
-        "/images/maze/5.webp",
-      ],
-      technology: ["Java", "Raycasting", "JavaFx"],
-      weblink: "",
-      github: "https://github.com/Rhixin/EscapeSerato",
-      video:
-        "https://drive.google.com/file/d/12972LaKNp6Q0kfXUXT4n-uHyKxs9-N5r/view?usp=sharing",
-    },
-    {
-      title: "Disease Symptoms Analysis",
-      description:
-        "I collected and preprocessed a dataset of diseases, symptoms, and side effects, then implemented the Apriori algorithm to identify frequent symptom sets and disease associations. I analyzed relationships between diseases based on shared symptoms to uncover potential correlations, and utilized Seaborn and Matplotlib for visualizations, including heatmaps and network graphs.",
-      images: [
-        "/images/disease/1.webp",
-        "/images/disease/2.webp",
-        "/images/disease/3.webp",
-        "/images/disease/4.webp",
-      ],
-      technology: ["Python", "Matplotlib", "Pandas", "Seaborn", "Apriori"],
-      weblink: "",
-      github: "https://github.com/Rhixin/SymptomsDiseaseAnalysis",
-      video: "",
-    },
-  ];
-
   const AnimatedBackground = () => {
     return (
       <div className="fixed inset-0 opacity-20 pointer-events-none -z-10">
@@ -1212,7 +745,15 @@ export default function Home() {
     );
   };
 
-  if (!isMounted) return <PageSkeleton />;
+  if (!isMounted || !dataLoaded) return <PageSkeleton />;
+
+  if (dataError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f]">
+        <p className="text-gray-400">Couldn&apos;t load projects right now. Please refresh.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
@@ -2526,7 +2067,15 @@ export default function Home() {
                       {/* Matting layer */}
                       <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
                         {/* Certificate holder */}
-                        <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
+                        <div
+                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
+                          onClick={() =>
+                            setSelectedCertification({
+                              src: "/imagesv2/certifications/aws.webp",
+                              alt: "AWS Academy Graduate - Cloud Foundations",
+                            })
+                          }
+                        >
                           <Image
                             src="/imagesv2/certifications/aws.webp"
                             alt="AWS Academy Graduate - Cloud Foundations"
@@ -2604,7 +2153,15 @@ export default function Home() {
                       {/* Matting layer */}
                       <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
                         {/* Certificate holder */}
-                        <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
+                        <div
+                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
+                          onClick={() =>
+                            setSelectedCertification({
+                              src: "/imagesv2/certifications/c.webp",
+                              alt: "C Programming",
+                            })
+                          }
+                        >
                           <Image
                             src="/imagesv2/certifications/c.webp"
                             alt="C Programming"
@@ -2680,7 +2237,15 @@ export default function Home() {
                       {/* Matting layer */}
                       <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
                         {/* Certificate holder */}
-                        <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
+                        <div
+                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
+                          onClick={() =>
+                            setSelectedCertification({
+                              src: "/imagesv2/certifications/java.webp",
+                              alt: "Java",
+                            })
+                          }
+                        >
                           <Image
                             src="/imagesv2/certifications/java.webp"
                             alt="Java"
@@ -2763,7 +2328,15 @@ export default function Home() {
                       {/* Matting layer */}
                       <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
                         {/* Certificate holder */}
-                        <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
+                        <div
+                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
+                          onClick={() =>
+                            setSelectedCertification({
+                              src: "/imagesv2/certifications/javascript.webp",
+                              alt: "JavaScript",
+                            })
+                          }
+                        >
                           <Image
                             src="/imagesv2/certifications/javascript.webp"
                             alt="JavaScript"
@@ -2839,7 +2412,15 @@ export default function Home() {
                       {/* Matting layer */}
                       <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
                         {/* Certificate holder */}
-                        <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
+                        <div
+                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
+                          onClick={() =>
+                            setSelectedCertification({
+                              src: "/imagesv2/certifications/philnits.webp",
+                              alt: "PhilNITS Passer",
+                            })
+                          }
+                        >
                           <Image
                             src="/imagesv2/certifications/philnits.webp"
                             alt="PhilNITS Passer"
@@ -2917,7 +2498,15 @@ export default function Home() {
                       {/* Matting layer */}
                       <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
                         {/* Certificate holder */}
-                        <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
+                        <div
+                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
+                          onClick={() =>
+                            setSelectedCertification({
+                              src: "/imagesv2/certifications/react.webp",
+                              alt: "React",
+                            })
+                          }
+                        >
                           <Image
                             src="/imagesv2/certifications/react.webp"
                             alt="React"
@@ -2995,7 +2584,15 @@ export default function Home() {
                       {/* Matting layer */}
                       <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
                         {/* Certificate holder */}
-                        <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
+                        <div
+                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
+                          onClick={() =>
+                            setSelectedCertification({
+                              src: "/imagesv2/certifications/sttp.webp",
+                              alt: "Scholars Technopreneurship Training Program",
+                            })
+                          }
+                        >
                           <Image
                             src="/imagesv2/certifications/sttp.webp"
                             alt="Scholars Technopreneurship Training Program"
@@ -3071,7 +2668,15 @@ export default function Home() {
                       {/* Matting layer */}
                       <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
                         {/* Certificate holder */}
-                        <div className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden">
+                        <div
+                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
+                          onClick={() =>
+                            setSelectedCertification({
+                              src: "/imagesv2/certifications/topcit.webp",
+                              alt: "TopCIT Level III",
+                            })
+                          }
+                        >
                           <Image
                             src="/imagesv2/certifications/topcit.webp"
                             alt="TopCIT Level III"
@@ -3275,6 +2880,49 @@ export default function Home() {
             project={selectedProject}
             onClose={() => setSelectedProject(null)}
           />
+        )}
+      </AnimatePresence>
+
+      {/* Certification Full-Image Lightbox */}
+      <AnimatePresence>
+        {selectedCertification && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-6"
+            style={{ background: "rgba(0,0,0,0.9)", backdropFilter: "blur(8px)" }}
+            onClick={() => setSelectedCertification(null)}
+          >
+            <button
+              onClick={() => setSelectedCertification(null)}
+              className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-colors z-10"
+              aria-label="Close"
+            >
+              <FontAwesomeIcon icon={faXmark} className="text-white text-sm" />
+            </button>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.94 }}
+              transition={{ duration: 0.25 }}
+              className="relative w-full h-full max-w-4xl max-h-[85vh]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={selectedCertification.src}
+                alt={selectedCertification.alt}
+                fill
+                className="object-contain"
+              />
+            </motion.div>
+
+            <p className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-black/60 rounded-full text-sm text-gray-200">
+              {selectedCertification.alt}
+            </p>
+          </motion.div>
         )}
       </AnimatePresence>
 
