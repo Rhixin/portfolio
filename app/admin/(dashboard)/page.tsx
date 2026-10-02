@@ -47,6 +47,13 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
+      <Link
+        href="/admin/settings"
+        className="inline-block mb-4 px-4 py-2 rounded-lg bg-white/10 text-white text-sm font-semibold hover:bg-white/20"
+      >
+        Edit Homepage Stats
+      </Link>
+
       <div className="flex gap-3 mb-6">
         <button
           onClick={() => setTab("projects")}
