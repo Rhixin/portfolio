@@ -1,4 +1,4 @@
-import type { CertificationRecord, ExperienceRecord, ProjectRecord } from "./types";
+import type { CertificationRecord, ExperienceRecord, ProjectRecord, SiteSettings } from "./types";
 
 const ALLOWED_CATEGORIES = ["mobile", "web", "automations", "games"];
 const EXPERIENCE_TYPES = ["Full-time", "Part-time", "Internship", "Contract"];
@@ -6,6 +6,7 @@ const EXPERIENCE_TYPES = ["Full-time", "Part-time", "Internship", "Contract"];
 export type ProjectInput = Omit<ProjectRecord, "created_at">;
 export type ExperienceInput = Omit<ExperienceRecord, "created_at" | "id">;
 export type CertificationInput = Omit<CertificationRecord, "created_at" | "id">;
+export type SiteSettingsInput = Omit<SiteSettings, "id">;
 
 type Result<T> =
   | { ok: true; data: T; error?: undefined }
@@ -102,6 +103,26 @@ export function sanitizeCertificationInput(body: unknown): Result<CertificationI
       title,
       image: toNullableString(b.image),
       sort_order: typeof b.sort_order === "number" ? b.sort_order : 0,
+    },
+  };
+}
+
+export function sanitizeSiteSettingsInput(body: unknown): Result<SiteSettingsInput> {
+  if (typeof body !== "object" || body === null) {
+    return { ok: false, error: "Request body must be an object" };
+  }
+  const b = body as Record<string, unknown>;
+
+  const yearsExperience = typeof b.years_experience === "string" ? b.years_experience.trim() : "";
+  const projectsCompleted = typeof b.projects_completed === "string" ? b.projects_completed.trim() : "";
+  const clientsSatisfied = typeof b.clients_satisfied === "string" ? b.clients_satisfied.trim() : "";
+
+  return {
+    ok: true,
+    data: {
+      years_experience: yearsExperience,
+      projects_completed: projectsCompleted,
+      clients_satisfied: clientsSatisfied,
     },
   };
 }

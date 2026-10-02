@@ -42,9 +42,17 @@ create table if not exists public.certifications (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.site_settings (
+  id text primary key,
+  years_experience text not null default '',
+  projects_completed text not null default '',
+  clients_satisfied text not null default ''
+);
+
 alter table public.projects enable row level security;
 alter table public.experience enable row level security;
 alter table public.certifications enable row level security;
+alter table public.site_settings enable row level security;
 
 drop policy if exists "Public read access" on public.projects;
 create policy "Public read access" on public.projects for select using (true);
@@ -55,9 +63,16 @@ create policy "Public read access" on public.experience for select using (true);
 drop policy if exists "Public read access" on public.certifications;
 create policy "Public read access" on public.certifications for select using (true);
 
+drop policy if exists "Public read access" on public.site_settings;
+create policy "Public read access" on public.site_settings for select using (true);
+
 -- Writes (insert/update/delete) are only ever done server-side via the
 -- service_role key, which bypasses RLS entirely, so no write policies
 -- are defined here.
+
+insert into public.site_settings (id, years_experience, projects_completed, clients_satisfied)
+values ('default', '6+', '100+', '40+')
+on conflict (id) do nothing;
 
 insert into storage.buckets (id, name, public)
 values ('project-images', 'project-images', true)

@@ -32,3 +32,10 @@ export interface CertificationRecord {
   sort_order: number;
   created_at: string;
 }
+
+export interface SiteSettings {
+  id: string;
+  years_experience: string;
+  projects_completed: string;
+  clients_satisfied: string;
+}
