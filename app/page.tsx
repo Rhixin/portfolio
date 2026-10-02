@@ -17,7 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faVideo, faLink, faFilter, faXmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import type { ProjectRecord, ExperienceRecord } from "@/lib/types";
+import type { ProjectRecord, ExperienceRecord, CertificationRecord } from "@/lib/types";
 
 // Website projects data for tabs
 const websiteProjects = [
@@ -60,6 +60,7 @@ export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
   const [allProjects, setAllProjects] = useState<ProjectRecord[]>([]);
   const [experience, setExperience] = useState<ExperienceRecord[]>([]);
+  const [certifications, setCertifications] = useState<CertificationRecord[]>([]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [dataError, setDataError] = useState(false);
   const [activeProjectCategory, setActiveProjectCategory] = useState<
@@ -153,10 +154,15 @@ export default function Home() {
         if (!r.ok) throw new Error("Failed to fetch experience");
         return r.json();
       }),
+      fetch("/api/certifications").then((r) => {
+        if (!r.ok) throw new Error("Failed to fetch certifications");
+        return r.json();
+      }),
     ])
-      .then(([projectsRes, experienceRes]) => {
+      .then(([projectsRes, experienceRes, certificationsRes]) => {
         setAllProjects(projectsRes.projects ?? []);
         setExperience(experienceRes.experience ?? []);
+        setCertifications(certificationsRes.certifications ?? []);
         setDataLoaded(true);
       })
       .catch(() => {
@@ -2016,699 +2022,64 @@ export default function Home() {
 
           {/* Picture Frames Gallery */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {/* Frame 1: AWS Academy - Classic Wooden Frame */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div
-                className="relative w-full aspect-[4/3] cursor-pointer"
-                style={{
-                  perspective: "2000px",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <div
-                  className="w-full h-full relative transition-all duration-500 group-hover:rotateY(0deg) group-hover:rotateX(0deg) group-hover:scale-110"
-                  style={{
-                    transform: "rotateY(-8deg) rotateX(6deg) translateZ(0px)",
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  {/* Outer Frame - Creates 3D depth */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ transform: "translateZ(40px)" }}
-                  >
-                    {/* Frame Border with beveled edges */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 rounded-sm">
-                      {/* Top highlight bevel */}
-                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-300/60 to-transparent rounded-t-sm"></div>
-                      {/* Left highlight bevel */}
-                      <div className="absolute top-0 left-0 bottom-0 w-4 bg-gradient-to-r from-amber-300/60 to-transparent rounded-l-sm"></div>
-                      {/* Bottom shadow bevel */}
-                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/60 to-transparent rounded-b-sm"></div>
-                      {/* Right shadow bevel */}
-                      <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-black/60 to-transparent rounded-r-sm"></div>
-                      {/* Wood grain */}
-                      <div
-                        className="absolute inset-0"
-                        style={{
-                          background:
-                            "repeating-linear-gradient(90deg, rgba(0,0,0,0.15) 0px, transparent 3px, transparent 6px, rgba(0,0,0,0.15) 9px)",
-                          opacity: 0.4,
-                        }}
-                      ></div>
-                    </div>
+            {certifications.map((cert, index) => {
+              const frameStyles = [
+                {
+                  outer: "from-amber-600 via-amber-700 to-amber-900",
+                  inner: "from-amber-900 to-amber-950",
+                },
+                {
+                  outer: "from-slate-300 via-slate-400 to-slate-600",
+                  inner: "from-slate-700 to-slate-900",
+                },
+                {
+                  outer: "from-orange-600 via-orange-700 to-orange-900",
+                  inner: "from-orange-900 to-orange-950",
+                },
+                {
+                  outer: "from-gray-700 via-gray-800 to-black",
+                  inner: "from-black to-gray-900",
+                },
+              ];
+              const style = frameStyles[index % frameStyles.length];
 
-                    {/* Inner frame ridge */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-amber-900 to-amber-950 rounded-sm shadow-lg">
-                      {/* Matting layer */}
-                      <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
-                        {/* Certificate holder */}
-                        <div
-                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
-                          onClick={() =>
-                            setSelectedCertification({
-                              src: "/imagesv2/certifications/aws.webp",
-                              alt: "AWS Academy Graduate - Cloud Foundations",
-                            })
-                          }
-                        >
-                          <Image
-                            src="/imagesv2/certifications/aws.webp"
-                            alt="AWS Academy Graduate - Cloud Foundations"
-                            fill
-                            className="object-contain p-3"
-                          />
+              return (
+                <motion.div
+                  key={cert.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: (index % 4) * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <div className="relative w-full aspect-[4/3] cursor-pointer transition-transform duration-500 group-hover:scale-105">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${style.outer} rounded-sm`}>
+                      <div className={`absolute inset-4 bg-gradient-to-br ${style.inner} rounded-sm shadow-lg`}>
+                        <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
+                          <div
+                            className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
+                            onClick={() =>
+                              cert.image &&
+                              setSelectedCertification({ src: cert.image, alt: cert.title })
+                            }
+                          >
+                            {cert.image && (
+                              <Image
+                                src={cert.image}
+                                alt={cert.title}
+                                fill
+                                className="object-contain p-3"
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Multi-layer wall shadow for depth */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    {/* Primary shadow */}
-                    <div
-                      className="absolute top-3 left-5 right-0 bottom-0 bg-black/30 blur-2xl rounded-sm"
-                      style={{ transform: "translateZ(-10px) scale(0.98)" }}
-                    ></div>
-                    {/* Secondary softer shadow */}
-                    <div
-                      className="absolute top-5 left-8 right-0 bottom-0 bg-black/15 blur-3xl rounded-sm"
-                      style={{ transform: "translateZ(-20px) scale(0.95)" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-center mt-4 text-gray-300 font-medium">
-                AWS Academy Graduate
-              </p>
-            </motion.div>
-
-            {/* Frame 2: C Programming - Modern Metal Frame */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div
-                className="relative w-full aspect-[4/3] cursor-pointer"
-                style={{
-                  perspective: "2000px",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <div
-                  className="w-full h-full relative transition-all duration-500 group-hover:rotateY(0deg) group-hover:rotateX(0deg) group-hover:scale-110"
-                  style={{
-                    transform: "rotateY(7deg) rotateX(-5deg) translateZ(0px)",
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  {/* Outer Frame - Creates 3D depth */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ transform: "translateZ(40px)" }}
-                  >
-                    {/* Frame Border with beveled edges */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-gray-400 via-gray-500 to-gray-700 rounded-sm">
-                      {/* Top highlight bevel */}
-                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white/70 to-transparent rounded-t-sm"></div>
-                      {/* Left highlight bevel */}
-                      <div className="absolute top-0 left-0 bottom-0 w-4 bg-gradient-to-r from-white/70 to-transparent rounded-l-sm"></div>
-                      {/* Bottom shadow bevel */}
-                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/70 to-transparent rounded-b-sm"></div>
-                      {/* Right shadow bevel */}
-                      <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-black/70 to-transparent rounded-r-sm"></div>
-                      {/* Metal shine */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent opacity-50"></div>
-                    </div>
-
-                    {/* Inner frame ridge */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-gray-700 to-gray-900 rounded-sm shadow-lg">
-                      {/* Matting layer */}
-                      <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
-                        {/* Certificate holder */}
-                        <div
-                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
-                          onClick={() =>
-                            setSelectedCertification({
-                              src: "/imagesv2/certifications/c.webp",
-                              alt: "C Programming",
-                            })
-                          }
-                        >
-                          <Image
-                            src="/imagesv2/certifications/c.webp"
-                            alt="C Programming"
-                            fill
-                            className="object-contain p-3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Multi-layer wall shadow for depth */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div
-                      className="absolute top-3 left-0 right-5 bottom-0 bg-black/30 blur-2xl rounded-sm"
-                      style={{ transform: "translateZ(-10px) scale(0.98)" }}
-                    ></div>
-                    <div
-                      className="absolute top-5 left-0 right-8 bottom-0 bg-black/15 blur-3xl rounded-sm"
-                      style={{ transform: "translateZ(-20px) scale(0.95)" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-center mt-4 text-gray-300 font-medium">
-                C Programming
-              </p>
-            </motion.div>
-
-            {/* Frame 3: Java - Gold Ornate Frame */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div
-                className="relative w-full aspect-[4/3] cursor-pointer"
-                style={{
-                  perspective: "2000px",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <div
-                  className="w-full h-full relative transition-all duration-500 group-hover:rotateY(0deg) group-hover:rotateX(0deg) group-hover:scale-110"
-                  style={{
-                    transform: "rotateY(-6deg) rotateX(7deg) translateZ(0px)",
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  {/* Outer Frame - Creates 3D depth */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ transform: "translateZ(40px)" }}
-                  >
-                    {/* Gold Ornate Frame Border with beveled edges */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 via-yellow-600 to-yellow-800 rounded-sm border-4 border-yellow-400/60">
-                      {/* Top highlight bevel */}
-                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-yellow-200/80 to-transparent rounded-t-sm"></div>
-                      {/* Left highlight bevel */}
-                      <div className="absolute top-0 left-0 bottom-0 w-4 bg-gradient-to-r from-yellow-200/80 to-transparent rounded-l-sm"></div>
-                      {/* Bottom shadow bevel */}
-                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/60 to-transparent rounded-b-sm"></div>
-                      {/* Right shadow bevel */}
-                      <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-black/60 to-transparent rounded-r-sm"></div>
-                      {/* Gold shine */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent"></div>
-                    </div>
-
-                    {/* Inner frame ridge */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-yellow-800 to-yellow-950 rounded-sm shadow-lg">
-                      {/* Matting layer */}
-                      <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
-                        {/* Certificate holder */}
-                        <div
-                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
-                          onClick={() =>
-                            setSelectedCertification({
-                              src: "/imagesv2/certifications/java.webp",
-                              alt: "Java",
-                            })
-                          }
-                        >
-                          <Image
-                            src="/imagesv2/certifications/java.webp"
-                            alt="Java"
-                            fill
-                            className="object-contain p-3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Multi-layer wall shadow for depth */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div
-                      className="absolute top-3 left-5 right-0 bottom-0 bg-black/30 blur-2xl rounded-sm"
-                      style={{ transform: "translateZ(-10px) scale(0.98)" }}
-                    ></div>
-                    <div
-                      className="absolute top-5 left-8 right-0 bottom-0 bg-black/15 blur-3xl rounded-sm"
-                      style={{ transform: "translateZ(-20px) scale(0.95)" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-center mt-4 text-gray-300 font-medium">
-                Java Certification
-              </p>
-            </motion.div>
-
-            {/* Frame 4: JavaScript - Dark Wood Frame */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div
-                className="relative w-full aspect-[4/3] cursor-pointer"
-                style={{
-                  perspective: "2000px",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <div
-                  className="w-full h-full relative transition-all duration-500 group-hover:rotateY(0deg) group-hover:rotateX(0deg) group-hover:scale-110"
-                  style={{
-                    transform: "rotateY(5deg) rotateX(-8deg) translateZ(0px)",
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  {/* Outer Frame - Creates 3D depth */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ transform: "translateZ(40px)" }}
-                  >
-                    {/* Dark Wood Frame Border with beveled edges */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-stone-700 via-stone-900 to-black rounded-sm">
-                      {/* Top highlight bevel */}
-                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-stone-500/50 to-transparent rounded-t-sm"></div>
-                      {/* Left highlight bevel */}
-                      <div className="absolute top-0 left-0 bottom-0 w-4 bg-gradient-to-r from-stone-500/50 to-transparent rounded-l-sm"></div>
-                      {/* Bottom shadow bevel */}
-                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/80 to-transparent rounded-b-sm"></div>
-                      {/* Right shadow bevel */}
-                      <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-black/80 to-transparent rounded-r-sm"></div>
-                      {/* Wood grain */}
-                      <div
-                        className="absolute inset-0"
-                        style={{
-                          background:
-                            "repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, transparent 1px, transparent 3px, rgba(255,255,255,0.05) 4px)",
-                          opacity: 0.3,
-                        }}
-                      ></div>
-                    </div>
-
-                    {/* Inner frame ridge */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-stone-950 to-black rounded-sm shadow-lg">
-                      {/* Matting layer */}
-                      <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
-                        {/* Certificate holder */}
-                        <div
-                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
-                          onClick={() =>
-                            setSelectedCertification({
-                              src: "/imagesv2/certifications/javascript.webp",
-                              alt: "JavaScript",
-                            })
-                          }
-                        >
-                          <Image
-                            src="/imagesv2/certifications/javascript.webp"
-                            alt="JavaScript"
-                            fill
-                            className="object-contain p-3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Multi-layer wall shadow for depth */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div
-                      className="absolute top-3 left-0 right-5 bottom-0 bg-black/30 blur-2xl rounded-sm"
-                      style={{ transform: "translateZ(-10px) scale(0.98)" }}
-                    ></div>
-                    <div
-                      className="absolute top-5 left-0 right-8 bottom-0 bg-black/15 blur-3xl rounded-sm"
-                      style={{ transform: "translateZ(-20px) scale(0.95)" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-center mt-4 text-gray-300 font-medium">
-                JavaScript
-              </p>
-            </motion.div>
-
-            {/* Frame 5: PhilNITS - Silver Modern Frame */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div
-                className="relative w-full aspect-[4/3] cursor-pointer"
-                style={{
-                  perspective: "2000px",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <div
-                  className="w-full h-full relative transition-all duration-500 group-hover:rotateY(0deg) group-hover:rotateX(0deg) group-hover:scale-110"
-                  style={{
-                    transform: "rotateY(-7deg) rotateX(6deg) translateZ(0px)",
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  {/* Outer Frame - Creates 3D depth */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ transform: "translateZ(40px)" }}
-                  >
-                    {/* Frame Border with beveled edges */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-slate-300 via-slate-400 to-slate-600 rounded-sm">
-                      {/* Top highlight bevel */}
-                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white/70 to-transparent rounded-t-sm"></div>
-                      {/* Left highlight bevel */}
-                      <div className="absolute top-0 left-0 bottom-0 w-4 bg-gradient-to-r from-white/70 to-transparent rounded-l-sm"></div>
-                      {/* Bottom shadow bevel */}
-                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/70 to-transparent rounded-b-sm"></div>
-                      {/* Right shadow bevel */}
-                      <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-black/70 to-transparent rounded-r-sm"></div>
-                      {/* Silver shine */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-50"></div>
-                    </div>
-
-                    {/* Inner frame ridge */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-slate-500 to-slate-700 rounded-sm shadow-lg">
-                      {/* Matting layer */}
-                      <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
-                        {/* Certificate holder */}
-                        <div
-                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
-                          onClick={() =>
-                            setSelectedCertification({
-                              src: "/imagesv2/certifications/philnits.webp",
-                              alt: "PhilNITS Passer",
-                            })
-                          }
-                        >
-                          <Image
-                            src="/imagesv2/certifications/philnits.webp"
-                            alt="PhilNITS Passer"
-                            fill
-                            className="object-contain p-3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Multi-layer wall shadow for depth */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    {/* Primary shadow */}
-                    <div
-                      className="absolute top-3 left-5 right-0 bottom-0 bg-black/30 blur-2xl rounded-sm"
-                      style={{ transform: "translateZ(-10px) scale(0.98)" }}
-                    ></div>
-                    {/* Secondary softer shadow */}
-                    <div
-                      className="absolute top-5 left-8 right-0 bottom-0 bg-black/15 blur-3xl rounded-sm"
-                      style={{ transform: "translateZ(-20px) scale(0.95)" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-center mt-4 text-gray-300 font-medium">
-                PhilNITS Passer
-              </p>
-            </motion.div>
-
-            {/* Frame 6: React - Minimalist White Frame */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div
-                className="relative w-full aspect-[4/3] cursor-pointer"
-                style={{
-                  perspective: "2000px",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <div
-                  className="w-full h-full relative transition-all duration-500 group-hover:rotateY(0deg) group-hover:rotateX(0deg) group-hover:scale-110"
-                  style={{
-                    transform: "rotateY(8deg) rotateX(-6deg) translateZ(0px)",
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  {/* Outer Frame - Creates 3D depth */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ transform: "translateZ(40px)" }}
-                  >
-                    {/* Frame Border with beveled edges */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-100 to-gray-300 rounded-sm">
-                      {/* Top highlight bevel */}
-                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white/90 to-transparent rounded-t-sm"></div>
-                      {/* Left highlight bevel */}
-                      <div className="absolute top-0 left-0 bottom-0 w-4 bg-gradient-to-r from-white/90 to-transparent rounded-l-sm"></div>
-                      {/* Bottom shadow bevel */}
-                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-gray-400/60 to-transparent rounded-b-sm"></div>
-                      {/* Right shadow bevel */}
-                      <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-gray-400/60 to-transparent rounded-r-sm"></div>
-                      {/* White shine */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-transparent opacity-50"></div>
-                    </div>
-
-                    {/* Inner frame ridge */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-gray-200 to-gray-400 rounded-sm shadow-lg">
-                      {/* Matting layer */}
-                      <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
-                        {/* Certificate holder */}
-                        <div
-                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
-                          onClick={() =>
-                            setSelectedCertification({
-                              src: "/imagesv2/certifications/react.webp",
-                              alt: "React",
-                            })
-                          }
-                        >
-                          <Image
-                            src="/imagesv2/certifications/react.webp"
-                            alt="React"
-                            fill
-                            className="object-contain p-3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Multi-layer wall shadow for depth */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    {/* Primary shadow */}
-                    <div
-                      className="absolute top-3 left-0 right-5 bottom-0 bg-black/30 blur-2xl rounded-sm"
-                      style={{ transform: "translateZ(-10px) scale(0.98)" }}
-                    ></div>
-                    {/* Secondary softer shadow */}
-                    <div
-                      className="absolute top-5 left-0 right-8 bottom-0 bg-black/15 blur-3xl rounded-sm"
-                      style={{ transform: "translateZ(-20px) scale(0.95)" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-center mt-4 text-gray-300 font-medium">
-                React Certification
-              </p>
-            </motion.div>
-
-            {/* Frame 7: STTP - Bronze Classic Frame */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div
-                className="relative w-full aspect-[4/3] cursor-pointer"
-                style={{
-                  perspective: "2000px",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <div
-                  className="w-full h-full relative transition-all duration-500 group-hover:rotateY(0deg) group-hover:rotateX(0deg) group-hover:scale-110"
-                  style={{
-                    transform: "rotateY(-5deg) rotateX(-7deg) translateZ(0px)",
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  {/* Outer Frame - Creates 3D depth */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ transform: "translateZ(40px)" }}
-                  >
-                    {/* Frame Border with beveled edges */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-600 via-orange-700 to-orange-900 rounded-sm">
-                      {/* Top highlight bevel */}
-                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-orange-400/70 to-transparent rounded-t-sm"></div>
-                      {/* Left highlight bevel */}
-                      <div className="absolute top-0 left-0 bottom-0 w-4 bg-gradient-to-r from-orange-400/70 to-transparent rounded-l-sm"></div>
-                      {/* Bottom shadow bevel */}
-                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/70 to-transparent rounded-b-sm"></div>
-                      {/* Right shadow bevel */}
-                      <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-black/70 to-transparent rounded-r-sm"></div>
-                      {/* Bronze shine */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-300/40 to-transparent opacity-50"></div>
-                    </div>
-
-                    {/* Inner frame ridge */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-orange-800 to-orange-950 rounded-sm shadow-lg">
-                      {/* Matting layer */}
-                      <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
-                        {/* Certificate holder */}
-                        <div
-                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
-                          onClick={() =>
-                            setSelectedCertification({
-                              src: "/imagesv2/certifications/sttp.webp",
-                              alt: "Scholars Technopreneurship Training Program",
-                            })
-                          }
-                        >
-                          <Image
-                            src="/imagesv2/certifications/sttp.webp"
-                            alt="Scholars Technopreneurship Training Program"
-                            fill
-                            className="object-contain p-3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Multi-layer wall shadow for depth */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    {/* Primary shadow */}
-                    <div
-                      className="absolute top-3 left-5 right-0 bottom-0 bg-black/30 blur-2xl rounded-sm"
-                      style={{ transform: "translateZ(-10px) scale(0.98)" }}
-                    ></div>
-                    {/* Secondary softer shadow */}
-                    <div
-                      className="absolute top-5 left-8 right-0 bottom-0 bg-black/15 blur-3xl rounded-sm"
-                      style={{ transform: "translateZ(-20px) scale(0.95)" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-center mt-4 text-gray-300 font-medium">STTP</p>
-            </motion.div>
-
-            {/* Frame 8: TopCIT - Black Luxury Frame */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div
-                className="relative w-full aspect-[4/3] cursor-pointer"
-                style={{
-                  perspective: "2000px",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <div
-                  className="w-full h-full relative transition-all duration-500 group-hover:rotateY(0deg) group-hover:rotateX(0deg) group-hover:scale-110"
-                  style={{
-                    transform: "rotateY(6deg) rotateX(8deg) translateZ(0px)",
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  {/* Outer Frame - Creates 3D depth */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ transform: "translateZ(40px)" }}
-                  >
-                    {/* Frame Border with beveled edges */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-black to-gray-900 rounded-sm">
-                      {/* Top highlight bevel */}
-                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-gray-600/60 to-transparent rounded-t-sm"></div>
-                      {/* Left highlight bevel */}
-                      <div className="absolute top-0 left-0 bottom-0 w-4 bg-gradient-to-r from-gray-600/60 to-transparent rounded-l-sm"></div>
-                      {/* Bottom shadow bevel */}
-                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/80 to-transparent rounded-b-sm"></div>
-                      {/* Right shadow bevel */}
-                      <div className="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-black/80 to-transparent rounded-r-sm"></div>
-                      {/* Luxury shine */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50"></div>
-                    </div>
-
-                    {/* Inner frame ridge */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-black to-gray-900 rounded-sm shadow-lg border border-gray-700">
-                      {/* Matting layer */}
-                      <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
-                        {/* Certificate holder */}
-                        <div
-                          className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
-                          onClick={() =>
-                            setSelectedCertification({
-                              src: "/imagesv2/certifications/topcit.webp",
-                              alt: "TopCIT Level III",
-                            })
-                          }
-                        >
-                          <Image
-                            src="/imagesv2/certifications/topcit.webp"
-                            alt="TopCIT Level III"
-                            fill
-                            className="object-contain p-3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Multi-layer wall shadow for depth */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    {/* Primary shadow */}
-                    <div
-                      className="absolute top-3 left-0 right-5 bottom-0 bg-black/40 blur-2xl rounded-sm"
-                      style={{ transform: "translateZ(-10px) scale(0.98)" }}
-                    ></div>
-                    {/* Secondary softer shadow */}
-                    <div
-                      className="absolute top-5 left-0 right-8 bottom-0 bg-black/20 blur-3xl rounded-sm"
-                      style={{ transform: "translateZ(-20px) scale(0.95)" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-center mt-4 text-gray-300 font-medium">
-                TopCIT Level III
-              </p>
-            </motion.div>
+                  <p className="text-center mt-4 text-gray-300 font-medium">{cert.title}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
