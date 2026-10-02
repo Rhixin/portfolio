@@ -17,7 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faVideo, faLink, faFilter, faXmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import type { ProjectRecord, ExperienceRecord, CertificationRecord } from "@/lib/types";
+import type { ProjectRecord, ExperienceRecord, CertificationRecord, SiteSettings } from "@/lib/types";
 
 // Website projects data for tabs
 const websiteProjects = [
@@ -61,6 +61,7 @@ export default function Home() {
   const [allProjects, setAllProjects] = useState<ProjectRecord[]>([]);
   const [experience, setExperience] = useState<ExperienceRecord[]>([]);
   const [certifications, setCertifications] = useState<CertificationRecord[]>([]);
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [dataError, setDataError] = useState(false);
   const [activeProjectCategory, setActiveProjectCategory] = useState<
@@ -158,11 +159,16 @@ export default function Home() {
         if (!r.ok) throw new Error("Failed to fetch certifications");
         return r.json();
       }),
+      fetch("/api/settings").then((r) => {
+        if (!r.ok) throw new Error("Failed to fetch settings");
+        return r.json();
+      }),
     ])
-      .then(([projectsRes, experienceRes, certificationsRes]) => {
+      .then(([projectsRes, experienceRes, certificationsRes, settingsRes]) => {
         setAllProjects(projectsRes.projects ?? []);
         setExperience(experienceRes.experience ?? []);
         setCertifications(certificationsRes.certifications ?? []);
+        setSettings(settingsRes.settings ?? null);
         setDataLoaded(true);
       })
       .catch(() => {
@@ -799,7 +805,7 @@ export default function Home() {
           >
             <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3">
               <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF8C5A] flex items-center justify-center">
-                <span className="text-white font-bold text-xs sm:text-sm md:text-lg">6+</span>
+                <span className="text-white font-bold text-xs sm:text-sm md:text-lg">{settings?.years_experience ?? "6+"}</span>
               </div>
               <div>
                 <p className="text-white font-bold text-xs sm:text-sm">Years</p>
@@ -830,7 +836,7 @@ export default function Home() {
           >
             <div className="text-center">
               <div className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-[#FF6B35] to-[#FF8C5A] bg-clip-text mb-0.5 sm:mb-1 text-white">
-                100+
+                {settings?.projects_completed ?? "100+"}
               </div>
               <p className="text-white font-semibold text-[10px] sm:text-xs">Projects</p>
               <p className="text-gray-400 text-[10px] sm:text-xs">Completed</p>
@@ -862,7 +868,7 @@ export default function Home() {
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FF8C5A]"></div>
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FFB088]"></div>
               </div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">40+</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">{settings?.clients_satisfied ?? "40+"}</h3>
               <p className="text-white font-semibold text-[10px] sm:text-xs">
                 Clients Satisfied
               </p>
