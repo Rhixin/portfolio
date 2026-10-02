@@ -24,3 +24,11 @@ export interface ExperienceRecord {
   sort_order: number;
   created_at: string;
 }
+
+export interface CertificationRecord {
+  id: string;
+  title: string;
+  image: string | null;
+  sort_order: number;
+  created_at: string;
+}

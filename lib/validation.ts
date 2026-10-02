@@ -1,10 +1,11 @@
-import type { ExperienceRecord, ProjectRecord } from "./types";
+import type { CertificationRecord, ExperienceRecord, ProjectRecord } from "./types";
 
 const ALLOWED_CATEGORIES = ["mobile", "web", "automations", "games"];
 const EXPERIENCE_TYPES = ["Full-time", "Part-time", "Internship", "Contract"];
 
 export type ProjectInput = Omit<ProjectRecord, "created_at">;
 export type ExperienceInput = Omit<ExperienceRecord, "created_at" | "id">;
+export type CertificationInput = Omit<CertificationRecord, "created_at" | "id">;
 
 type Result<T> =
   | { ok: true; data: T; error?: undefined }
@@ -81,6 +82,25 @@ export function sanitizeExperienceInput(body: unknown): Result<ExperienceInput> 
       year: toNullableString(b.year),
       duration: toNullableString(b.duration),
       link: toNullableString(b.link),
+      sort_order: typeof b.sort_order === "number" ? b.sort_order : 0,
+    },
+  };
+}
+
+export function sanitizeCertificationInput(body: unknown): Result<CertificationInput> {
+  if (typeof body !== "object" || body === null) {
+    return { ok: false, error: "Request body must be an object" };
+  }
+  const b = body as Record<string, unknown>;
+
+  const title = typeof b.title === "string" ? b.title.trim() : "";
+  if (!title) return { ok: false, error: "title is required" };
+
+  return {
+    ok: true,
+    data: {
+      title,
+      image: toNullableString(b.image),
       sort_order: typeof b.sort_order === "number" ? b.sort_order : 0,
     },
   };

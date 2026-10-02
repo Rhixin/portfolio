@@ -34,14 +34,26 @@ create table if not exists public.experience (
 -- rendering from hardcoded arrays instead of this column).
 alter table public.experience add column if not exists link text;
 
+create table if not exists public.certifications (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  image text,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now()
+);
+
 alter table public.projects enable row level security;
 alter table public.experience enable row level security;
+alter table public.certifications enable row level security;
 
 drop policy if exists "Public read access" on public.projects;
 create policy "Public read access" on public.projects for select using (true);
 
 drop policy if exists "Public read access" on public.experience;
 create policy "Public read access" on public.experience for select using (true);
+
+drop policy if exists "Public read access" on public.certifications;
+create policy "Public read access" on public.certifications for select using (true);
 
 -- Writes (insert/update/delete) are only ever done server-side via the
 -- service_role key, which bypasses RLS entirely, so no write policies
