@@ -1557,10 +1557,17 @@ export default function Home() {
                       <p className="text-gray-300 text-sm">
                         {exp.year}
                       </p>
-                      {/* Duration badge */}
-                      <span className="inline-block mt-1 px-2.5 py-0.5 bg-[#FF6B35]/20 border border-[#FF6B35]/40 text-[#FF8C5A] text-xs font-semibold rounded-full">
-                        {exp.duration}
-                      </span>
+                      {/* Duration + type badges */}
+                      <div className="flex items-center justify-center gap-1.5 mt-1 flex-wrap">
+                        <span className="inline-block px-2.5 py-0.5 bg-[#FF6B35]/20 border border-[#FF6B35]/40 text-[#FF8C5A] text-xs font-semibold rounded-full">
+                          {exp.duration}
+                        </span>
+                        {exp.type && (
+                          <span className="inline-block px-2.5 py-0.5 bg-cyan-400/10 border border-cyan-400/40 text-cyan-300 text-xs font-semibold rounded-full">
+                            {exp.type}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     {/* Shop - 8 tiles wide (384px) with hover effects */}
