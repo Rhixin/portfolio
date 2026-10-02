@@ -1,22 +1,25 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import type { ExperienceRecord, ProjectRecord } from "@/lib/types";
+import type { CertificationRecord, ExperienceRecord, ProjectRecord } from "@/lib/types";
 
 export default function AdminDashboardPage() {
-  const [tab, setTab] = useState<"projects" | "experience">("projects");
+  const [tab, setTab] = useState<"projects" | "experience" | "certifications">("projects");
   const [projects, setProjects] = useState<ProjectRecord[]>([]);
   const [experience, setExperience] = useState<ExperienceRecord[]>([]);
+  const [certifications, setCertifications] = useState<CertificationRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   const loadData = async () => {
     setLoading(true);
-    const [projectsRes, experienceRes] = await Promise.all([
+    const [projectsRes, experienceRes, certificationsRes] = await Promise.all([
       fetch("/api/projects").then((r) => r.json()),
       fetch("/api/experience").then((r) => r.json()),
+      fetch("/api/certifications").then((r) => r.json()),
     ]);
     setProjects(projectsRes.projects ?? []);
     setExperience(experienceRes.experience ?? []);
+    setCertifications(certificationsRes.certifications ?? []);
     setLoading(false);
   };
 
@@ -33,6 +36,12 @@ export default function AdminDashboardPage() {
   const handleDeleteExperience = async (id: string) => {
     if (!confirm("Delete this experience entry? This cannot be undone.")) return;
     await fetch(`/api/admin/experience/${id}`, { method: "DELETE" });
+    loadData();
+  };
+
+  const handleDeleteCertification = async (id: string) => {
+    if (!confirm("Delete this certification? This cannot be undone.")) return;
+    await fetch(`/api/admin/certifications/${id}`, { method: "DELETE" });
     loadData();
   };
 
@@ -54,6 +63,14 @@ export default function AdminDashboardPage() {
           }`}
         >
           Experience ({experience.length})
+        </button>
+        <button
+          onClick={() => setTab("certifications")}
+          className={`px-4 py-2 rounded-lg text-sm font-semibold ${
+            tab === "certifications" ? "bg-[#FF6B35] text-white" : "bg-white/10 text-gray-300"
+          }`}
+        >
+          Certifications ({certifications.length})
         </button>
       </div>
 
@@ -126,6 +143,41 @@ export default function AdminDashboardPage() {
                   </Link>
                   <button
                     onClick={() => handleDeleteExperience(e.id)}
+                    className="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {!loading && tab === "certifications" && (
+        <div>
+          <Link
+            href="/admin/certifications/new"
+            className="inline-block mb-4 px-4 py-2 rounded-lg bg-[#FF6B35] text-white text-sm font-semibold"
+          >
+            + Add Certification
+          </Link>
+          <div className="flex flex-col gap-2">
+            {certifications.map((c) => (
+              <div
+                key={c.id}
+                className="flex items-center justify-between px-4 py-3 rounded-lg bg-white/5 border border-white/10"
+              >
+                <p className="text-white font-medium">{c.title}</p>
+                <div className="flex gap-2">
+                  <Link
+                    href={`/admin/certifications/${c.id}/edit`}
+                    className="px-3 py-1.5 rounded-lg bg-white/10 text-white text-xs"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDeleteCertification(c.id)}
                     className="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs"
                   >
                     Delete
