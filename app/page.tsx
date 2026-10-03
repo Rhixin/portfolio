@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import PageSkeleton from "@/components/PageSkeleton";
 import ProjectModal, { type Project } from "@/components/ProjectModal";
+import ExperienceDetailPanel from "@/components/ExperienceDetailPanel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -74,6 +75,7 @@ export default function Home() {
     { src: string; alt: string } | null
   >(null);
   const [currentSection, setCurrentSection] = useState(0);
+  const [activeExperienceIndex, setActiveExperienceIndex] = useState(0);
   const [roadmapProgress, setRoadmapProgress] = useState(0);
   const [activeEducationIndex, setActiveEducationIndex] = useState(-1);
   const [activeProjectIndex, setActiveProjectIndex] = useState(-1);
@@ -139,11 +141,16 @@ export default function Home() {
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
   const educationRefs = useRef<(HTMLDivElement | null)[]>([]);
   const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const experienceRef = useRef<ExperienceRecord[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
     setIsVisible(true);
   }, []);
+
+  useEffect(() => {
+    experienceRef.current = experience;
+  }, [experience]);
 
   useEffect(() => {
     Promise.all([
@@ -1402,7 +1409,7 @@ export default function Home() {
 
           {/* Game Container */}
           <motion.div
-            className="absolute inset-0 flex items-center justify-center overflow-hidden"
+            className="absolute inset-y-0 left-0 w-full lg:w-1/2 flex items-center justify-center overflow-hidden"
             initial={{ opacity: 0, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
@@ -1752,6 +1759,10 @@ export default function Home() {
               </div>
             </div>
           </motion.div>
+
+          {experience.length > 0 && (
+            <ExperienceDetailPanel experience={experience[activeExperienceIndex]} />
+          )}
         </div>
       </section>
 
