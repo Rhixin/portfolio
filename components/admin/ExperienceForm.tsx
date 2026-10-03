@@ -15,6 +15,11 @@ export default function ExperienceForm({ initial }: { initial?: ExperienceRecord
   const [type, setType] = useState<string>(initial?.type ?? "");
   const [year, setYear] = useState(initial?.year ?? "");
   const [duration, setDuration] = useState(initial?.duration ?? "");
+  const [description, setDescription] = useState(initial?.description ?? "");
+  const [referenceName, setReferenceName] = useState(initial?.reference_name ?? "");
+  const [referenceTitle, setReferenceTitle] = useState(initial?.reference_title ?? "");
+  const [referenceContact, setReferenceContact] = useState(initial?.reference_contact ?? "");
+  const [referenceLink, setReferenceLink] = useState(initial?.reference_link ?? "");
   const [link, setLink] = useState(initial?.link ?? "");
   const [logo, setLogo] = useState<string[]>(initial?.logo ? [initial.logo] : []);
   const [sortOrder, setSortOrder] = useState(initial?.sort_order ?? 0);
@@ -37,6 +42,11 @@ export default function ExperienceForm({ initial }: { initial?: ExperienceRecord
       type: type || null,
       year,
       duration,
+      description,
+      reference_name: referenceName,
+      reference_title: referenceTitle,
+      reference_contact: referenceContact,
+      reference_link: referenceLink,
       link,
       logo: logo[0] ?? null,
       sort_order: Number(sortOrder) || 0,
@@ -123,6 +133,48 @@ export default function ExperienceForm({ initial }: { initial?: ExperienceRecord
           placeholder="e.g. 6 months"
           className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
         />
+      </div>
+
+      <div>
+        <label className="block text-gray-300 text-sm mb-1">
+          Description (what you did here)
+        </label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={4}
+          className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
+        />
+      </div>
+
+      <div className="border-t border-white/10 pt-4">
+        <p className="text-gray-300 text-sm font-semibold mb-3">Reference (optional)</p>
+        <div className="flex flex-col gap-3">
+          <input
+            value={referenceName}
+            onChange={(e) => setReferenceName(e.target.value)}
+            placeholder="Name"
+            className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm"
+          />
+          <input
+            value={referenceTitle}
+            onChange={(e) => setReferenceTitle(e.target.value)}
+            placeholder="Title / Role"
+            className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm"
+          />
+          <input
+            value={referenceContact}
+            onChange={(e) => setReferenceContact(e.target.value)}
+            placeholder="Contact (email or phone)"
+            className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm"
+          />
+          <input
+            value={referenceLink}
+            onChange={(e) => setReferenceLink(e.target.value)}
+            placeholder="LinkedIn or other link"
+            className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm"
+          />
+        </div>
       </div>
 
       <div>
