@@ -142,6 +142,7 @@ export default function Home() {
   const educationRefs = useRef<(HTMLDivElement | null)[]>([]);
   const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
   const experienceRef = useRef<ExperienceRecord[]>([]);
+  const activeExperienceIndexRef = useRef(0);
 
   useEffect(() => {
     setIsMounted(true);
@@ -1257,6 +1258,53 @@ export default function Home() {
                   "url(/imagesv2/games/knightidle.webp)";
                 spriteElement.style.backgroundSize = "400% 100%";
               }, 150);
+            }
+
+            // Update experience detail panel (slide in / pause / slide out)
+            const panelElement = document.getElementById(
+              "experience-detail-panel"
+            );
+            const currentExperience = experienceRef.current;
+            if (panelElement && currentExperience.length > 0) {
+              const segmentSize = 1 / currentExperience.length;
+              const rawIndex = Math.floor(scrollProgress / segmentSize);
+              const newActiveIndex = Math.min(
+                rawIndex,
+                currentExperience.length - 1
+              );
+              const localProgress = Math.min(
+                1,
+                Math.max(
+                  0,
+                  (scrollProgress - newActiveIndex * segmentSize) / segmentSize
+                )
+              );
+
+              let translateXPercent = 100;
+              let opacity = 0;
+              if (localProgress <= 0.2) {
+                const phase = localProgress / 0.2;
+                translateXPercent = 100 - phase * 100;
+                opacity = phase;
+              } else if (localProgress <= 0.8) {
+                translateXPercent = 0;
+                opacity = 1;
+              } else {
+                const phase = (localProgress - 0.8) / 0.2;
+                translateXPercent = phase * 100;
+                opacity = 1 - phase;
+              }
+
+              panelElement.style.transform = `translate(${translateXPercent}%, -50%)`;
+              panelElement.style.opacity = String(opacity);
+
+              if (
+                opacity === 0 &&
+                newActiveIndex !== activeExperienceIndexRef.current
+              ) {
+                activeExperienceIndexRef.current = newActiveIndex;
+                setActiveExperienceIndex(newActiveIndex);
+              }
             }
           };
 
