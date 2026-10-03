@@ -1298,10 +1298,7 @@ export default function Home() {
               panelElement.style.transform = `translate(${translateXPercent}%, -50%)`;
               panelElement.style.opacity = String(opacity);
 
-              if (
-                opacity === 0 &&
-                newActiveIndex !== activeExperienceIndexRef.current
-              ) {
+              if (newActiveIndex !== activeExperienceIndexRef.current) {
                 activeExperienceIndexRef.current = newActiveIndex;
                 setActiveExperienceIndex(newActiveIndex);
               }
