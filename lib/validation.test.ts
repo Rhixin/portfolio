@@ -77,6 +77,11 @@ describe("sanitizeExperienceInput", () => {
       year: null,
       duration: null,
       link: null,
+      description: null,
+      reference_name: null,
+      reference_title: null,
+      reference_contact: null,
+      reference_link: null,
       sort_order: 0,
     });
   });

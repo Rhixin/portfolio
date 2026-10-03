@@ -21,6 +21,11 @@ export interface ExperienceRecord {
   year: string | null;
   duration: string | null;
   link: string | null;
+  description: string | null;
+  reference_name: string | null;
+  reference_title: string | null;
+  reference_contact: string | null;
+  reference_link: string | null;
   sort_order: number;
   created_at: string;
 }

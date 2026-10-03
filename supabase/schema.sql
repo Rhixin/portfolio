@@ -26,6 +26,11 @@ create table if not exists public.experience (
   year text,
   duration text,
   link text,
+  description text,
+  reference_name text,
+  reference_title text,
+  reference_contact text,
+  reference_link text,
   sort_order int not null default 0,
   created_at timestamptz not null default now()
 );
@@ -33,6 +38,13 @@ create table if not exists public.experience (
 -- Added after initial creation (final-review fix: experience section was
 -- rendering from hardcoded arrays instead of this column).
 alter table public.experience add column if not exists link text;
+
+-- Added for the scroll-synced experience detail panel feature.
+alter table public.experience add column if not exists description text;
+alter table public.experience add column if not exists reference_name text;
+alter table public.experience add column if not exists reference_title text;
+alter table public.experience add column if not exists reference_contact text;
+alter table public.experience add column if not exists reference_link text;
 
 create table if not exists public.certifications (
   id uuid primary key default gen_random_uuid(),

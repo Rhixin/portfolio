@@ -83,6 +83,11 @@ export function sanitizeExperienceInput(body: unknown): Result<ExperienceInput> 
       year: toNullableString(b.year),
       duration: toNullableString(b.duration),
       link: toNullableString(b.link),
+      description: toNullableString(b.description),
+      reference_name: toNullableString(b.reference_name),
+      reference_title: toNullableString(b.reference_title),
+      reference_contact: toNullableString(b.reference_contact),
+      reference_link: toNullableString(b.reference_link),
       sort_order: typeof b.sort_order === "number" ? b.sort_order : 0,
     },
   };
