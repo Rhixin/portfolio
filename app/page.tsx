@@ -8,6 +8,7 @@ import ExperienceDetailPanel from "@/components/ExperienceDetailPanel";
 import ChatMascot from "@/components/ChatMascot";
 import SpriteAnimator from "@/components/SpriteAnimator";
 import { CLOSEUP_FRAMES } from "@/lib/spriteSheet";
+import { pixelBody, pixelTitle } from "@/lib/fonts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -2013,7 +2014,7 @@ export default function Home() {
 
       {/* GitHub Activity Section */}
       <section className="py-12 sm:py-20 px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -2021,12 +2022,12 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4">
-              <span className="bg-gradient-to-r from-[#FF6B35] via-[#FF8C5A] to-[#FFB088] bg-clip-text text-transparent">
-                GitHub Activity
-              </span>
+            <h2
+              className={`${pixelTitle.className} text-2xl sm:text-3xl md:text-4xl mb-6 text-[#FF6B35] leading-relaxed`}
+            >
+              GitHub Activity
             </h2>
-            <p className="text-xl text-gray-400">
+            <p className={`${pixelBody.className} text-2xl sm:text-3xl text-gray-400`}>
               Recent contributions and coding activity on GitHub.
             </p>
           </motion.div>
@@ -2036,25 +2037,22 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white/10 flex flex-col gap-8"
+            className="bg-[#0a0a0f] border-4 border-[#FF6B35] shadow-[6px_6px_0_0_rgba(255,107,53,0.35)] p-6 sm:p-8 flex flex-col gap-8"
           >
             <div className="overflow-x-auto">
               <img
                 src="https://ghchart.rshah.org/FF6B35/ZhaztedValles"
                 alt="GitHub contribution graph for ZhaztedValles"
                 className="min-w-[640px] w-full"
+                style={{ imageRendering: "pixelated" }}
               />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            <div className="flex justify-center">
               <img
-                src="https://github-readme-stats.vercel.app/api?username=ZhaztedValles&show_icons=true&theme=transparent&hide_border=true"
+                src="https://github-readme-stats.vercel.app/api?username=ZhaztedValles&show_icons=true&hide_border=true&theme=transparent&title_color=FF6B35&icon_color=FF8C5A&text_color=F5E6D3"
                 alt="GitHub stats for ZhaztedValles"
-                className="w-full"
-              />
-              <img
-                src="https://github-readme-stats.vercel.app/api/top-langs/?username=ZhaztedValles&layout=compact&theme=transparent&hide_border=true"
-                alt="Top languages on GitHub for ZhaztedValles"
-                className="w-full"
+                className="w-full max-w-xl"
+                style={{ imageRendering: "pixelated" }}
               />
             </div>
             <div className="text-center">
@@ -2062,9 +2060,8 @@ export default function Home() {
                 href="https://github.com/ZhaztedValles"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B35]/20 hover:bg-[#FF6B35]/30 border border-[#FF6B35]/50 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105"
+                className={`${pixelTitle.className} inline-block text-[10px] sm:text-xs px-5 py-3 bg-[#FF6B35] text-[#0a0a0f] border-4 border-[#0a0a0f] shadow-[4px_4px_0_0_#0a0a0f] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#0a0a0f] transition-all duration-150`}
               >
-                <FontAwesomeIcon icon={faGithub} />
                 View GitHub Profile
               </a>
             </div>
