@@ -1149,8 +1149,10 @@ export default function Home() {
               "experience-background"
             );
             if (backgroundElement) {
-              // Move from right to left as user scrolls
-              const translateX = -scrollProgress * 75.5; // Move so last stop (88%) lands at center
+              // Each experience scrolls one screen-width past the knight, so the
+              // total travel is one screen-width per experience (background is 400% wide)
+              const translateX =
+                -scrollProgress * 25 * experienceRef.current.length;
               backgroundElement.style.transform = `translateX(${translateX}%)`;
             }
 
@@ -1454,7 +1456,7 @@ export default function Home() {
 
           {/* Game Container */}
           <motion.div
-            className="absolute inset-y-0 left-0 w-full lg:w-1/2 flex items-center justify-center overflow-hidden"
+            className="absolute inset-0 flex items-center justify-center overflow-hidden"
             initial={{ opacity: 0, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
@@ -1574,10 +1576,7 @@ export default function Home() {
 
               {/* Experience Shops - Positioned across the scrolling background */}
               {experience.map((exp, index) => {
-                const position =
-                  15 +
-                  (index * (88 - 15)) /
-                    Math.max(experience.length - 1, 1);
+                const position = (index + 0.75) * 25;
                 return (
                   <div
                     key={index}
@@ -1762,7 +1761,7 @@ export default function Home() {
             {/* Avatar - Center, Running in Place */}
             <div
               id="experience-avatar"
-              className="absolute left-1/2 bottom-30 -translate-x-1/2 z-10 idle"
+              className="absolute left-1/4 bottom-30 -translate-x-1/2 z-10 idle"
             >
               <div className="relative">
                 {/* Level up notification - Above character */}
