@@ -2361,10 +2361,6 @@ export default function Home() {
             )}
           </div>
           )}
-          {/* Pulse animation when closed */}
-          {!isChatOpen && (
-            <span className="absolute inset-0 rounded-full bg-[#FF6B35] opacity-75 animate-ping"></span>
-          )}
         </motion.button>
       </div>
 

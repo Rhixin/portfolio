@@ -11,7 +11,7 @@ export default function ChatMascot() {
         frameMs={260}
         boxWidth={160}
         boxHeight={224}
-        className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]"
+        className="translate-x-3 drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]"
       />
       <div
         className={`${pixelTitle.className} absolute -top-12 right-0 whitespace-nowrap bg-white text-[#3b2412] text-[9px] px-2 py-1.5 border-2 border-[#3b2412] shadow-md`}
