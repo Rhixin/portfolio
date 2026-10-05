@@ -1309,7 +1309,7 @@ export default function Home() {
           return () => window.removeEventListener("scroll", handleScroll);
         }}
         className="relative"
-        style={{ height: "700vh" }}
+        style={{ height: `${Math.max(700, experience.length * 150)}vh` }}
       >
         {/* Sticky container */}
         <div className="sticky top-0 h-screen w-full overflow-hidden">

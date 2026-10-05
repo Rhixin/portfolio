@@ -1,5 +1,6 @@
 "use client";
 import type { ExperienceRecord } from "@/lib/types";
+import { pixelBody, pixelTitle } from "@/lib/fonts";
 
 export default function ExperienceDetailPanel({
   experience,
@@ -16,54 +17,65 @@ export default function ExperienceDetailPanel({
   return (
     <div
       id="experience-detail-panel"
-      className="absolute top-1/2 right-8 lg:right-16 w-[85%] max-w-sm bg-[#0d0d14]/95 border border-[#FF6B35]/30 rounded-2xl p-6 backdrop-blur-sm shadow-2xl hidden lg:block"
+      className="absolute top-1/2 right-[3%] hidden lg:block"
       style={{
+        width: "min(860px, 85vw, 90vh)",
+        aspectRatio: "1 / 1",
+        backgroundImage: "url(/imagesv2/others/scroll-panel.png)",
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+        imageRendering: "pixelated",
         transform: "translate(100%, -50%)",
         opacity: 0,
       }}
     >
-      <h4 className="text-[#FF8C5A] text-sm font-bold uppercase tracking-wider mb-2">
-        {experience.name}
-      </h4>
-      {experience.description ? (
-        <p className="text-gray-300 text-sm leading-relaxed mb-4">
-          {experience.description}
-        </p>
-      ) : (
-        <p className="text-gray-500 text-sm italic mb-4">
-          {experience.additional} · {experience.year}
-        </p>
-      )}
-      {hasReference && (
-        <div className="border-t border-white/10 pt-3 mt-3">
-          <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
-            Reference
+      <div
+        className="absolute text-[#3b2412]"
+        style={{ top: "28%", bottom: "27%", left: "29%", right: "27%" }}
+      >
+        <h4
+          className={`${pixelTitle.className} text-[#5a2d0c] text-[11px] sm:text-xs leading-relaxed mb-3`}
+        >
+          {experience.name}
+        </h4>
+        {experience.description ? (
+          <p
+            className={`${pixelBody.className} text-xl sm:text-2xl leading-tight mb-3`}
+          >
+            {experience.description}
           </p>
-          {experience.reference_name && (
-            <p className="text-white text-sm font-semibold">
-              {experience.reference_name}
-            </p>
-          )}
-          {experience.reference_title && (
-            <p className="text-gray-400 text-xs">{experience.reference_title}</p>
-          )}
-          {experience.reference_contact && (
-            <p className="text-gray-400 text-xs mt-1">
-              {experience.reference_contact}
-            </p>
-          )}
-          {experience.reference_link && (
-            <a
-              href={experience.reference_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-cyan-400 text-xs hover:underline mt-1 inline-block"
-            >
-              View Profile
-            </a>
-          )}
-        </div>
-      )}
+        ) : (
+          <p
+            className={`${pixelBody.className} text-xl sm:text-2xl leading-tight mb-3 opacity-80`}
+          >
+            {experience.additional} · {experience.year}
+          </p>
+        )}
+        {hasReference && (
+          <div className={`${pixelBody.className} border-t border-[#3b2412]/40 pt-2`}>
+            <p className="text-base uppercase opacity-70">Reference</p>
+            {experience.reference_name && (
+              <p className="text-lg font-bold">{experience.reference_name}</p>
+            )}
+            {experience.reference_title && (
+              <p className="text-base">{experience.reference_title}</p>
+            )}
+            {experience.reference_contact && (
+              <p className="text-base">{experience.reference_contact}</p>
+            )}
+            {experience.reference_link && (
+              <a
+                href={experience.reference_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base underline text-[#7a3b00]"
+              >
+                View Profile
+              </a>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
