@@ -1,22 +1,23 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  SHEET_HEIGHT,
+  SHEET_URL,
+  SHEET_WIDTH,
+  type SpriteRect,
+} from "@/lib/spriteSheet";
 
-const SHEET_URL = "/imagesv2/others/z-character.png";
-const COLS = 5;
-const ROWS = 6;
-
-// Frames are row-major indexes into the 5 x 6 spritesheet.
 export default function SpriteAnimator({
   frames,
   frameMs,
-  cellWidth,
-  cellHeight,
+  boxWidth,
+  boxHeight,
   className,
 }: {
-  frames: number[];
+  frames: SpriteRect[];
   frameMs: number;
-  cellWidth: number;
-  cellHeight: number;
+  boxWidth: number;
+  boxHeight: number;
   className?: string;
 }) {
   const [step, setStep] = useState(0);
@@ -30,22 +31,34 @@ export default function SpriteAnimator({
     return () => clearInterval(id);
   }, [frames.length, frameMs]);
 
-  const frame = frames[step];
-  const col = frame % COLS;
-  const row = Math.floor(frame / COLS);
+  // One shared scale for the whole set so the character keeps the same size between frames
+  const scale = useMemo(() => {
+    const maxW = Math.max(...frames.map((f) => f.w));
+    const maxH = Math.max(...frames.map((f) => f.h));
+    return Math.min(boxWidth / maxW, boxHeight / maxH);
+  }, [frames, boxWidth, boxHeight]);
+
+  const f = frames[step];
+  const drawW = f.w * scale;
+  const drawH = f.h * scale;
 
   return (
     <div
-      className={className}
-      style={{
-        width: cellWidth,
-        height: cellHeight,
-        backgroundImage: `url(${SHEET_URL})`,
-        backgroundSize: `${COLS * 100}% ${ROWS * 100}%`,
-        backgroundPosition: `${(col / (COLS - 1)) * 100}% ${(row / (ROWS - 1)) * 100}%`,
-        backgroundRepeat: "no-repeat",
-        imageRendering: "pixelated",
-      }}
-    />
+      className={`flex items-end justify-center overflow-hidden ${className ?? ""}`}
+      style={{ width: boxWidth, height: boxHeight }}
+    >
+      {/* The inner box is exactly the sprite's own pixels, so neighbouring sprites never show */}
+      <div
+        style={{
+          width: drawW,
+          height: drawH,
+          backgroundImage: `url(${SHEET_URL})`,
+          backgroundSize: `${SHEET_WIDTH * scale}px ${SHEET_HEIGHT * scale}px`,
+          backgroundPosition: `${-f.x * scale}px ${-f.y * scale}px`,
+          backgroundRepeat: "no-repeat",
+          imageRendering: "pixelated",
+        }}
+      />
+    </div>
   );
 }

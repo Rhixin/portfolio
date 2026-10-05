@@ -7,6 +7,7 @@ import ProjectModal, { type Project } from "@/components/ProjectModal";
 import ExperienceDetailPanel from "@/components/ExperienceDetailPanel";
 import ChatMascot from "@/components/ChatMascot";
 import SpriteAnimator from "@/components/SpriteAnimator";
+import { CLOSEUP_FRAMES } from "@/lib/spriteSheet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -1327,59 +1328,14 @@ export default function Home() {
           >
             {/* Profile Picture and EXP Bar */}
             <div className="flex items-center gap-4 mb-3">
-              {/* Profile Picture - Game Style */}
-              <div className="relative w-20 h-20 flex-shrink-0">
-                {/* Main frame */}
-                <div className="relative w-full h-full rounded-full border-4 border-[#FF6B35] bg-gradient-to-br from-[#1a1a2e] to-[#0f1419] p-0.5">
-                  {/* Inner border */}
-                  <div className="w-full h-full rounded-full border-2 border-[#FF8C5A]/50 overflow-hidden relative">
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                      <SpriteAnimator
-                        frames={[25, 26, 27, 28]}
-                        frameMs={260}
-                        cellWidth={120}
-                        cellHeight={159}
-                      />
-                    </div>
-                    {/* Scan line effect */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-transparent animate-scan pointer-events-none"></div>
-                  </div>
-                </div>
-
-                {/* Rotating hexagon effect */}
-                <div className="absolute inset-0 animate-spin-slow opacity-30 pointer-events-none">
-                  <svg viewBox="0 0 100 100" className="w-full h-full">
-                    <polygon
-                      points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5"
-                      fill="none"
-                      stroke="url(#grad)"
-                      strokeWidth="2"
-                      className="drop-shadow-[0_0_8px_rgba(255,107,53,0.8)]"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="grad"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="100%"
-                      >
-                        <stop
-                          offset="0%"
-                          style={{ stopColor: "#FF6B35", stopOpacity: 1 }}
-                        />
-                        <stop
-                          offset="50%"
-                          style={{ stopColor: "#FF8C5A", stopOpacity: 1 }}
-                        />
-                        <stop
-                          offset="100%"
-                          style={{ stopColor: "#FFB088", stopOpacity: 1 }}
-                        />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </div>
+                            {/* Profile sprite */}
+              <div className="flex-shrink-0">
+                <SpriteAnimator
+                  frames={CLOSEUP_FRAMES}
+                  frameMs={260}
+                  boxWidth={104}
+                  boxHeight={104}
+                />
               </div>
 
               {/* Level and Progress Label */}
