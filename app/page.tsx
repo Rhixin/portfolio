@@ -5,6 +5,8 @@ import Image from "next/image";
 import PageSkeleton from "@/components/PageSkeleton";
 import ProjectModal, { type Project } from "@/components/ProjectModal";
 import ExperienceDetailPanel from "@/components/ExperienceDetailPanel";
+import ChatMascot from "@/components/ChatMascot";
+import SpriteAnimator from "@/components/SpriteAnimator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -1331,14 +1333,14 @@ export default function Home() {
                 <div className="relative w-full h-full rounded-full border-4 border-[#FF6B35] bg-gradient-to-br from-[#1a1a2e] to-[#0f1419] p-0.5">
                   {/* Inner border */}
                   <div className="w-full h-full rounded-full border-2 border-[#FF8C5A]/50 overflow-hidden relative">
-                    <Image
-                      src="/imagesv2/others/profile.webp"
-                      alt="Profile"
-                      width={72}
-                      height={72}
-                      className="rounded-full w-full h-full object-cover"
-                      style={{ imageRendering: "auto" }}
-                    />
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                      <SpriteAnimator
+                        frames={[25, 26, 27, 28]}
+                        frameMs={260}
+                        cellWidth={120}
+                        cellHeight={159}
+                      />
+                    </div>
                     {/* Scan line effect */}
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-transparent animate-scan pointer-events-none"></div>
                   </div>
@@ -2364,19 +2366,29 @@ export default function Home() {
       <div className="fixed bottom-12 right-8 md:right-16 lg:right-24 z-50">
         <motion.button
           onClick={() => setIsChatOpen(!isChatOpen)}
-          className="w-14 h-14 rounded-full transition-all duration-300 hover:scale-110 group"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(255, 107, 53, 0.9) 0%, rgba(255, 107, 53, 0.7) 100%)",
-            backdropFilter: "blur(20px) saturate(180%)",
-            WebkitBackdropFilter: "blur(20px) saturate(180%)",
-            boxShadow:
-              "0 4px 12px 0 rgba(255, 107, 53, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.3)",
-            border: "2px solid rgba(255, 255, 255, 0.3)",
-          }}
+          className={
+            isChatOpen
+              ? "w-14 h-14 rounded-full transition-all duration-300 hover:scale-110 group"
+              : "transition-all duration-300 hover:scale-105 group"
+          }
+          style={
+            isChatOpen
+              ? {
+                  background:
+                    "linear-gradient(135deg, rgba(255, 107, 53, 0.9) 0%, rgba(255, 107, 53, 0.7) 100%)",
+                  backdropFilter: "blur(20px) saturate(180%)",
+                  WebkitBackdropFilter: "blur(20px) saturate(180%)",
+                  boxShadow:
+                    "0 4px 12px 0 rgba(255, 107, 53, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.3)",
+                  border: "2px solid rgba(255, 255, 255, 0.3)",
+                }
+              : undefined
+          }
         >
+          {!isChatOpen && <ChatMascot />}
+          {isChatOpen && (
           <div className="flex items-center justify-center">
-            {isChatOpen ? (
+            {(
               <svg
                 className="w-6 h-6 text-white transition-transform duration-300"
                 fill="none"
@@ -2390,22 +2402,9 @@ export default function Home() {
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-            ) : (
-              <svg
-                className="w-6 h-6 text-white transition-transform duration-300 group-hover:scale-110"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
             )}
           </div>
+          )}
           {/* Pulse animation when closed */}
           {!isChatOpen && (
             <span className="absolute inset-0 rounded-full bg-[#FF6B35] opacity-75 animate-ping"></span>
