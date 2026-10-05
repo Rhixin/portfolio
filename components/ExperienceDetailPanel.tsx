@@ -17,7 +17,7 @@ export default function ExperienceDetailPanel({
   return (
     <div
       id="experience-detail-panel"
-      className="absolute top-1/2 right-[3%] w-[94vw] aspect-[1/1.1] lg:w-[min(860px,85vw,90vh)] lg:aspect-square"
+      className="absolute top-1/2 right-[8%] w-[94vw] aspect-[1/1.1] lg:w-[min(860px,85vw,90vh)] lg:aspect-square"
       style={{
         backgroundImage: "url(/imagesv2/others/scroll-panel.png)",
         backgroundSize: "100% 100%",
