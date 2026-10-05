@@ -8,7 +8,6 @@ import ExperienceDetailPanel from "@/components/ExperienceDetailPanel";
 import ChatMascot from "@/components/ChatMascot";
 import SpriteAnimator from "@/components/SpriteAnimator";
 import { CLOSEUP_FRAMES } from "@/lib/spriteSheet";
-import { pixelBody, pixelTitle } from "@/lib/fonts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -2009,63 +2008,6 @@ export default function Home() {
                 ))}
             </motion.div>
           </AnimatePresence>
-        </div>
-      </section>
-
-      {/* GitHub Activity Section */}
-      <section className="py-12 sm:py-20 px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2
-              className={`${pixelTitle.className} text-2xl sm:text-3xl md:text-4xl mb-6 text-[#FF6B35] leading-relaxed`}
-            >
-              GitHub Activity
-            </h2>
-            <p className={`${pixelBody.className} text-2xl sm:text-3xl text-gray-400`}>
-              Recent contributions and coding activity on GitHub.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-[#0a0a0f] border-4 border-[#FF6B35] shadow-[6px_6px_0_0_rgba(255,107,53,0.35)] p-6 sm:p-8 flex flex-col gap-8"
-          >
-            <div className="overflow-x-auto">
-              <img
-                src="https://ghchart.rshah.org/FF6B35/ZhaztedValles"
-                alt="GitHub contribution graph for ZhaztedValles"
-                className="min-w-[640px] w-full"
-                style={{ imageRendering: "pixelated" }}
-              />
-            </div>
-            <div className="flex justify-center">
-              <img
-                src="https://github-readme-stats.vercel.app/api?username=ZhaztedValles&show_icons=true&hide_border=true&theme=transparent&title_color=FF6B35&icon_color=FF8C5A&text_color=F5E6D3"
-                alt="GitHub stats for ZhaztedValles"
-                className="w-full max-w-xl"
-                style={{ imageRendering: "pixelated" }}
-              />
-            </div>
-            <div className="text-center">
-              <a
-                href="https://github.com/ZhaztedValles"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${pixelTitle.className} inline-block text-[10px] sm:text-xs px-5 py-3 bg-[#FF6B35] text-[#0a0a0f] border-4 border-[#0a0a0f] shadow-[4px_4px_0_0_#0a0a0f] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#0a0a0f] transition-all duration-150`}
-              >
-                View GitHub Profile
-              </a>
-            </div>
-          </motion.div>
         </div>
       </section>
 
