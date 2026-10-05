@@ -32,8 +32,8 @@ export default function ExperienceDetailPanel({
       <div
         className="absolute text-[#3b2412]"
         style={{
-          top: "30%",
-          bottom: "29%",
+          top: "27%",
+          bottom: "32%",
           left: "34%",
           right: "28%",
           padding: "2%",
