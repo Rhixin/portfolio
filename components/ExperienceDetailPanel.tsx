@@ -31,7 +31,13 @@ export default function ExperienceDetailPanel({
     >
       <div
         className="absolute text-[#3b2412]"
-        style={{ top: "28%", bottom: "27%", left: "29%", right: "27%" }}
+        style={{
+          top: "30%",
+          bottom: "29%",
+          left: "34%",
+          right: "28%",
+          padding: "2%",
+        }}
       >
         <h4
           className={`${pixelTitle.className} text-[#5a2d0c] text-[11px] sm:text-xs leading-relaxed mb-3`}
