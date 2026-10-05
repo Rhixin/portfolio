@@ -743,9 +743,9 @@ export default function Home() {
     },
     {
       label: "GitHub",
-      value: "Rhixin",
+      value: "ZhaztedValles",
       icon: faGithub,
-      link: "https://github.com/Rhixin",
+      link: "https://github.com/ZhaztedValles",
     },
     {
       label: "LinkedIn",
@@ -2214,7 +2214,7 @@ export default function Home() {
             </h3>
             <div className="flex justify-center gap-6">
               <a
-                href="https://github.com/Rhixin"
+                href="https://github.com/ZhaztedValles"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#FF6B35]/20 hover:border-[#FF6B35]/50 transition-all duration-300 hover:scale-110"
