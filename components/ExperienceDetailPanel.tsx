@@ -1,12 +1,23 @@
 "use client";
+import { useCallback, useState } from "react";
 import type { ExperienceRecord } from "@/lib/types";
 import { pixelBody, pixelTitle } from "@/lib/fonts";
+import ScrollUnroll from "@/components/ScrollUnroll";
+import { SCROLL_UNROLL_FRAMES } from "@/lib/spriteSheet";
 
 export default function ExperienceDetailPanel({
   experience,
 }: {
   experience: ExperienceRecord;
 }) {
+  // Text shows once the scroll has finished unrolling for this experience
+  const [unrolledId, setUnrolledId] = useState<string | null>(null);
+  const handleUnrolled = useCallback(
+    () => setUnrolledId(experience.id),
+    [experience.id]
+  );
+  const isOpen = unrolledId === experience.id;
+
   const hasReference = Boolean(
     experience.reference_name ||
       experience.reference_title ||
@@ -17,17 +28,23 @@ export default function ExperienceDetailPanel({
   return (
     <div
       id="experience-detail-panel"
-      className="absolute top-1/2 right-[8%] w-[94vw] aspect-[1/1.1] lg:w-[min(860px,85vw,90vh)] lg:aspect-square"
-      style={{
-        backgroundImage: "url(/imagesv2/others/scroll-panel.png)",
-        backgroundSize: "100% 100%",
-        backgroundRepeat: "no-repeat",
-        imageRendering: "pixelated",
-        transform: "translate(100%, -50%)",
-        opacity: 0,
-      }}
+      className="absolute top-1/2 right-[8%] -translate-y-1/2 w-[94vw] lg:w-[min(560px,85vw,calc(90vh*0.863))]"
+      style={{ opacity: 0 }}
     >
-      <div className="absolute top-[27%] bottom-[32%] left-[31%] right-[27%] lg:left-[34%] lg:right-[28%] p-[2%] text-[#3b2412]">
+      {/* Remounts for each experience so the unroll plays again */}
+      <ScrollUnroll
+        key={experience.id}
+        frames={SCROLL_UNROLL_FRAMES}
+        frameMs={80}
+        onComplete={handleUnrolled}
+        className="w-full"
+      />
+
+      <div
+        className={`absolute top-[25%] bottom-[24%] left-[24%] right-[24%] overflow-y-auto text-[#3b2412] transition-opacity duration-300 ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
+      >
         <h4
           className={`${pixelTitle.className} text-[9px] sm:text-[11px] text-[#5a2d0c] leading-relaxed mb-2`}
         >
@@ -35,13 +52,13 @@ export default function ExperienceDetailPanel({
         </h4>
         {experience.description ? (
           <p
-            className={`${pixelBody.className} text-lg sm:text-xl lg:text-2xl leading-tight mb-2`}
+            className={`${pixelBody.className} text-lg sm:text-xl leading-tight mb-2`}
           >
             {experience.description}
           </p>
         ) : (
           <p
-            className={`${pixelBody.className} text-lg sm:text-xl lg:text-2xl leading-tight mb-2 opacity-80`}
+            className={`${pixelBody.className} text-lg sm:text-xl leading-tight mb-2 opacity-80`}
           >
             {experience.additional} · {experience.year}
           </p>

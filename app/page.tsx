@@ -1265,7 +1265,7 @@ export default function Home() {
               }, 150);
             }
 
-            // Update experience detail panel (slide in / pause / slide out)
+            // Update experience detail panel (fixed in place; text swaps per experience)
             const panelElement = document.getElementById(
               "experience-detail-panel"
             );
@@ -1277,31 +1277,8 @@ export default function Home() {
                 rawIndex,
                 currentExperience.length - 1
               );
-              const localProgress = Math.min(
-                1,
-                Math.max(
-                  0,
-                  (scrollProgress - newActiveIndex * segmentSize) / segmentSize
-                )
-              );
-
-              let translateXPercent = 100;
-              let opacity = 0;
-              if (localProgress <= 0.2) {
-                const phase = localProgress / 0.2;
-                translateXPercent = 100 - phase * 100;
-                opacity = phase;
-              } else if (localProgress <= 0.8) {
-                translateXPercent = 0;
-                opacity = 1;
-              } else {
-                const phase = (localProgress - 0.8) / 0.2;
-                translateXPercent = phase * 100;
-                opacity = 1 - phase;
-              }
-
-              panelElement.style.transform = `translate(${translateXPercent}%, -50%)`;
-              panelElement.style.opacity = String(opacity);
+              // The scroll stays in place; each new experience replays the unroll
+              panelElement.style.opacity = scrollProgress > 0.01 ? "1" : "0";
 
               if (newActiveIndex !== activeExperienceIndexRef.current) {
                 activeExperienceIndexRef.current = newActiveIndex;
