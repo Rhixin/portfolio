@@ -8,6 +8,10 @@ import ExperienceDetailPanel from "@/components/ExperienceDetailPanel";
 import ChatMascot from "@/components/ChatMascot";
 import SpriteAnimator from "@/components/SpriteAnimator";
 import { CLOSEUP_FRAMES } from "@/lib/spriteSheet";
+import CertificateFrame from "@/components/CertificateFrame";
+import { CERT_FRAME_VARIANTS } from "@/lib/certFrames";
+import HouseSprite from "@/components/HouseSprite";
+import { HOUSE_VARIANTS } from "@/lib/houseSprites";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -1586,16 +1590,10 @@ export default function Home() {
                           "drop-shadow(0 0 0 transparent)";
                       }}
                     >
-                      <div
-                        className="shop-sprite"
-                        style={{
-                          width: "300px",
-                          height: "300px",
-                          backgroundImage: "url(/imagesv2/games/shop_anim.png)",
-                          backgroundSize: "600% 100%",
-                          imageRendering: "pixelated",
-                        }}
-                      ></div>
+                      <HouseSprite
+                        variant={HOUSE_VARIANTS[index % HOUSE_VARIANTS.length]}
+                        className="w-[300px]"
+                      />
                     </a>
                   </div>
                 );
@@ -2019,26 +2017,6 @@ export default function Home() {
           {/* Picture Frames Gallery */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {certifications.map((cert, index) => {
-              const frameStyles = [
-                {
-                  outer: "from-amber-600 via-amber-700 to-amber-900",
-                  inner: "from-amber-900 to-amber-950",
-                },
-                {
-                  outer: "from-slate-300 via-slate-400 to-slate-600",
-                  inner: "from-slate-700 to-slate-900",
-                },
-                {
-                  outer: "from-orange-600 via-orange-700 to-orange-900",
-                  inner: "from-orange-900 to-orange-950",
-                },
-                {
-                  outer: "from-gray-700 via-gray-800 to-black",
-                  inner: "from-black to-gray-900",
-                },
-              ];
-              const style = frameStyles[index % frameStyles.length];
-
               return (
                 <motion.div
                   key={cert.id}
@@ -2048,29 +2026,28 @@ export default function Home() {
                   viewport={{ once: true }}
                   className="group"
                 >
-                  <div className="relative w-full aspect-[4/3] cursor-pointer transition-transform duration-500 group-hover:scale-105">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${style.outer} rounded-sm`}>
-                      <div className={`absolute inset-4 bg-gradient-to-br ${style.inner} rounded-sm shadow-lg`}>
-                        <div className="absolute inset-2 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
-                          <div
-                            className="absolute inset-4 bg-white shadow-2xl shadow-black/40 overflow-hidden"
-                            onClick={() =>
-                              cert.image &&
-                              setSelectedCertification({ src: cert.image, alt: cert.title })
-                            }
-                          >
-                            {cert.image && (
-                              <Image
-                                src={cert.image}
-                                alt={cert.title}
-                                fill
-                                className="object-contain p-3"
-                              />
-                            )}
-                          </div>
-                        </div>
+                  <div className="relative w-full cursor-pointer transition-transform duration-500 group-hover:scale-105">
+                    <CertificateFrame
+                      variant={CERT_FRAME_VARIANTS[index % CERT_FRAME_VARIANTS.length]}
+                      className="w-full"
+                    >
+                      <div
+                        className="relative w-full h-full bg-white overflow-hidden"
+                        onClick={() =>
+                          cert.image &&
+                          setSelectedCertification({ src: cert.image, alt: cert.title })
+                        }
+                      >
+                        {cert.image && (
+                          <Image
+                            src={cert.image}
+                            alt={cert.title}
+                            fill
+                            className="object-contain p-3"
+                          />
+                        )}
                       </div>
-                    </div>
+                    </CertificateFrame>
                   </div>
                   <p className="text-center mt-4 text-gray-300 font-medium">{cert.title}</p>
                 </motion.div>
