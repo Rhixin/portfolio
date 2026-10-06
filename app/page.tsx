@@ -1526,7 +1526,7 @@ export default function Home() {
                     }}
                   >
                     {/* Company Info Above Shop */}
-                    <div className="absolute -top-36 left-1/2 -translate-x-1/2 text-center w-64">
+                    <div className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 text-center w-64">
                       {/* Logo */}
                       <div className="flex justify-center">
                         {exp.logo && (
@@ -1592,7 +1592,7 @@ export default function Home() {
                     >
                       <HouseSprite
                         variant={HOUSE_VARIANTS[index % HOUSE_VARIANTS.length]}
-                        className="w-[300px]"
+                        className="w-[240px]"
                       />
                     </a>
                   </div>

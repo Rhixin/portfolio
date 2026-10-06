@@ -28,7 +28,7 @@ export default function ExperienceDetailPanel({
   return (
     <div
       id="experience-detail-panel"
-      className="absolute top-1/2 right-[12%] -translate-y-1/2 w-[94vw] lg:w-[min(560px,85vw,calc(90vh*0.863))]"
+      className="absolute top-1/2 right-[16%] -translate-y-1/2 w-[94vw] lg:w-[min(560px,85vw,calc(90vh*0.863))]"
       style={{ opacity: 0 }}
     >
       {/* Remounts for each experience so the unroll plays again */}
